@@ -55,7 +55,6 @@
         reader.readAsText(file);
 }   ;
 
-
     var pugScale = 1.0
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
@@ -68,6 +67,7 @@
         const pug = document.getElementById("pug")
         pugScale = pugScale + 1;
         //ComfyJS.Say( pugScale );
+        console.log(text + " hi");
         pug.classList.add("grow");
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
