@@ -18,4 +18,4 @@ jobs:
         env: 
           TEST: ${{secrets.TEST}}
         run: |
-         html.yaml
+         index.html
