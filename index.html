@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
-  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script 
+    src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js">
+    var pugScale=1.0;
+  </script>
   <style>
     .rotate {
     animation: rotation 1s 1 linear;
@@ -18,7 +21,7 @@
     }
   }
     .size {
-        transform: scale(1.0+var(--pugScale));
+        transform: scale(1.0+pugScale);
     }
   </style>
 </head>
@@ -42,6 +45,7 @@
             // Entire file
             //console.log(this.result);
             text=this.result;
+            console.log(text);
 
             // By lines
             var lines = this.result.split('\n');
