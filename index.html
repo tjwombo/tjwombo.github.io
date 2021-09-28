@@ -35,7 +35,6 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
-    var text="";
     document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
@@ -44,20 +43,17 @@
         reader.onload = function(progressEvent){
             // Entire file
             //console.log(this.result);
-            text=this.result;
+            var text=this.result;
             console.log(text);
 
             // By lines
             var lines = this.result.split('\n');
             for(var line = 0; line < lines.length; line++){
-                //console.log(lines[line]);
+                console.log(lines[line]);
             }
         };
-        //text = reader.readAsText(file);
-        console.log(text);
+        reader.readAsText(file);
 }   ;
-
-    console.log(text);
 
 
     var pugScale = 1.0
