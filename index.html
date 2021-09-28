@@ -42,7 +42,7 @@
                     .textContent=fr.result;
         }
               
-        text2 =this.files[0];
+        text2 =fr.readAsText(this.files[0]);
         doecument.write(text2 +"\n");
     })
     document.write("hi\n");
