@@ -37,7 +37,8 @@
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
         pugScale = pugScale + 1;
-        pug.classList.add("grow")
+        ComfyJS.Say( pugScale );
+        pug.classList.add("grow");
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
         pugScale = vpugScale - 1;
