@@ -44,9 +44,10 @@
         }
         text3 = this.result;
         text2 =fr.readAsText(this.files[0]);
+
+        document.write(text3);
     })
 
-    document.write(text3);
 
     var pugScale = 1.0
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
