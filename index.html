@@ -33,7 +33,7 @@
         var fr=new FileReader();
         fr.onload=function(){
             document.getElementById('output')
-                .textContent=fr.result;
+                    .textContent=fr.result;
         }
               
         fr.readAsText(this.files[0]);
