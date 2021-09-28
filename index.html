@@ -53,14 +53,14 @@
         const pug = document.getElementById("pug")
         pugScale = pugScale + 1;
         //ComfyJS.Say( pugScale );
+        console.log(text[0]);
+        console.log(text[1]);
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
         pugScale = pugScale - 1;
         
       }
     }
-    console.log(text[0]);
-    console.log(text[1]);
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
     ComfyJS.Init("tjwombo");
 
