@@ -52,11 +52,17 @@
         }, 1000)
       } else if (command == "grow") {
         pugScale += .5;
+        if (pugScale > 12) {
+            pugScale = 12;
+        }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         //console.log(text[0]);
         //console.log(text[1]);
       } else if (command == "shrink") {
         pugScale -= .5;
+        if (pugScale < -12) {
+            pugScale = -12;
+        }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
       }
     }
