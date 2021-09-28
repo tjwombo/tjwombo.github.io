@@ -17,6 +17,13 @@
       transform: rotate(359deg);
     }
   }
+    .grow {
+        transform: scaleY(1.5); scaleX(1.5);
+    }
+    
+    .shrink {
+        transform: scaleY(.5); scaleX(.5);
+    }
   </style>
 </head>
 <body>
@@ -29,6 +36,18 @@
         tomat.classList.add("rotate")
         setTimeout(() => {
           tomat.classList.remove("rotate")
+        }, 1000)
+      } else if (command == "grow") {
+        const pug = document.getElementById("pug")
+        pug.classList.add("grow")
+        setTimeout(() => {
+            pug.classList.remove("grow")
+        }, 1000)
+      } else if (command == "shrink") {
+        const pug = document.getElementById("pug")
+        pug.classList.add("shrink")
+        setTimeout(() => {
+            pug.classList.remove("shrink")
         }, 1000)
       }
     }
