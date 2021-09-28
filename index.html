@@ -26,6 +26,20 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
+
+    document.getElementById('inputfile')
+        .addEventListener('change', function() {
+              
+        var fr=new FileReader();
+        fr.onload=function(){
+            document.getElementById('output')
+                .textContent=fr.result;
+        }
+              
+        fr.readAsText(this.files[0]);
+    })
+
+
     var pugScale = 1.0
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
