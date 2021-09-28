@@ -32,6 +32,7 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
+    var text;
     document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
@@ -39,16 +40,19 @@
         var reader = new FileReader();
         reader.onload = function(progressEvent){
             // Entire file
-            console.log(this.result);
+            //console.log(this.result);
 
             // By lines
             var lines = this.result.split('\n');
             for(var line = 0; line < lines.length; line++){
-                console.log(lines[line]);
+                //console.log(lines[line]);
             }
         };
-        reader.readAsText(file);
+        text = reader.readAsText(file);
+        console.log(text);
 }   ;
+
+    console.log(text);
 
 
     var pugScale = 1.0
@@ -62,7 +66,7 @@
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
         pugScale = pugScale + 1;
-        ComfyJS.Say( pugScale );
+        //ComfyJS.Say( pugScale );
         pug.classList.add("grow");
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
