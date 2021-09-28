@@ -40,15 +40,9 @@
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
         pug.classList.add("grow")
-        setTimeout(() => {
-            pug.classList.remove("grow")
-        }, 1000)
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
         pug.classList.add("shrink")
-        setTimeout(() => {
-            pug.classList.remove("shrink")
-        }, 1000)
       }
     }
     ComfyJS.Init("tjwombo");
