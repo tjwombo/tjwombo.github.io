@@ -18,7 +18,7 @@
     }
   }
     .size {
-        transform: scale(1.0+pugScale);
+        transform: scale(1.0+var(--pugScale));
     }
   </style>
 </head>
@@ -26,7 +26,7 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
-    var pugScale = 1.0
+    --pugScale: 1.0;
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         const tomat = document.getElementById("tomat")
@@ -36,11 +36,11 @@
         }, 1000)
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
-        pugScale += .1;
+        --pugScale += .1;
         pug.classList.add("grow")
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
-        pugScale -= .1;
+        --pugScale -= .1;
         pug.classList.add("grow")
       }
     }
