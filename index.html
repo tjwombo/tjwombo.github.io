@@ -32,7 +32,7 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
-    var text;
+    var text="";
     document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
@@ -41,7 +41,7 @@
         reader.onload = function(progressEvent){
             // Entire file
             //console.log(this.result);
-            text = this.result;
+            text=this.result;
 
             // By lines
             var lines = this.result.split('\n');
@@ -71,7 +71,7 @@
         pug.classList.add("grow");
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
-        pugScale = vpugScale - 1;
+        pugScale = pugScale - 1;
         pug.classList.add("grow")
       }
     }
