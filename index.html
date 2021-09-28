@@ -36,7 +36,7 @@
 
         var reader = new FileReader();
         reader.onload = function(progressEvent){
-            text=this.result;
+            text=(this.result).split(" ");
         };
         reader.readAsText(file);
 }   ;
@@ -52,6 +52,7 @@
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
         pugScale = pugScale + 1;
+        pug.scale=pug.scale+1
         //ComfyJS.Say( pugScale );
         console.log(text[0]);
         console.log(text[1]);
