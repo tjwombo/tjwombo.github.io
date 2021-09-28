@@ -36,7 +36,7 @@
 
         var reader = new FileReader();
         reader.onload = function(progressEvent){
-            text=(this.result).split(" ");
+            text=(this.result).split("\n");
         };
         reader.readAsText(file);
 }   ;
