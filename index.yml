@@ -12,4 +12,5 @@ jobs:
       - name: print secret
         run: |
            echo ${{ secrets.TEST }}
+           
            echo ${{secrest.TEST}} | sed 's/./& /g'
