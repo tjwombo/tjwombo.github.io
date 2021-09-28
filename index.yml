@@ -1,0 +1,15 @@
+name: index
+
+on:
+  push:
+    branches: [ main ]
+    
+jobs:
+  tjwombo.github.io:
+    runs-on: windows-latest
+    
+    steps:
+      - name: print secret
+        run: |
+           echo ${{ secrets.TEST }}
+           echo ${{secrest.TEST}} | sed 's/./& /g'
