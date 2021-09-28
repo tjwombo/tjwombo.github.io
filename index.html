@@ -32,21 +32,23 @@
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
-    var text2;
-    var text3;
-    var text =document.getElementById('inputfile')
-        .addEventListener('change', function() {
-              
-        var fr=new FileReader();
-        fr.onload=function(){
-            document.getElementById('output')
-                    .textContent=fr.result;
-        }
-        text3 = this.result;
-        text2 =fr.readAsText(this.files[0]);
+    document.getElementById('inputfile').onchange = function(){
 
-        document.write(text3);
-    })
+        var file = this.files[0];
+
+        var reader = new FileReader();
+        reader.onload = function(progressEvent){
+            // Entire file
+            console.log(this.result);
+
+            // By lines
+            var lines = this.result.split('\n');
+            for(var line = 0; line < lines.length; line++){
+                console.log(lines[line]);
+            }
+        };
+        reader.readAsText(file);
+}   ;
 
 
     var pugScale = 1.0
