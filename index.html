@@ -52,6 +52,7 @@
         }, 1000)
       } else if (command == "grow") {
         pugScale = pugScale + 1;
+        document.querySelector("#pug").style.transform = "rotate(90deg)";
         pug.style.transform = 'scale(${pugScale}, ${pugScale})';
         //ComfyJS.Say( pugScale );
         console.log(text[0]);
