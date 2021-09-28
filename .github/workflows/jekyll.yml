@@ -34,7 +34,7 @@ jobs:
       -
         name: Deploy to GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: tjwombo/tjwombo-github-pages@V1
         with:
           target_branch: gh-pages
           build_dir: build
