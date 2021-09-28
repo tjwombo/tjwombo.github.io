@@ -41,6 +41,7 @@
         reader.onload = function(progressEvent){
             // Entire file
             //console.log(this.result);
+            text = this.result;
 
             // By lines
             var lines = this.result.split('\n');
@@ -48,7 +49,7 @@
                 //console.log(lines[line]);
             }
         };
-        text = reader.readAsText(file);
+        //text = reader.readAsText(file);
         console.log(text);
 }   ;
 
