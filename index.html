@@ -42,10 +42,7 @@
 
         var reader = new FileReader();
         reader.onload = function(progressEvent){
-            // Entire file
-            //console.log(this.result);
             text=this.result;
-            console.log(text);
 
             // By lines
             var lines = this.result.split('\n');
