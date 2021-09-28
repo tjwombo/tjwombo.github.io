@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-:root {
-    --pugScale: 1;
-}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -39,11 +36,11 @@
         }, 1000)
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
-        var(--pugScale) = var(--pugScale) + 1;
+        pugScale = pugScale + 1;
         pug.classList.add("grow")
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
-        var(--pugScale) = var(--pugScale) - 1;
+        pugScale = vpugScale - 1;
         pug.classList.add("grow")
       }
     }
