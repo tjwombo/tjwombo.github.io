@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  var {
+    pugScale = 0;
+  }
   <style>
     .rotate {
     animation: rotation 1s 1 linear;
@@ -17,12 +20,8 @@
       transform: rotate(359deg);
     }
   }
-    .grow {
-        transform: scaleY(1.5); scaleX(1.5);
-    }
-    
-    .shrink {
-        transform: scaleY(.5); scaleX(.5);
+    .size {
+        transform: scale(1+pugScale);
     }
   </style>
 </head>
@@ -39,10 +38,12 @@
         }, 1000)
       } else if (command == "grow") {
         const pug = document.getElementById("pug")
+        pugScale += .1;
         pug.classList.add("grow")
       } else if (command == "shrink") {
         const pug = document.getElementById("pug")
-        pug.classList.add("shrink")
+        pugScale -= .1;
+        pug.classList.add("grow")
       }
     }
     ComfyJS.Init("tjwombo");
