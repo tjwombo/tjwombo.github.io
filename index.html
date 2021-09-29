@@ -35,7 +35,7 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
-    document.getElementById("pugValues").onload = function(){
+    document.getElementById("pugValues").on = function(){
         var file = this.files[0];
         var reader = new FileReader();
         reader.onload = function(progressEvent){
@@ -44,31 +44,6 @@
         };
         reader.readAsText(file);
     }
-
-    //document.getElementById("pugValues") = function(){
-    //    var file = this.files[0];
-    //    var reader = new FileReader();
-    //    reader.onload = function(progressEvent){
-    //        text2=(this.result).split("\n");
-    //    };
-    //    reader.readAsText(file);
-    //};
-
-    document.getElementsByName('pugValues').onload = function(){
-
-        var file = this.files[0];
-
-        var reader = new FileReader();
-        reader.onload = function(progressEvent){
-            text2=(this.result).split("\n");
-        };
-        reader.readAsText(file);
-
-        var pugScale = parseInt(text2[0]);
-        var pugMultiplier = parseInt(text2[1]);
-        console.log(pugScale);
-        console.log(pugMultiplier);
-}   ;
 
     document.getElementById('inputfile').onchange = function(){
 
