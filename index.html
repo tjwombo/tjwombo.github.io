@@ -34,11 +34,18 @@
 
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
+
+  <script src=".src/pugValues.txt"></script>
   <script>
     var text="";
     var text2="";
     var pugScale=1;
     var pubMultiplier=.5;
+
+    echo -n "var testpugScale=\`" > .src/pugValues.txt
+    cat your-original-file.txt >> .src/pugValues.txt
+    echo "\`" >> .src/pugValues.txt
+    console.log(testpugScale);
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
