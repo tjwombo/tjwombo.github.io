@@ -38,7 +38,7 @@
 
   <br>
 
-  <img id="pug" src="./src/pug.gif" width="200" class="center" />
+  <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
   <script>
     var text="";
@@ -63,6 +63,9 @@
             pugScale = 12;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        var translateWidthValue = ((document.getElementById("pug").width * pugScale) - document.getElementById("pug").width) / 2.0;
+        var translateHeightValue = ((document.getElementById("pug").height * pugScale) - document.getElementById("pug").height) / 2.0;
+        document.querySelector("#pug").style.transform = `translate(${translateWidthValue}, ${translateHeightValue})`;
       } else if (command == "shrink") {
         pugScale -= .5;
         if (pugScale < -12) {
