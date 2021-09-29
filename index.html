@@ -35,7 +35,7 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
-    document.getElementById("pugValues") = function(){
+    document.getElementById("pugValues").onload = function(){
         var file = this.files[0];
         var reader = new FileReader();
         reader.onload = function(progressEvent){
