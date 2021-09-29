@@ -48,7 +48,7 @@
     var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     var pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
 
-    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%)`;
+    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
@@ -67,7 +67,7 @@
             pugScale = 12;
             pugPercentage = 240;
         }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%)`;
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
 
       } else if (command == "shrink") {
         pugScale -= pugMultiplier;
@@ -76,7 +76,7 @@
             pugScale = -12;
             pugPercentage = 240;
         }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%)`;
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
