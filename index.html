@@ -44,9 +44,10 @@
     var text="";
     var text2="";
 
-    var pugScale = parseInt(testpugScale.split(" ")[0])
+    var pugScale = parseFloat(testpugScale.split(" ")[0])
     var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     var pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
+
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`
     document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
 
@@ -59,6 +60,7 @@
         setTimeout(() => {
           tomat.classList.remove("rotate")
         }, 1000)
+
       } else if (command == "grow") {
         pugScale += pugMultiplier;
         pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
@@ -68,6 +70,7 @@
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
+
       } else if (command == "shrink") {
         pugScale -= pugMultiplier;
         pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
