@@ -40,6 +40,9 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
+    const tomat = document.getElementById("tomat")
+    const pug = document.getElementById("pug")
+
     document.getElementById("pugValues").onchange = function(){
         var file = this.files[0];
         var reader = new FileReader();
@@ -47,6 +50,7 @@
             text2=(this.result).split("\n");
             pugScale = parseInt(text2[0]);
             pugMultiplier = parseInt(text2[1]);
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
             console.log(text2);
         };
         reader.readAsText(file);
@@ -62,10 +66,7 @@
         };
         reader.readAsText(file);
 }   ;
-
-    const tomat = document.getElementById("tomat")
-    const pug = document.getElementById("pug")
-    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+    
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
