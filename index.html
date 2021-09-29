@@ -48,7 +48,7 @@
     var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     var pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
 
-    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`
+    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})` `translate(${pugPercentage}%)`;
     //document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
 
     console.log(pugScale);
