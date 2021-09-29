@@ -42,13 +42,13 @@
     //    reader.readAsText(file);
     //};
 
-    document.getElementById('pugValues').onchange = function(){
+    document.getElementById('pugValues').onload = function(){
 
         var file = this.files[0];
 
         var reader = new FileReader();
         reader.onload = function(progressEvent){
-            text=(this.result).split("\n");
+            text2=(this.result).split("\n");
         };
         reader.readAsText(file);
 }   ;
