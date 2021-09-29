@@ -44,8 +44,9 @@
     var text="";
     var text2="";
 
-    var pugScale = parseInt(testpugScale.split(" ")[0])
-    var pugMultiplier = parseInt(testpugScale.split(" ")[1])
+    var pugValue = testpugScale;
+    var pugScale = parseInt(pugValue.split(" ")[0])
+    var pugMultiplier = parseInt(pugValue.split(" ")[1])
     console.log(pugMultiplier);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
     var translateWidthValue = ((document.getElementById("pug").width * pugScale) - document.getElementById("pug").width) / -2.0;
