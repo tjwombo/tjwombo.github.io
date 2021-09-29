@@ -32,6 +32,8 @@
   <script>
     var text="";
     var text2="";
+    var pugScale=1;
+    var pubMultiplier=.5;
 
     //document.getElementById("pugValues") = function(){
     //    var file = this.files[0];
@@ -51,6 +53,11 @@
             text2=(this.result).split("\n");
         };
         reader.readAsText(file);
+
+        var pugScale = parseInt(text2[0]);
+        var pugMultiplier = parseInt(text2[1]);
+        console.log(pugScale);
+        console.log(pugMultiplier);
 }   ;
 
     document.getElementById('inputfile').onchange = function(){
@@ -66,10 +73,6 @@
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
-    var pugScale = parseInt(text2[0]);
-    var pugMultiplier = parseInt(text2[1]);
-    console.log(pugScale);
-    console.log(pugMultiplier);
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
