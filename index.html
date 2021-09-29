@@ -40,7 +40,7 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
-    document.getElementById("pugValues").on = function(){
+    document.getElementById("pugValues").onchange = function(){
         var file = this.files[0];
         var reader = new FileReader();
         reader.onload = function(progressEvent){
