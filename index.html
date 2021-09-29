@@ -20,8 +20,8 @@
   </style>
 </head>
 <body>
-  <input type="file" name = "./pugValues.txt"
-           id="pugValues">
+  <input type="file" name = "inputfile"
+           id="inputfile">
    <br>
 
    <pre id="output"></pre>
@@ -30,7 +30,7 @@
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
     var text="";
-    document.getElementById('pugValues') = function(){
+    document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
 
@@ -43,8 +43,7 @@
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
-    var pugScale = parseInt(text[1]);
-    var pugMultiplier = parseInt(text[2]);
+    var pugScale = 1.0
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
