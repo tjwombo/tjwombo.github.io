@@ -1,1 +1,1 @@
-testpugScale=`3 .5`
+pugValues=`3 .5`
