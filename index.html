@@ -46,6 +46,7 @@
 
     var pugScale = parseInt(testpugScale.split(" ")[0])
     var pugMultiplier = parseInt(testpugScale.split(" ")[1])
+    console.log(pugMultiplier);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
     const tomat = document.getElementById("tomat")
@@ -58,7 +59,7 @@
           tomat.classList.remove("rotate")
         }, 1000)
       } else if (command == "grow") {
-        pugScale += pugMultiplier;
+        pugScale += .5;
         if (pugScale > 12) {
             pugScale = 12;
         }
@@ -67,7 +68,7 @@
         var translateHeightValue = ((document.getElementById("pug").height * pugScale) - document.getElementById("pug").height) / -2.0;
         document.querySelector("#pug").style.transform = `translate(${translateWidthValue}, ${translateHeightValue})`;
       } else if (command == "shrink") {
-        pugScale -= pugMultiplier;
+        pugScale -= .5;
         if (pugScale < -12) {
             pugScale = -12;
         }
