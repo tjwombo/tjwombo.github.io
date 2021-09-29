@@ -7,10 +7,12 @@
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <style>
     .center {
-        display: block;
-        position: fixed;
-        right: 0px;
-        bottom: 0px;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
    }
 
     .rotate {
@@ -46,9 +48,9 @@
 
     var pugScale = parseFloat(testpugScale.split(" ")[0])
     var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
-    var pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
+    //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
-    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
+    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
@@ -62,21 +64,21 @@
 
       } else if (command == "grow") {
         pugScale += pugMultiplier;
-        pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
+        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
-            pugPercentage = 240;
+            //pugPercentage = 240;
         }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
       } else if (command == "shrink") {
         pugScale -= pugMultiplier;
-        pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
+        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale < -12) {
             pugScale = -12;
-            pugPercentage = 240;
+            //pugPercentage = 240;
         }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale}) translate(${pugPercentage}%, ${pugPercentage}%)`;
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
