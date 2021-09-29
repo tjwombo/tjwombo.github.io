@@ -6,6 +6,10 @@
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <style>
+  :root {
+        --file: "dummytext";
+  }
+
     .rotate {
     animation: rotation 1s 1 linear;
   }
@@ -40,8 +44,8 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
+    var r = document.querySelector(':root');
     var rs = getComputedStyle(r);
-  // Alert the value of the --blue variable
     document.write(rs.getPropertyValue('--file'));
 
     const tomat = document.getElementById("tomat")
