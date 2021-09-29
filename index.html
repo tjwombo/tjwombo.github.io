@@ -35,19 +35,14 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
-    //document.getElementById("pugValues") = function(){
-    //    var file = this.files[0];
-    //    var reader = new FileReader();
-    //    reader.onload = function(progressEvent){
-    //        text2=(this.result).split("\n");
-    //    };
-    //    reader.readAsText(file);
-    //};
-
-    console.log(pugValues);
-    //console.log(pugValues.document.body);
-    console.log(document.getElementsByName('pugValues'));
-    console.log(document.getElementsByName('pugValues').document.body);
+    document.getElementById("pugValues") = function(){
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(progressEvent){
+            text2=(this.result).split("\n");
+        };
+        reader.readAsText(file);
+    };
 
     document.getElementsByName('pugValues').onload = function(){
 
