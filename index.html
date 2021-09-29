@@ -48,6 +48,9 @@
     var pugMultiplier = parseInt(testpugScale.split(" ")[1])
     console.log(pugMultiplier);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+    var translateWidthValue = ((document.getElementById("pug").width * pugScale) - document.getElementById("pug").width) / -2.0;
+    var translateHeightValue = ((document.getElementById("pug").height * pugScale) - document.getElementById("pug").height) / -2.0;
+    document.querySelector("#pug").style.transform = `translate(${translateWidthValue}, ${translateHeightValue})`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
