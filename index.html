@@ -42,6 +42,17 @@
     //    reader.readAsText(file);
     //};
 
+    document.getElementById('pugValues') = function(){
+
+        var file = this.files[0];
+
+        var reader = new FileReader();
+        reader.onload = function(progressEvent){
+            text=(this.result).split("\n");
+        };
+        reader.readAsText(file);
+}   ;
+
     document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
