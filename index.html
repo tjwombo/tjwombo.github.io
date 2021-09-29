@@ -42,40 +42,13 @@
   <script>
     var text="";
     var text2="";
-    var pugScale=1;
-    var pubMultiplier=.5;
 
-    console.log(testpugScale);
-    console.log(testpugScale.split(" ")[0]);
-
-    pugScale = parseInt(testpugScale.split(" ")[0])
+    var pugScale = parseInt(testpugScale.split(" ")[0])
+    var pugMultiplier = parseInt(testpugScale.split(" ")[1])
+    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
-
-    document.getElementById("pugValues").onchange = function(){
-        var file = this.files[0];
-        var reader = new FileReader();
-        reader.onload = function(progressEvent){
-            text2=(this.result).split("\n");
-            pugScale = parseInt(text2[0]);
-            pugMultiplier = parseInt(text2[1]);
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            console.log(text2);
-        };
-        reader.readAsText(file);
-    }
-
-    document.getElementById('inputfile').onchange = function(){
-
-        var file = this.files[0];
-
-        var reader = new FileReader();
-        reader.onload = function(progressEvent){
-            text=(this.result).split("\n");
-        };
-        reader.readAsText(file);
-}   ;
     
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
