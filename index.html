@@ -45,6 +45,8 @@
         var reader = new FileReader();
         reader.onload = function(progressEvent){
             text2=(this.result).split("\n");
+            pugScale = parseInt(text2[0]);
+            pugMultiplier = parseInt(text2[1]);
             console.log(text2);
         };
         reader.readAsText(file);
