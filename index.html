@@ -40,6 +40,7 @@
         var reader = new FileReader();
         reader.onload = function(progressEvent){
             text2=(this.result).split("\n");
+            console.log(text2);
         };
         reader.readAsText(file);
     }
@@ -52,9 +53,6 @@
     //    };
     //    reader.readAsText(file);
     //};
-
-    var test = document.getElementsByName("pugValues");
-    console.log(test);
 
     document.getElementsByName('pugValues').onload = function(){
 
