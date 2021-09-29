@@ -8,10 +8,9 @@
   <style>
     .center {
         display: block;
-        margin-left: auto;
-        margin-right: 0px;
-        margin-top: auto;
-        margin-bottom: 0px;
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
    }
 
     .rotate {
@@ -49,7 +48,7 @@
     var pugScale = parseInt(pugValue.split(" ")[0])
     var pugMultiplier = parseInt(pugValue.split(" ")[1])
     console.log(pugMultiplier);
-    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+    document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})` `translate(-30%`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
