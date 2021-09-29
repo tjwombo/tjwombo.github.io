@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="https://requirejs.org/docs/release/2.3.6/r.js"></script>
   <style>
     .rotate {
     animation: rotation 1s 1 linear;
@@ -29,15 +28,20 @@
 
   <img id="tomat" src="./src/tomat.jpg" width="200" />
   <img id="pug" src="./src/pug.gif" width="200" />
+  <object data="./src/pugValues.txt" name="pugValues"></object>
   <script>
     var text="";
+    var text2="";
 
-    const fs = require("fs")
-
-    fs.readFile("./src/pugValues.txt", (err, data) => {
-        if (err) throw err;
-        console.log(data);
-    })
+    document.getElementById("pugValues") = function(){
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(progressEvent){
+            text2=(this.result).split("\n");
+            console.log(text2);
+        };
+        reader.readAsText(file);
+    }
 
     document.getElementById('inputfile').onchange = function(){
 
@@ -48,7 +52,7 @@
             text=(this.result).split("\n");
         };
         reader.readAsText(file);
-}   ;
+}   };
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
