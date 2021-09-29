@@ -44,20 +44,14 @@
     var text="";
     var text2="";
 
-    var pugValue = testpugScale;
-    var pugScale = parseInt(pugValue.split(" ")[0])
-    var pugMultiplier = parseFloat(pugValue.split(" ")[1])
-    console.log(testpugScale);
-    console.log(testpugScale.split(" "));
-    console.log(pugMultiplier);
+    var pugScale = parseInt(testpugScale.split(" ")[0])
+    var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
+    var pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`
-    document.querySelector("#pug").style.transform = `translate(-30%)`;
+    document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
-
-    pug.classList.remove("center")
-    pug.classList.add("center")
     
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
@@ -66,19 +60,23 @@
           tomat.classList.remove("rotate")
         }, 1000)
       } else if (command == "grow") {
-        pugScale += .5;
+        pugScale += pugMultiplier;
+        pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
+            pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        pug.classList.remove("center")
-    pug.classList.add("center")
+        document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
       } else if (command == "shrink") {
-        pugScale -= .5;
+        pugScale -= pugMultiplier;
+        pugPercentage = (Math.abs(pugMultiplier) / .5) * -10;
         if (pugScale < -12) {
             pugScale = -12;
+            pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        document.querySelector("#pug").style.transform = `translate(${pugPercentage}%)`;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
