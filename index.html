@@ -36,16 +36,15 @@
   <img id="pug" src="./src/pug.gif" width="200" />
 
   <script src="src/pugValues.txt"></script>
+  echo -n "var testpugScale=\`" > src/pugValues.txt
+  cat your-original-file.txt >> src/pugValues.txt
+  echo "\`" >> src/pugValues.txt
   <script>
     var text="";
     var text2="";
     var pugScale=1;
     var pubMultiplier=.5;
 
-    <?php echo 'hi';
-    echo -n "var testpugScale=\`" > src/pugValues.txt
-    cat your-original-file.txt >> src/pugValues.txt
-    echo "\`" >> src/pugValues.txt ?>
     console.log(testpugScale);
 
     const tomat = document.getElementById("tomat")
