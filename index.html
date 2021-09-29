@@ -46,9 +46,10 @@
 
     var pugValue = testpugScale;
     var pugScale = parseInt(pugValue.split(" ")[0])
-    var pugMultiplier = parseInt(pugValue.split(" ")[1])
+    var pugMultiplier = parseDouble(pugValue.split(" ")[1])
     console.log(testpugScale);
     console.log(testpugScale.split(" "));
+    console.log(pugMultiplier);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`
     document.querySelector("#pug").style.transform = `translate(-30%)`;
 
