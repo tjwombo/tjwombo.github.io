@@ -30,6 +30,14 @@
   <img id="pug" src="./src/pug.gif" width="200" />
   <script>
     var text="";
+
+    const fs = require("fs")
+
+    fs.readFile("./src/pugValues.txt", (err, data) => {
+        if (err) throw err;
+        console.log(data);
+    })
+
     document.getElementById('inputfile').onchange = function(){
 
         var file = this.files[0];
