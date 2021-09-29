@@ -35,6 +35,15 @@
     var pugScale=1;
     var pubMultiplier=.5;
 
+    document.getElementById("pugValues") = function(){
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(progressEvent){
+            text2=(this.result).split("\n");
+        };
+        reader.readAsText(file);
+    }
+
     //document.getElementById("pugValues") = function(){
     //    var file = this.files[0];
     //    var reader = new FileReader();
