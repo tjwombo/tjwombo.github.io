@@ -38,7 +38,6 @@
         var reader = new FileReader();
         reader.onload = function(progressEvent){
             text2=(this.result).split("\n");
-            console.log(text2);
         };
         reader.readAsText(file);
     ;
@@ -56,7 +55,8 @@
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
-    var pugScale = 1.0
+    var pugScale = parseInt(text2[0]);
+    var pugMultiplier=parseInt(text2[1]);
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
