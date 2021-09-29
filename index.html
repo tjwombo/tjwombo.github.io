@@ -8,6 +8,7 @@
   <style>
     .center {
         display: block;
+        position: fixed;
         bottom: 0px;
         right: 0px;
    }
@@ -48,12 +49,12 @@
     var pugMultiplier = parseInt(pugValue.split(" ")[1])
     console.log(pugMultiplier);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-    var translateWidthValue = ((document.getElementById("pug").width * pugScale) - document.getElementById("pug").width) / -2.0;
-    var translateHeightValue = ((document.getElementById("pug").height * pugScale) - document.getElementById("pug").height) / -2.0;
-    document.querySelector("#pug").style.transform = `translate(${translateWidthValue}, ${translateHeightValue})`;
 
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
+
+    pug.classList.remove("center")
+    pug.classList.add("center")
     
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
@@ -67,9 +68,8 @@
             pugScale = 12;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        var translateWidthValue = ((document.getElementById("pug").width * pugScale) - document.getElementById("pug").width) / -2.0;
-        var translateHeightValue = ((document.getElementById("pug").height * pugScale) - document.getElementById("pug").height) / -2.0;
-        document.querySelector("#pug").style.transform = `translate(${translateWidthValue}, ${translateHeightValue})`;
+        pug.classList.remove("center")
+    pug.classList.add("center")
       } else if (command == "shrink") {
         pugScale -= .5;
         if (pugScale < -12) {
