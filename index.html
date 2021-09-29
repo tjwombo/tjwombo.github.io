@@ -67,7 +67,9 @@
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
     var pugScale = parseInt(text2[0]);
-    var pugMultiplier=parseInt(text2[1]);
+    var pugMultiplier = parseInt(text2[1]);
+    console.log(pugScale);
+    console.log(pugMultiplier);
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
