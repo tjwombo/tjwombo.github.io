@@ -42,6 +42,8 @@
 
   <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
+  <div id="text"></div>
+
   <script>
     var text="";
     var text2="";
@@ -56,7 +58,7 @@
     const pug = document.getElementById("pug")
 
     	
-    openFile=fopen(getFilePath(),0);
+    document.getElementById("text").innerHTML = "Text added by JavaScript code";
     
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
