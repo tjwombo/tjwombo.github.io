@@ -42,25 +42,16 @@
 
   <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
-  
-  <script data-main="scripts/app" src="require.js"></script>
 
   <script>
 
   async function filestuff() {
-    var fs = require('fs');
-    const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
-    fetch(url1)
-        .then(
-            res =>
-                new Promise((resolve, reject) => {
-                    const dest = fs.createWriteStream("./tmp.txt");
-                    res.body.pipe(dest);
-                    res.body.on("end", () => resolve("it worked"));
-                })
-        )
-   }
-   filestuff();
+        const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
+        const response = await fetch(url1);
+        const data = await response.text();
+        console.log(data);
+  }
+  filestuff();
     
 
     var text="";
