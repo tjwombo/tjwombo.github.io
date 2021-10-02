@@ -42,6 +42,14 @@
   <script src="test.js" type="text/javascript"></script>
 
   <script>
+
+    try {
+        await cookieStore.set('opted_out', '1');
+    } catch (e) {
+        console.error(`Failed to set cookie: ${e}`);
+    }
+
+
     var text="";
     var text2="";
 
