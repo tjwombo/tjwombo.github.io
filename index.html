@@ -58,6 +58,7 @@
 
     var pugScale=1;
     var pugMultiplier=.5;
+    //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     async function readCookie() {
         try {
@@ -66,6 +67,7 @@
                 console.log(`Found ${cookie.name} cookie: ${cookie.value}`);
 
                 if (cookie.name = "scale") {
+                    console.log(cookie.value);
                     pugScale = cookie.value;
                 }
 
@@ -82,17 +84,6 @@
     var text="";
     var text2="";
 
-    //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
-
-    var testpugScale = "";
-    async function filestuff() {
-        const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testPugValues.txt'
-        const response = await fetch(url1);
-        testpugScale = await response.text();
-        pugScale = parseFloat(testpugScale.split(" ")[0])
-        pugMultiplier = parseFloat(testpugScale.split(" ")[1])
-    }
-    filestuff();
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
