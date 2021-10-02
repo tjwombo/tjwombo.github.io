@@ -55,9 +55,8 @@
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
 
-    var ActivexObj = new ActiveXObject(libraryname.classname[location]);
-    let newfile = new ActiveXObject("Scripting.FileSystemObject");
-    let openFile = newfile.OpenTextFile("C:\\testfile.txt", 1, true);
+    	
+    openFile=fopen(getFilePath(),0);
     
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
       if (command === "yeeclaw") {
