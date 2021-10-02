@@ -29,10 +29,6 @@
   </style>
 </head>
 <body>
-  <script src="src/pugValues.txt"></script>
-
-  <br>
-
   <img id="tomat" src="./src/tomat.jpg" width="200" />
 
   <br>
@@ -41,6 +37,7 @@
 
   <script>
 
+    // Sets a cookie on the page so you can read/write a persistent value
     async function cookies(names, values) {
         try {
             await cookieStore.set(names, values);
@@ -59,15 +56,32 @@
         });
     }
 
-    cookies("scale", 3);
-     
+    var pugScale=1;
+    var pugMultiplier=.5;
 
+    async function readCookie() {
+        try {
+            const cookie = await cookieStore.get('session_id');
+            if (cookie) {
+                console.log(`Found ${cookie.name} cookie: ${cookie.value}`);
+
+                if (cookie.name = "scale") {
+                    pugScale = cookie.value;
+                }
+
+            } else {
+                console.log('Cookie not found');
+            }
+        } catch (e) {
+            console.error(`Cookie store error: ${e}`);
+        }
+    }
+
+    readCookie();
 
     var text="";
     var text2="";
 
-    var pugScale = parseFloat(testpugScale.split(" ")[0])
-    var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     var testpugScale = "";
@@ -101,6 +115,7 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        cookiesWrite("scale", pugScale);
 
       } else if (command == "shrink") {
         pugScale -= pugMultiplier;
@@ -110,10 +125,12 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        cookiesWrite("scale", pugScale);
 
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+            cookiesWrite("scale", pugScale);
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
