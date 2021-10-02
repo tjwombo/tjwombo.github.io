@@ -38,7 +38,7 @@
   <script>
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
-    async function cookies(names, values) {
+    async function cookiesWrite(names, values) {
         try {
             await cookieStore.set(names, values);
         } catch (e) {
@@ -62,7 +62,7 @@
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
-    async function readCookie() {
+    async function cookiesRead() {
         try {
             const cookie = await cookieStore.get("scale");
             if (cookie) {
@@ -78,7 +78,7 @@
         }
     }
 
-    readCookie();
+    cookiesRead();
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
