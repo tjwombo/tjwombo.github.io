@@ -55,8 +55,8 @@
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
 
-    set fso = CreateObject("Scripting.FileSystemObject"); 
-    set s   = fso.CreateTextFile("<your Path>/filename.txt", True);
+    var fso = CreateObject("Scripting.FileSystemObject"); 
+    var s   = fso.CreateTextFile("<your Path>/filename.txt", True);
  
     var firstName = document.getElementById('FirstName');
     var lastName  = document.getElementById('lastName');
