@@ -57,8 +57,8 @@
                     const dest = fs.createWriteStream("./tmp.txt");
                     res.body.pipe(dest);
                     res.body.on("end", () => resolve("it worked"));
-      })
-  )
+                })
+        )
    }
    filestuff();
     
