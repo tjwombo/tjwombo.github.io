@@ -47,15 +47,18 @@
         console.error(`Failed to set cookie: ${e}`);
     }
 
-    await cookieStore.set({
-        name: 'opted_out',
-        value: '1',
-        expires: null,  // session cookie
+    async funcion cookies(names='opted_out', values=1) {
+        await cookieStore.set({
+            name: names,
+            value: values,
+            expires: null,  // session cookie
 
-        // By default, domain is set to null which means the scope is locked at the current domain.
-        domain: null,
-        path: '/'
+            // By default, domain is set to null which means the scope is locked at the current domain.
+            domain: null,
+            path: '/'
     });
+    }
+     
 
 
     var text="";
