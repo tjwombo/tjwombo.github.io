@@ -52,13 +52,22 @@
   filestuff();
     
 
-    var text="";
-    var text2="";
+  var text="";
+  var text2="";
 
     var pugScale = parseFloat(testpugScale.split(" ")[0])
     console.log(pugScale);
     var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
+
+
+    async function updatePug() {
+
+    pugScale = parseFloat(testpugScale.split(" ")[0])
+    console.log(pugScale);
+    pugMultiplier = parseFloat(testpugScale.split(" ")[1])
+  }
+  updatePug();
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
