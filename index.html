@@ -41,13 +41,13 @@
 
   <script>
 
-    try {
-        await cookieStore.set('opted_out', '1');
-    } catch (e) {
-        console.error(`Failed to set cookie: ${e}`);
-    }
+    async function cookies() {
+        try {
+            await cookieStore.set('opted_out', '1');
+        } catch (e) {
+            console.error(`Failed to set cookie: ${e}`);
+        }
 
-    async funcion cookies(names='opted_out', values=1) {
         await cookieStore.set({
             name: names,
             value: values,
@@ -56,8 +56,10 @@
             // By default, domain is set to null which means the scope is locked at the current domain.
             domain: null,
             path: '/'
-    });
+        });
     }
+
+    cookies();
      
 
 
