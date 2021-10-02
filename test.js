@@ -1,4 +1,3 @@
-console.log("test");
 var xhr = new XMLHttpRequest();
 xhr.open("POST", "/postman", true);
 xhr.setRequestHeader('Content-Type', 'application/json');
