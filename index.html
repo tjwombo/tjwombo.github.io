@@ -59,20 +59,6 @@
     }
     filestuff();
 
-    var input = document.querySelector('input[type="file"]')
-
-    var data = new FormData()
-    data.append('file', "test")
-    data.append('user', 'hubot')
-
-    async function filestuff2() {
-        await fetch('src/testOut.txt', {
-            method: 'POST',
-            body: data
-        })
-        console.log("did? did it work?")
-    }
-    filestuff2();
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
