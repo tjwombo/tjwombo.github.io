@@ -65,7 +65,7 @@
     data.append('file', "test")
     data.append('user', 'hubot')
 
-    fetch('data.json', {
+    fetch('https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json', {
         method: 'POST',
         body: data
     })
