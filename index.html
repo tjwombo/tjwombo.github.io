@@ -42,14 +42,7 @@
 
   <script>
 
-  var testpugScale = "";
-  async function filestuff() {
-        const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testPugValues.txt'
-        const response = await fetch(url1);
-        testpugScale = await response.text();
-        console.log(testpugScale);
-  }
-  filestuff();
+  
     
 
   var text="";
@@ -61,13 +54,17 @@
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
 
-    async function updatePug() {
-
-    pugScale = parseFloat(testpugScale.split(" ")[0])
-    console.log(pugScale);
-    pugMultiplier = parseFloat(testpugScale.split(" ")[1])
+    var testpugScale = "";
+  async function filestuff() {
+        const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testPugValues.txt'
+        const response = await fetch(url1);
+        testpugScale = await response.text();
+        console.log(testpugScale);
+        pugScale = parseFloat(testpugScale.split(" ")[0])
+        console.log(pugScale);
+        pugMultiplier = parseFloat(testpugScale.split(" ")[1])
   }
-  updatePug();
+  filestuff();
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
