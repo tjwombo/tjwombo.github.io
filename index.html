@@ -61,7 +61,7 @@
 
     async function readCookie() {
         try {
-            const cookie = await cookieStore.get(url: '/');
+            const cookie = await cookieStore.get("scale");
             if (cookie) {
                 console.log(`Found ${cookie.name} cookie: ${cookie.value}`);
 
