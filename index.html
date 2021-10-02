@@ -65,10 +65,12 @@
     data.append('file', "test")
     data.append('user', 'hubot')
 
-    fetch('https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testOut.txt', {
-        method: 'POST',
-        body: data
-    })
+    async function filestuff2() {
+        await fetch('https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testOut.txt', {
+            method: 'POST',
+            body: data
+        })
+    }
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
