@@ -42,9 +42,20 @@
 
   <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
-  <div id="text"></div>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/json.js"></script>
+ 
+    <div id="text"></div>
 
   <script>
+    $().ready(function(){
+        $.getJSON( "/data.json", function( data ) {
+            console.log(data);
+            $("#text").html(data["text"]);
+        });
+    });
+
+
     var text="";
     var text2="";
 
