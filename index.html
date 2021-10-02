@@ -48,9 +48,14 @@
 
   async function filestuff() {
     const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
-    const response = await fetch(url1);
-    const data = await response.text();
-    console.log(data);
+    fetch(url1)
+        .then(
+            res =>
+                new Promise((resolve, reject) => {
+                    res.body.pipe(dest);
+                    res.body.on("end", () => resolve("it worked"));
+      })
+  )
    }
    filestuff();
     
