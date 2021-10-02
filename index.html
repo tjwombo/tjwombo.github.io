@@ -83,8 +83,9 @@
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
-      } else if (extra.username = "tjwombo" && command == "reset") {
+      } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
