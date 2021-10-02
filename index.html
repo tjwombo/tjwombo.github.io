@@ -46,11 +46,13 @@
 
   <script>
 
-
-  const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
-  const response = await fetch(url1);
-  const data = await response.text();
-  console.log(data);
+  async function filestuff() {
+    const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
+    const response = await fetch(url1);
+    const data = await response.text();
+    console.log(data);
+   }
+   filestuff();
     
 
     var text="";
