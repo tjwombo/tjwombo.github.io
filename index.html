@@ -45,15 +45,16 @@
     var text="";
     var text2="";
 
-    var pugScale = 1;
-    var pugMultiplier = .5;
+    var pugScale = parseFloat(testpugScale.split(" ")[0])
+    var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
 
+    var testpugScale = "";
     async function filestuff() {
         const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testPugValues.txt'
         const response = await fetch(url1);
-        const testpugScale = await response.text();
+        testpugScale = await response.text();
         pugScale = parseFloat(testpugScale.split(" ")[0])
         pugMultiplier = parseFloat(testpugScale.split(" ")[1])
     }
