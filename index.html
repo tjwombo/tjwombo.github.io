@@ -30,9 +30,6 @@
 </head>
 <body>
   <script src="src/pugValues.txt"></script>
-  echo -n "var testpugScale=\`" > src/pugValues.txt
-  cat your-original-file.txt >> src/pugValues.txt
-  echo "\`" >> src/pugValues.txt
 
   <br>
 
@@ -45,10 +42,11 @@
 
   <script>
 
+  var testpugScale = "";
   async function filestuff() {
         const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/data.json'
         const response = await fetch(url1);
-        const data = await response.text();
+        testpugScale = await response.text();
         console.log(data);
   }
   filestuff();
