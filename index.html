@@ -50,8 +50,13 @@
 
   <script>
 
-  $().ready(function() {
-   $("#text").html("Text added by jQuery code.");
+    $().ready(function() {
+        $("#text").html("Text added by jQuery code.");
+
+        $.getJSON( "/data.json", function( data ) {
+            console.log(data);
+            $("#text").html(data["text"]);
+        });
     });
     
 
