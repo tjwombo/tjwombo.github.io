@@ -117,7 +117,7 @@
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
-         var newMult = parseFloat(id);
+         var newMult = parseFloat(message);
          newMult = Math.round(newMult * 10) / 10;
          console.log(newMult);
          if (newMult > 1) {
