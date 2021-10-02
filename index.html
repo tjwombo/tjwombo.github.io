@@ -61,7 +61,7 @@
 
     async function readCookie() {
         try {
-            const cookie = await cookieStore.get('session_id');
+            const cookie = await cookieStore.get(url: '/');
             if (cookie) {
                 console.log(`Found ${cookie.name} cookie: ${cookie.value}`);
 
