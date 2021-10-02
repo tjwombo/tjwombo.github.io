@@ -69,6 +69,7 @@
                 if (cookie.name = "scale") {
                     console.log(cookie.value);
                     pugScale = cookie.value;
+                    console.log(pugScale);
                 }
 
             } else {
@@ -84,7 +85,7 @@
     var text="";
     var text2="";
 
-
+    console.log(pugScale);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
     const tomat = document.getElementById("tomat")
