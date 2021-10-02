@@ -49,8 +49,8 @@
         }
 
         await cookieStore.set({
-            name: names,
-            value: values,
+            name: 'opted_out',
+            value: '1',
             expires: null,  // session cookie
 
             // By default, domain is set to null which means the scope is locked at the current domain.
