@@ -79,6 +79,9 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+
+      } else if (flags.broadcaster && command == "rest") {
+            pugScale = 0;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
