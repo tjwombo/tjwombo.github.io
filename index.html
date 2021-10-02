@@ -42,29 +42,22 @@
 
   <script>
 
-  
-    
+    var text="";
+    var text2="";
 
-  var text="";
-  var text2="";
-
-    var pugScale = parseFloat(testpugScale.split(" ")[0])
-    console.log(pugScale);
-    var pugMultiplier = parseFloat(testpugScale.split(" ")[1])
+    var pugScale = 1;
+    var pugMultiplier = .5;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
 
-    var testpugScale = "";
-  async function filestuff() {
+    async function filestuff() {
         const url1 = 'https://raw.githubusercontent.com/tjwombo/tjwombo.github.io/main/src/testPugValues.txt'
         const response = await fetch(url1);
-        testpugScale = await response.text();
-        console.log(testpugScale);
+        const testpugScale = await response.text();
         pugScale = parseFloat(testpugScale.split(" ")[0])
-        console.log(pugScale);
         pugMultiplier = parseFloat(testpugScale.split(" ")[1])
-  }
-  filestuff();
+    }
+    filestuff();
 
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
