@@ -45,31 +45,31 @@
 
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
-    async function cookiesWrite(names, values) {
-        try {
-            await cookieStore.set(names, values);
-        } catch (e) {
-            console.error(`Failed to set cookie: ${e}`);
-        }
+    //async function cookiesWrite(names, values) {
+    //    try {
+    //        await cookieStore.set(names, values);
+    //    } catch (e) {
+    //        console.error(`Failed to set cookie: ${e}`);
+    //    }
 
-        await cookieStore.set({
-            name: names,
-            value: values,
-            expires: null,  // session cookie
+    //    await cookieStore.set({
+    //        name: names,
+    //        value: values,
+    //        expires: null,  // session cookie
 
             // By default, domain is set to null which means the scope is locked at the current domain.
-            domain: null,
-            path: '/'
-        });
-    }
+    //        domain: null,
+    //        path: '/'
+    //    });
+    //}
 
     // Makes sure that the cookies that are read are still ints
-    function checkInt(number) {
-        if (isNaN(number)) {
-            return 1;
-        }
-        return number;
-    }
+    //function checkInt(number) {
+    //    if (isNaN(number)) {
+    //        return 1;
+    //    }
+    //    return number;
+    //}
 
     // Variables that use cookie values
     var pugScale=1;
@@ -77,30 +77,31 @@
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
-    async function cookiesRead() {
-        try {
-            const cookie = await cookieStore.get("scale");
-            if (cookie) {
-                    pugScale = cookie.value;
-            }
-            const cookie2 = await cookieStore.get("multiplier");
-            if (cookie2) {
-                pugMultiplier = cookie2.value;
-            }
-            pugScale = checkInt(pugScale);
-            pugMultiplier = checkInt(pugMultiplier);
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        } catch (e) {
-            console.error(`Cookie store error: ${e}`);
-        }
-    }
+    //async function cookiesRead() {
+    //    try {
+    //        const cookie = await cookieStore.get("scale");
+    //        if (cookie) {
+    //                pugScale = cookie.value;
+    //        }
+    //        const cookie2 = await cookieStore.get("multiplier");
+    //        if (cookie2) {
+    //            pugMultiplier = cookie2.value;
+    //        }
+    //        pugScale = checkInt(pugScale);
+    //        pugMultiplier = checkInt(pugMultiplier);
+    //        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+    //    } catch (e) {
+    //        console.error(`Cookie store error: ${e}`);
+    //    }
+    //}
 
-    cookiesRead();
+    //cookiesRead();
 
     async function readValues(file) {
         var text = await file.text();
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
     }
 
 
