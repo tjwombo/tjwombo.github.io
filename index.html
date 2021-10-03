@@ -43,11 +43,6 @@
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
-    async function readValues(file) {
-        var text = await file.text();
-        document.getElementById('output').textContent = text;
-    }
-
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
     async function cookiesWrite(names, values) {
@@ -101,6 +96,12 @@
     }
 
     cookiesRead();
+
+    async function readValues(file) {
+        var text = await file.text();
+        document.getElementById('output').textContent = text;
+        pugScale = parseInt(text);
+    }
 
 
     // Get the element of the pictures
