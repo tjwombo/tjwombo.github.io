@@ -120,7 +120,7 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
-        pugScale = checkInt(pugScale);
+        //pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
@@ -128,11 +128,11 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        cookiesWrite("scale", pugScale);
+        //cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "shrink") {
-        pugScale = checkInt(pugScale);
+        //pugScale = checkInt(pugScale);
         pugScale -= pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale < -12) {
@@ -140,11 +140,11 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        cookiesWrite("scale", pugScale);
+        //cookiesWrite("scale", pugScale);
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
-         pugScale = checkInt(pugMultiplier);
+         //pugScale = checkInt(pugMultiplier);
          var newMult = parseFloat(message);
          newMult = Math.round(newMult * 10) / 10;
          console.log(newMult);
@@ -154,14 +154,14 @@
               newMult = .1
          }
          pugMultiplier = newMult;
-         cookiesWrite("multiplier", pugMultiplier)
+         //cookiesWrite("multiplier", pugMultiplier)
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            cookiesWrite("scale", pugScale);
+            //cookiesWrite("scale", pugScale);
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
