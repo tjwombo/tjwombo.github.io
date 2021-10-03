@@ -29,7 +29,9 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data">
+  <input type="file" id="data" name="data" onchange="readValues(this.files[0])">
+
+  <ore id="output"></pre>
 
   <img id="tomat" src="./src/tomat.jpg" width="200" />
 
@@ -40,6 +42,11 @@
   <script>
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
+
+    async function readValues(file) {
+        var text = await file.text();
+        document.getElementById('output').textContent = text;
+    }
 
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
