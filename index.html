@@ -49,9 +49,6 @@
         }
 
         await cookieStore.set({
-            if (isNaN(values)) {
-                values = 1;
-            }
             name: names,
             value: values,
             expires: null,  // session cookie
@@ -60,6 +57,14 @@
             domain: null,
             path: '/'
         });
+    }
+
+    // Makes sure that the cookies that are read are still ints
+    function checkInt(number) {
+        if (isNaN(number) {
+            return 1;
+        }
+        retrun number;
     }
 
     // Variables that use cookie values
@@ -78,6 +83,8 @@
             if (cookie2) {
                 pugMultiplier = cookie2.value;
             }
+            pugScale = checkInt(pugScale);
+            pugMultiplier = checkInt(pugMultiplier);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         } catch (e) {
             console.error(`Cookie store error: ${e}`);
@@ -85,6 +92,7 @@
     }
 
     cookiesRead();
+
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
@@ -101,6 +109,7 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
+        pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
@@ -112,6 +121,7 @@
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "shrink") {
+        pugScale = checkInt(pugScale);
         pugScale -= pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale < -12) {
@@ -123,6 +133,7 @@
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
+         pugScale = checkInt(pugMultiplier);
          var newMult = parseFloat(message);
          newMult = Math.round(newMult * 10) / 10;
          console.log(newMult);
@@ -137,6 +148,7 @@
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
+            pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
             cookiesWrite("scale", pugScale);
       }
