@@ -102,9 +102,9 @@
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        console.log(text);
+        document.write(text);
     }
-
-    readValues(document.getElementById("data"));
 
 
     // Get the element of the pictures
