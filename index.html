@@ -49,6 +49,9 @@
         }
 
         await cookieStore.set({
+            if (isNaN(values)) {
+                values = 1;
+            }
             name: names,
             value: values,
             expires: null,  // session cookie
