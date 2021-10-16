@@ -109,8 +109,9 @@
 
         fileReader.readAsText(fileToLoad, "UTF-8");
 
-        var end = fileReader.result;
-        console.log(end);
+        reader.onload = function (evt) {
+            console.log(evt.target.result);
+        }
     }
 
     async function readValues(file) {
