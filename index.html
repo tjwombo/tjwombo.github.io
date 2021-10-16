@@ -108,6 +108,10 @@
         //document.write(text);
     }
 
+    readValues(file).then(() => {
+        console.log(text);
+    })
+
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
