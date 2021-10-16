@@ -108,7 +108,7 @@
     }
 
     data = document.getElementById("data");
-    text2 = data.text();
+    text2 = data.files[0].text();
     console.log(text2);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
