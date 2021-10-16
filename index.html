@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data">
+  <input type="file" id="data" name="data" onchange="getFile(this)">
 
   <pre id="output"></pre>
 
@@ -97,8 +97,6 @@
     //}
 
     //cookiesRead();
-
-    document.getElementById('data').addEventListener('change', getFile)
 
     function getFile(event) {
 	    const input = event.target
