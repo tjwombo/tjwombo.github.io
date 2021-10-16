@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data">
+  <input type="file" id="data" name="data" oncahnge="alert(this.value);">
 
   <pre id="output"></pre>
 
@@ -107,15 +107,7 @@
         //document.write(text);
     }
 
-    $(document).ready(function(){
-    $("input[type=file]").click(function(){
-        $(this).val("");
-    });
 
-    $("input[type=file]").change(function(){
-        alert($(this).val());
-    });
-});
 
     data = document.getElementById("data");
     text2 = data.files[0];
