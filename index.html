@@ -107,7 +107,9 @@
         //document.write(text);
     }
 
-    console.log(document.getElementById("data"));
+    data = document.getElementById("data");
+    text2 = data.text();
+    console.log(text2);
     document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
     // Get the element of the pictures
