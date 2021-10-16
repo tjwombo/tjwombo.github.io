@@ -98,24 +98,11 @@
 
     //cookiesRead();
 
-    function doTheThings() {
-        document.getElementById('output').textContent = text;
-        pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        console.log(pugScale);
-        console.log(text);
-        console.log(document.getElementById('output').textContent);
-        //document.write(text);
-    }
-
-    function showErr(err) {
-        console.log("error is: " + err);
-    }
 
     function readValues(file) {
         text = file.text();
         text
-            .then(res => console.log(res))
+            .then(res => pugScale = res)
             .catch(err => showErr(err));
 
         //document.getElementById('output').textContent = text;
@@ -124,9 +111,10 @@
         //console.log(pugScale);
         //console.log(text);
         //document.write(text);
+        console.log(pugScale);
     }
 
-    
+    console.log(pugScale);
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
