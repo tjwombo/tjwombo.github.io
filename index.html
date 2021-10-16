@@ -100,14 +100,14 @@
 
     function readValues(file) {
         text = file.text();
-        text.then{
+        text.then(
             document.getElementById('output').textContent = text;
             pugScale = parseInt(text);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
             console.log(text);
-        }.catch (err){
+        ).catch (err)(
             console.log("error");
-        }
+        );
         //document.getElementById('output').textContent = text;
         //pugScale = parseInt(text);
         //document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
