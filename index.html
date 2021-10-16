@@ -101,6 +101,7 @@
     async function readValues(file) {
         text = file.text();
         document.getElementById('output').textContent = text;
+        console.log(getElementById("output").textContent);
         pugScale = parseInt(text);
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         console.log(text);
@@ -108,8 +109,6 @@
         //document.write(text);
         return await file.text();
     }
-
-    console.log(number);
     console.log(getElementById("output").textContent);
 
     
