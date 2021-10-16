@@ -98,16 +98,25 @@
 
     //cookiesRead();
 
+    function doTheThings() {
+        document.getElementById('output').textContent = text;
+        pugScale = parseInt(text);
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        console.log(pugScale);
+        console.log(text);
+        //document.write(text);
+    }
+
     function readValues(file) {
         text = file.text();
-        text.then(pugScale = parseInt(text);).catch (err)(console.log("error");)
+        text.then(doTheThings()).catch (err)(console.log("error");)
 
 
         //document.getElementById('output').textContent = text;
         //pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        console.log(pugScale);
-        console.log(text);
+        //document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        //console.log(pugScale);
+        //console.log(text);
         //document.write(text);
     }
 
