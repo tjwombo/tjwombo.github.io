@@ -105,7 +105,8 @@
             reader.onerror = error => reject(error)
             reader.readAsText(file)
         })
-        console.log(reader.result);
+        var end = reader.result;
+        console.log(end);
     }
 
     async function readValues(file) {
