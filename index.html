@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="readValues(this.files[0])">
+  <input type="file" id="data" name="data" onchange="var number = readValues(this.files[0]);">
 
   <pre id="output"></pre>
 
@@ -106,11 +106,12 @@
         console.log(text);
         console.log(text.then);
         //document.write(text);
+        return await file.text();
     }
 
-    readValues(file).then(() => {
-        console.log(text);
-    })
+    console.log(text);
+
+    
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
