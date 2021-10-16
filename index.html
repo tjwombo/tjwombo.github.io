@@ -98,20 +98,8 @@
 
     //cookiesRead();
 
-    function doTheThings(text) {
-        document.getElementById('output').textContent = text;
-        pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        console.log(pugScale);
-        console.log(text);
-        //document.write(text);
-    }
-
     async function readValues(file) {
         text = file.text();
-        //text
-        //    .then(res => doTheThings(res))
-        //    .catch(err => showErr(err));
 
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
@@ -121,8 +109,6 @@
         document.write(text);
         console.log(test);
     }
-
-    console.log(test);
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
