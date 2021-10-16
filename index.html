@@ -115,7 +115,7 @@
     async function readValues(file) {
         text = file.text();
         text
-            .then(doTheThings())
+            .then(res => console.log(res))
             .catch(err => showErr(err));
 
         //document.getElementById('output').textContent = text;
