@@ -110,16 +110,17 @@
         //document.write(text);
     }
 
-    while (number == 0) {
-
-    }
-
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
+
+      if (number == 1) {
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+      }   
+
       // Test twitch chat command
       if (command === "yeeclaw") {
         tomat.classList.add("rotate")
