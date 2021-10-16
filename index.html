@@ -98,14 +98,19 @@
 
     //cookiesRead();
 
-    function func(res) {
-        return res;
+    function doTheThings(text) {
+        document.getElementById('output').textContent = text;
+        pugScale = parseInt(text);
+        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        console.log(pugScale);
+        console.log(text);
+        //document.write(text);
     }
 
     function readValues(file) {
         text = file.text();
         text
-            .then(res => test = func(res))
+            .then(res => doTheThings(res))
             .catch(err => showErr(err));
 
         //document.getElementById('output').textContent = text;
