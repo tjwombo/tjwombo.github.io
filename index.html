@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="loadFileAsText">
+  <input type="file" id="data" name="data">
 
   <pre id="output"></pre>
 
@@ -45,31 +45,31 @@
 
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
-    //async function cookiesWrite(names, values) {
-    //    try {
-    //        await cookieStore.set(names, values);
-    //    } catch (e) {
-    //        console.error(`Failed to set cookie: ${e}`);
-    //    }
+    async function cookiesWrite(names, values) {
+        try {
+            await cookieStore.set(names, values);
+        } catch (e) {
+            console.error(`Failed to set cookie: ${e}`);
+        }
 
-    //    await cookieStore.set({
-    //        name: names,
-    //        value: values,
-    //        expires: null,  // session cookie
+        await cookieStore.set({
+            name: names,
+            value: values,
+            expires: null,  // session cookie
 
             // By default, domain is set to null which means the scope is locked at the current domain.
-    //        domain: null,
-    //        path: '/'
-    //    });
-    //}
+            domain: null,
+            path: '/'
+        });
+    }
 
     // Makes sure that the cookies that are read are still ints
-    //function checkInt(number) {
-    //    if (isNaN(number)) {
-    //        return 1;
-    //    }
-    //    return number;
-    //}
+    function checkInt(number) {
+        if (isNaN(number)) {
+            return 1;
+        }
+        return number;
+    }
 
     // Variables that use cookie values
     var pugScale=1;
@@ -78,41 +78,25 @@
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
-    //async function cookiesRead() {
-    //    try {
-    //        const cookie = await cookieStore.get("scale");
-    //        if (cookie) {
-    //                pugScale = cookie.value;
-    //        }
-    //        const cookie2 = await cookieStore.get("multiplier");
-    //        if (cookie2) {
-    //            pugMultiplier = cookie2.value;
-    //        }
-    //        pugScale = checkInt(pugScale);
-    //        pugMultiplier = checkInt(pugMultiplier);
-    //        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-    //    } catch (e) {
-    //        console.error(`Cookie store error: ${e}`);
-    //    }
-    //}
-
-    //cookiesRead();
-
-    function loadFileAsText(){
-        var fileToLoad = document.getElementById("fileToLoad").files[0];
-
-        var fileReader = new FileReader();
-        fileReader.onload = function(fileLoadedEvent){
-            var textFromFileLoaded = fileLoadedEvent.target.result;
-            document.getElementById("inputTextToSave").value = textFromFileLoaded;
-        };
-
-        fileReader.readAsText(fileToLoad, "UTF-8");
-
-        reader.onload = function (evt) {
-            console.log(evt.target.result);
+    async function cookiesRead() {
+        try {
+            const cookie = await cookieStore.get("scale");
+            if (cookie) {
+                    pugScale = cookie.value;
+            }
+            const cookie2 = await cookieStore.get("multiplier");
+            if (cookie2) {
+                pugMultiplier = cookie2.value;
+            }
+            pugScale = checkInt(pugScale);
+            pugMultiplier = checkInt(pugMultiplier);
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        } catch (e) {
+            console.error(`Cookie store error: ${e}`);
         }
     }
+
+    cookiesRead();
 
     async function readValues(file) {
         const reader = new FileReader()
@@ -146,7 +130,7 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
-        //pugScale = checkInt(pugScale);
+        pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
@@ -154,11 +138,11 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
+        cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "shrink") {
-        //pugScale = checkInt(pugScale);
+        pugScale = checkInt(pugScale);
         pugScale -= pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale < -12) {
@@ -166,11 +150,11 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
+        cookiesWrite("scale", pugScale);
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
-         //pugScale = checkInt(pugMultiplier);
+         pugScale = checkInt(pugMultiplier);
          var newMult = parseFloat(message);
          newMult = Math.round(newMult * 10) / 10;
          console.log(newMult);
@@ -180,14 +164,14 @@
               newMult = .1
          }
          pugMultiplier = newMult;
-         //cookiesWrite("multiplier", pugMultiplier)
+         cookiesWrite("multiplier", pugMultiplier)
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            //cookiesWrite("scale", pugScale);
+            cookiesWrite("scale", pugScale);
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
