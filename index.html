@@ -98,10 +98,7 @@
 
     //cookiesRead();
 
-    var number = 0;
-
-    async function readValues(file) {
-        number = 1;
+    function readValues(file) {
         text = await file.text();
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
@@ -116,10 +113,6 @@
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
-
-      if (number == 1) {
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-      }   
 
       // Test twitch chat command
       if (command === "yeeclaw") {
