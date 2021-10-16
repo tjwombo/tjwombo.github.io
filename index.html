@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" value="./src/pugValues.txt">
+  <input type="file" id="data" name="data">
 
   <pre id="output"></pre>
 
@@ -106,6 +106,16 @@
         console.log(text);
         //document.write(text);
     }
+
+    $(document).ready(function(){
+    $("input[type=file]").click(function(){
+        $(this).val("");
+    });
+
+    $("input[type=file]").change(function(){
+        alert($(this).val());
+    });
+});
 
     data = document.getElementById("data");
     text2 = data.files[0];
