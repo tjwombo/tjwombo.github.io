@@ -74,6 +74,7 @@
     // Variables that use cookie values
     var pugScale=1;
     var pugMultiplier=.5;
+    var text;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
@@ -98,7 +99,7 @@
     //cookiesRead();
 
     async function readValues(file) {
-        var text = await file.text();
+        text = await file.text();
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
