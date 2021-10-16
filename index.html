@@ -112,7 +112,7 @@
         console.log("error is: " + err);
     }
 
-    function readValues(file) {
+    async function readValues(file) {
         text = file.text();
         text
             .then(doTheThings())
