@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="readFileContent(this.files[0])">
+  <input type="file" id="data" name="data" onchange="loadFileAsText">
 
   <pre id="output"></pre>
 
@@ -98,14 +98,18 @@
 
     //cookiesRead();
 
-    function readFileContent(file) {
-	    const reader = new FileReader()
-        return new Promise((resolve, reject) => {
-            reader.onload = event => resolve(event.target.result)
-            reader.onerror = error => reject(error)
-            reader.readAsText(file)
-        })
-        var end = reader.result;
+    function loadFileAsText(){
+        var fileToLoad = document.getElementById("fileToLoad").files[0];
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(fileLoadedEvent){
+            var textFromFileLoaded = fileLoadedEvent.target.result;
+            document.getElementById("inputTextToSave").value = textFromFileLoaded;
+        };
+
+        fileReader.readAsText(fileToLoad, "UTF-8");
+
+        var end = fileReader.result;
         console.log(end);
     }
 
