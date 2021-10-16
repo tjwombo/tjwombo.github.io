@@ -98,7 +98,7 @@
 
     //cookiesRead();
 
-    function readValues(file) {
+    async function readValues(file) {
         text = file.text();
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
