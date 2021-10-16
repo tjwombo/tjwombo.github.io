@@ -99,7 +99,7 @@
     //cookiesRead();
 
     async function readValues(file) {
-        text = file.text();
+        text = await file.text();
         document.getElementById('output').textContent = text;
         pugScale = parseInt(text);
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
@@ -108,8 +108,6 @@
         //document.write(text);
         console.log(test);
     }
-
-    console.log(test);
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
