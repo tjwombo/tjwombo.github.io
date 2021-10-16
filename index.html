@@ -29,7 +29,7 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="var number = readValues(this.files[0]);">
+  <input type="file" id="data" name="data" onchange="readValues(this.files[0])">
 
   <pre id="output"></pre>
 
@@ -98,18 +98,22 @@
 
     //cookiesRead();
 
-    async function readValues(file) {
+    function readValues(file) {
         text = file.text();
-        document.getElementById('output').textContent = text;
-        console.log(document.getElementById("output").textContent);
-        pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        text.then(
+            document.getElementById('output').textContent = text;
+            pugScale = parseInt(text);
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+            console.log(text);
+        ).catch(
+
+        )
+        //document.getElementById('output').textContent = text;
+        //pugScale = parseInt(text);
+        //document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         console.log(text);
-        console.log(text.then);
         //document.write(text);
-        return await file.text();
     }
-    console.log(document.getElementById("output").textContent);
 
     
 
