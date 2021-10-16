@@ -47,20 +47,10 @@
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
     async function cookiesWrite(names, values) {
         try {
-            await cookieStore.set(names, values);
+            document.cookie = names + "=" + values;
         } catch (e) {
             console.error(`Failed to set cookie: ${e}`);
         }
-
-        await cookieStore.set({
-            name: names,
-            value: values,
-            expires: null,  // session cookie
-
-            // By default, domain is set to null which means the scope is locked at the current domain.
-            domain: null,
-            path: '/'
-        });
     }
 
     // Makes sure that the cookies that are read are still ints
@@ -80,6 +70,20 @@
     // Read cookies and update the variables
     async function cookiesRead() {
         try {
+            var name = "scale";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            var cookie;
+            for(let i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    cookie = c.substring(name.length, c.length);
+                    break;
+                }
+            }
             const cookie = await cookieStore.get("scale");
             if (cookie) {
                     pugScale = cookie.value;
