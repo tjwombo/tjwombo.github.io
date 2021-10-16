@@ -108,11 +108,15 @@
         //document.write(text);
     }
 
+    function showErr(err) {
+        console.log("error is: " + err);
+    }
+
     function readValues(file) {
         text = file.text();
         text
             .then(doTheThings())
-            .catch(console.log("error"));
+            .catch(showErr(err));
 
         //document.getElementById('output').textContent = text;
         //pugScale = parseInt(text);
