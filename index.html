@@ -84,11 +84,23 @@
                     break;
                 }
             }
-            const cookie = await cookieStore.get("scale");
             if (cookie) {
                     pugScale = cookie.value;
             }
-            const cookie2 = await cookieStore.get("multiplier");
+
+            name - "multiplier";
+            var cookie2;
+            for(let i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    cookie2 = c.substring(name.length, c.length);
+                    break;
+                }
+            }
+
             if (cookie2) {
                 pugMultiplier = cookie2.value;
             }
