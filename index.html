@@ -98,11 +98,14 @@
 
     //cookiesRead();
 
+    function int func(res) {
+        return res;
+    }
 
     function readValues(file) {
         text = file.text();
         text
-            .then(res => test = res)
+            .then(res => test = func(res))
             .catch(err => showErr(err));
 
         //document.getElementById('output').textContent = text;
