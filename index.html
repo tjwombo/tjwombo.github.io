@@ -79,8 +79,6 @@
             content.innerText = reader.result;
             pugScale = parseInt(reader.result);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            pugScale++;
-            writeFile(fileHandle, pugScale);
         }, false);
 
         if (file) {
@@ -149,6 +147,7 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        writeFile(fileHandle, pugScale);
         //cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
@@ -161,6 +160,7 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        writeFile(fileHandle, pugScale);
         //cookiesWrite("scale", pugScale);
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
@@ -182,7 +182,8 @@
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            //cookiesWrite("scale", pugScale);
+            writeFile(fileHandle, pugScale);
+            //cookiesWrite("scale", pugScale)
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
