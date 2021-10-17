@@ -19,6 +19,17 @@
         transform: translate(-50%, -50%);
         opacity: "0.5";
     }
+    .rotate {
+    animation: rotation 1s 1 linear;
+  }
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 
   </style>
 </head>
@@ -63,9 +74,9 @@
 
       // Test twitch chat command
       if (command === "yeeclaw") {
-        tomat.classList.add("rotate")
+        colorBox.classList.add("rotate")
         setTimeout(() => {
-          tomat.classList.remove("rotate")
+          colorBox.classList.remove("rotate")
         }, 1000)
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
