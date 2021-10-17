@@ -66,6 +66,7 @@
     async function previewFile2() {
         const content = document.querySelector('.content');
         const [file] = document.querySelector('input[type=file]').files;
+        console.log(file);
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
