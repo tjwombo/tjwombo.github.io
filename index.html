@@ -88,6 +88,7 @@
             for(let i = 0; i < splitCookieList.length; i++) {
                 var cookieSplit = splitCookieList[i].split("=");
                 
+                console.log(cookieSplit);
                 if (cookieSplit[1].endsWith(";")) {
                     console.log("yes");
                     cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
