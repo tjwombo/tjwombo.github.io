@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://rawgit.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>
   <style>
   
     .color-box {
@@ -36,7 +37,11 @@
 
   <pre id="output"></pre>
 
-  
+  <input type="file" id="colors" name="colors" onchange="previewFile2()">
+
+  <p class="content"></p>
+
+  <pre id="output2"></pre>
 
   <img id="box" class="color-box red" id="box" />
     <!-- Replace "#FF850A" to change the color -->
@@ -56,6 +61,7 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
+            content.innerText = reader.result;
             opacity = parseFloat(reader.result);
             document.querySelector("#box").style.opacity = opacity;
 
@@ -68,7 +74,27 @@
         }
     }
 
-    
+    async function previewFile2() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[name=colors]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            content.innerText = reader.result;
+            if (reader.result == "red") {
+                colorBox.classList.add("red");
+            } else if (reader.result == "blue") {
+                colorBox.classList.add("blue");
+            }
+
+            // WRITE TO FILE
+            //document.getElementById("data").value = pugScale;
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
