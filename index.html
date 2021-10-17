@@ -30,6 +30,7 @@
 </head>
 <body>
   <input type="file" id="data" name="data" onchange="previewFile()">
+  <p class="content"></p>
 
   <pre id="output"></pre>
 
@@ -73,7 +74,7 @@
 
         reader.addEventListener("load", () => {
             // this will then display a text file
-            //content.innerText = reader.result;
+            content.innerText = reader.result;
         }, false);
 
         if (file) {
