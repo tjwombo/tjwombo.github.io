@@ -17,7 +17,7 @@
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-        opacity: 0.5;
+        opacity: 0.0;
     }
     .red {
         background-color: red;
@@ -50,7 +50,7 @@
 
         reader.addEventListener("load", () => {
             opacity = parseInt(reader.result);
-            document.querySelector("#box").style.opacity = "0.5";
+            document.querySelector("#box").style.opacity = opacity;
 
             // WRITE TO FILE
             //document.getElementById("data").value = pugScale;
