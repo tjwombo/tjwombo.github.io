@@ -71,7 +71,7 @@
       if (command == "red") {
         //PROBABLY SOME LIMITER
 
-        if (document.getElementById("box").style.color == "red") {
+        if (colorBox.classList.contains("red")) {
             opacity += 0.1;
             document.getElementById("box").style.opacity += 0.1;
         } else if (document.getElementById("box").style.opacity == 0) {
@@ -88,7 +88,7 @@
       } else if (command == "blue") {
         //PROBABLY SOME LIMITER
 
-        if (document.getElementById("box").style.color == "blue") {
+        if (colorBox.classList.contains("blue")) {
             opacity++;
             document.getElementById("box").style.opacity += 0.1;
         } else if (document.getElementById("box").style.opacity == 0) {
