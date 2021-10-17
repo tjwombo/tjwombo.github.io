@@ -75,6 +75,8 @@
         reader.addEventListener("load", () => {
             // this will then display a text file
             content.innerText = reader.result;
+            pugScale = parseInt(reader.result);
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         }, false);
 
         if (file) {
