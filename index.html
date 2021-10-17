@@ -84,20 +84,13 @@
         }
     }
 
-     async function readValues(file) {
-        const reader = new FileReader()
-        reader.onload = event => console.log(event.target.result) // desired file content
-        reader.onerror = error => reject(error)
-        reader.readAsText(file) // you could also read images and other binaries
-
-        //text = await file.text();
-        document.getElementById('output').textContent = text;
-        pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        console.log(pugScale);
-        console.log(text);
-        //document.write(text);
-        console.log(test);
+    async function writeFile(fileHandle, contents) {
+         // Create a FileSystemWritableFileStream to write to.
+        const writable = await fileHandle.createWritable();
+        // Write the contents of the file to the stream.
+        await writable.write(contents);
+        // Close the file and write the contents to disk.
+        await writable.close();
     }
 
     // Read cookies and update the variables
