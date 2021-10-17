@@ -61,9 +61,6 @@
             pugScale = parseInt(reader.result);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
-            pugScale++;
-            document.getElementById("data").value = pugScale;
-
             var blob = new Blob([pugScale], { type: "text/plain;charset=utf-8" });
             saveAs(blob, "dynamic.txt");
         }, false);
