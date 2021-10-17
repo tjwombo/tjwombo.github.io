@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://github.com/eligrey/FileSaver.js.git"></script>
   <style>
     .color-box {
         width: 1980px;
@@ -56,6 +57,8 @@
 
             // WRITE TO FILE
             //document.getElementById("data").value = pugScale;
+            var blob = new Blob([opacity], { type: "text/plain;charset=utf-8" });
+            saveAs(blob, "dynamic.txt");
         }, false);
 
         if (file) {
