@@ -120,6 +120,7 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
+        console.log(document.cookie);
         pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
