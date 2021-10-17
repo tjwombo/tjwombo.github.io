@@ -48,7 +48,7 @@
     async function cookiesWrite(names, values) {
         try {
             document.cookie = names + "=" + values;
-            console.log(document.cookie);
+            console.log("write = " + document.cookie);
         } catch (e) {
             console.error(`Failed to set cookie: ${e}`);
         }
@@ -71,6 +71,7 @@
     // Read cookies and update the variables
     async function cookiesRead() {
         try {
+            console.log("read = " + document.cookie);
 
             var cookieList = document.cookie;
             var splitCookieList = cookieList.split("; ");
