@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If you're not OBS, Go Away</title>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+</head>
+<body>
+  <input type="file" id="data" name="data" onchange="previewFile()">
+  <p class="content"></p>
+
+  <pre id="output"></pre>
+
+  <div class="color-box" id="box" style="background-color: #FF850A;"></div>
+
+  <script>
+    //LINK TO TWITCH JS STUFF
+    //https://github.com/instafluff/ComfyJS/blob/master/README.md
+
+    var colorValue;
+
+    async function previewFile() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[type=file]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            colorValue = parseInt(reader.result);
+            document.querySelector("#box").style = `background-color: ${colorValue}`;
+
+            // WRITE TO FILE
+            //document.getElementById("data").value = pugScale;
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+    // Get the element of the pictures
+    const colorBox = document.getElementById("box");
+
+    // Twitch chat commands
+    ComfyJS.onCommand = (user, command, message, flags, extra) => {
+
+      // Test twitch chat command
+      if (command === "yeeclaw") {
+        tomat.classList.add("rotate")
+        setTimeout(() => {
+          tomat.classList.remove("rotate")
+        }, 1000)
+
+      // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+      } else if (command == "red") {
+        //PROBABLY SOME LIMITER
+
+        colorValue = "#" + (parseInt(colorValue.substring(1), 16)+3276800);
+        colorValue = "#" + (parseInt(colorValue.substring(1), 16)-50);
+
+        document.querySelector("#box").style = `background-color: ${colorValue}`;
+
+      // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+      } else if (command == "blue") {
+        //PROBABLY SOME LIMITER
+
+        colorValue = "#" + (parseInt(colorValue.substring(1), 16)+50);
+        colorValue = "#" + (parseInt(colorValue.substring(1), 16)-3276800);
+
+        document.querySelector("#box").style = `background-color: ${colorValue}`;
+
+      // Reset the pug (more of a in case of fire command, only I can use it)
+      } else if (flags.broadcaster && command == "reset") {
+            colorValue = "#FF850A";
+            document.querySelector("#box").style = `background-color: #FF850A`;
+      }
+    }
+    //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
+    ComfyJS.Init("tjwombo");
+
+  </script>
+</body>
+</html>
