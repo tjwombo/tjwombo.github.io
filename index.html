@@ -47,18 +47,7 @@
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
     async function cookiesWrite(names, values) {
         try {
-            var cookieList = document.cookie;
-            var splitCookieList = cookieList.split("; ");
-            for(let i = 0; i < splitCookieList.length; i++) {
-                var cookieSplit = splitCookieList[i].split("=");
-                if (cookieSplit[0] == names) {
-                    document.cookie = name + "= ";
-                    document.cookie = name + "=" + values;
-                }
-            }
-            //document.cookie = names + "=" + values;
-            console.log(pugScale);
-            console.log("write = " + document.cookie);
+            document.cookie = names + "=" + values;
         } catch (e) {
             console.error(`Failed to set cookie: ${e}`);
         }
@@ -80,9 +69,6 @@
     // Read cookies and update the variables
     async function cookiesRead() {
         try {
-            console.log(pugMultiplier);
-            console.log("read = " + document.cookie);
-
             var cookieList = document.cookie;
             var splitCookieList = cookieList.split("; ");
             for(let i = 0; i < splitCookieList.length; i++) {
@@ -90,7 +76,6 @@
                 
                 console.log(cookieSplit);
                 if (cookieSplit[1] != null && cookieSplit[1].endsWith(";")) {
-                    console.log("yes");
                     cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
                 }
 
@@ -136,7 +121,6 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
-        console.log(pugScale);
         pugScale = checkInt(pugScale);
         console.log(pugScale);
         console.log(pugMultiplier);
