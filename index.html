@@ -79,9 +79,9 @@
                 }
 
                 if (cookieSplit[0] == "scale") {
-                    pugScale = cookieSplit[1];
+                    pugScale = parseInt(cookieSplit[1]);
                 } else if (cookieSplit[0] == "multiplier") {
-                    pugMultiplier = cookieSplit[1];
+                    pugMultiplier = parseInt(cookieSplit[1]);
                 }
             }
             
@@ -121,12 +121,7 @@
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
         pugScale = checkInt(pugScale);
-        console.log(pugScale);
-        console.log(pugMultiplier);
-        console.log(typeof(pugScale));
-        console.log(typeof(pugMultiplier));
         pugScale += pugMultiplier;
-        console.log(pugScale);
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
