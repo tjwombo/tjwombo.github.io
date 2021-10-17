@@ -47,8 +47,16 @@
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
     async function cookiesWrite(names, values) {
         try {
-            document.cookie = names + "=";
-            document.cookie = names + "=" + values;
+            var cookieList = document.cookie;
+            var splitCookieList = cookieList.split("; ");
+            for(let i = 0; i < splitCookieList.length; i++) {
+                var cookieSplit = splitCookieList[i].split("=");
+                if (cookieSplit[0] == names) {
+                    document.cookie = name + "= ";
+                    document.cookie = name + "=" + values;
+                }
+            }
+            //document.cookie = names + "=" + values;
             console.log(pugScale);
             console.log("write = " + document.cookie);
         } catch (e) {
