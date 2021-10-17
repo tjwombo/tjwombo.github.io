@@ -59,6 +59,10 @@
             content.innerText = reader.result;
             pugScale = parseInt(reader.result);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+
+            var file = new File([reader.result], "pugValues.txt", {type: "application/octet-stream"});
+            var blobUrl = (URL || webkitURL).createObjectURL(file);
+            window.location = blobUrl;
         }, false);
 
         if (file) {
