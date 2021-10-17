@@ -17,6 +17,7 @@
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+        opacity: "0.5";
     }
 
   </style>
@@ -75,6 +76,7 @@
         colorValue = "#" + (parseInt(colorValue.substring(1), 16)-50);
 
         document.querySelector("#box").style = `background-color: ${colorValue}`;
+        document.getElementById("myDIV").style.opacity = "0.5";
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
@@ -84,11 +86,13 @@
         colorValue = "#" + (parseInt(colorValue.substring(1), 16)-3276800);
 
         document.querySelector("#box").style = `background-color: ${colorValue}`;
+        document.getElementById("myDIV").style.opacity = "0.5";
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             colorValue = "#FF850A";
             document.querySelector("#box").style = `background-color: #FF850A`;
+            document.getElementById("myDIV").style.opacity = "0.5";
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
