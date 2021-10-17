@@ -45,7 +45,7 @@
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
-    var colorValue = "#FF850A";
+    var opacity = 0;
 
     async function previewFile() {
         const content = document.querySelector('.content');
@@ -53,8 +53,8 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            colorValue = parseInt(reader.result);
-            document.querySelector("#box").style = `background-color: ${colorValue}`;
+            opacity = parseInt(reader.result);
+            document.querySelector("#box").style.opacity = "0.5";
 
             // WRITE TO FILE
             //document.getElementById("data").value = pugScale;
@@ -82,27 +82,37 @@
       } else if (command == "red") {
         //PROBABLY SOME LIMITER
 
-        colorValue = "#" + (parseInt(colorValue.substring(1), 16)+3276800);
-        colorValue = "#" + (parseInt(colorValue.substring(1), 16)-50);
-
-        document.querySelector("#box").style.background-color = `${colorValue}`;
-        document.getElementById("box").style.opacity = "0.5";
+        if (document.getElementById("box").style.color == "red") {
+            opacity += 0.1;
+            document.getElementById("box").style.opacity += 0.1;
+        } else if (document.getElementById("box").style.opacity == 0) {
+            document.getElementById("box").style.color = "red";
+            opacity += 0.1;
+            document.getElementById("box").style.opacity += 0.1;
+        } else {
+            opacity -= 0.1;
+            document.getElementById("box").style.opacity -= 0.1;
+        }
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
         //PROBABLY SOME LIMITER
 
-        colorValue = "#" + (parseInt(colorValue.substring(1), 16)+50);
-        colorValue = "#" + (parseInt(colorValue.substring(1), 16)-3276800);
-
-        document.querySelector("#box").style.background-color = `${colorValue}`;
-        document.getElementById("box").style.opacity = "0.5";
+        if (document.getElementById("box").style.color == "blue") {
+            opacity++;
+            document.getElementById("box").style.opacity += 0.1;
+        } else if (document.getElementById("box").style.opacity == 0) {
+            document.getElementById("box").style.color = "blue";
+            opacity += 0.1;
+            document.getElementById("box").style.opacity += 0.1;
+        } else {
+            opacity -= 0.1;
+            document.getElementById("box").style.opacity -= 0.1;
+        }
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
-            colorValue = "#FF850A";
-            document.querySelector("#box").style.background-color = `#FF850A`;
-            document.getElementById("box").style.opacity = "0.5";
+            document.getElementById("box").style.opacity = "0.0";
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
