@@ -105,7 +105,8 @@
       } else if (flags.broadcaster && command == "reset") {
             colorBox.classList.remove("red")
             colorBox.classList.remove("blue")
-            document.getElementById("box").style.opacity = "0.0";
+            opacity = 0.0;
+            document.getElementById("box").style.opacity = opacity;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
