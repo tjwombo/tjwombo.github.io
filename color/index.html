@@ -19,6 +19,13 @@
         transform: translate(-50%, -50%);
         opacity: 0.5;
     }
+    .red {
+        background-color: red;
+    }
+
+    .blue {
+        background-color: blue;
+    }
   </style>
 </head>
 <body>
@@ -27,7 +34,7 @@
 
   <pre id="output"></pre>
 
-  <div class="color-box" id="box" style="background-color: #FF850A;"></div>
+  <div class="color-box red" id="box"></div>
     <!-- Replace "#FF850A" to change the color -->
 
   <script>
@@ -68,7 +75,8 @@
             opacity += 0.1;
             document.getElementById("box").style.opacity += 0.1;
         } else if (document.getElementById("box").style.opacity == 0) {
-            document.getElementById("box").style.color = "red";
+            colorBox.classList.remove("blue");
+            colorBox.classList.add("red")
             opacity += 0.1;
             document.getElementById("box").style.opacity += 0.1;
         } else {
@@ -84,7 +92,8 @@
             opacity++;
             document.getElementById("box").style.opacity += 0.1;
         } else if (document.getElementById("box").style.opacity == 0) {
-            document.getElementById("box").style.color = "blue";
+            colorBox.classList.remove("red");
+            colorBox.classList.add("blue");
             opacity += 0.1;
             document.getElementById("box").style.opacity += 0.1;
         } else {
@@ -94,6 +103,8 @@
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
+            colorBox.classList.remove("red")
+            colorBox.classList.remove("blue")
             document.getElementById("box").style.opacity = "0.0";
       }
     }
