@@ -87,10 +87,15 @@
             var splitCookieList = cookieList.split("; ");
             for(let i = 0; i < splitCookieList.length; i++) {
                 var cookieSplit = splitCookieList[i].split("=");
-                var cookieName = cookieSplit.split(";"); //just to make sure it doesnt get a ; at the end
-                if (cookieName[0] == "scale") {
+                
+                if (cookieSplit[0].endsWith(";")) {
+                    console.log("yes");
+                    cookieSplit[0] = cookieSplit[0].substring(0, cookieSplit[0].length - 1);
+                }
+
+                if (cookieSplit[0] == "scale") {
                     pugScale = cookieSplit[1];
-                } else if (cookieName[0] == "multiplier") {
+                } else if (cookieSplit[0] == "multiplier") {
                     pugMultiplier = cookieSplit[1];
                 }
             }
