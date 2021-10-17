@@ -88,9 +88,9 @@
             for(let i = 0; i < splitCookieList.length; i++) {
                 var cookieSplit = splitCookieList[i].split("=");
                 
-                if (cookieSplit[0].endsWith(";")) {
+                if (cookieSplit[1].endsWith(";")) {
                     console.log("yes");
-                    cookieSplit[0] = cookieSplit[0].substring(0, cookieSplit[0].length - 1);
+                    cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
                 }
 
                 if (cookieSplit[0] == "scale") {
