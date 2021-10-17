@@ -75,7 +75,6 @@
     // Variables that use cookie values
     var pugScale=1;
     var pugMultiplier=.5;
-    var test;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
@@ -88,9 +87,10 @@
             var splitCookieList = cookieList.split("; ");
             for(let i = 0; i < splitCookieList.length; i++) {
                 var cookieSplit = splitCookieList[i].split("=");
-                if (cookieSplit[0] == "scale") {
+                var cookieName = cookieSplit.split(";"); //just to make sure it doesnt get a ; at the end
+                if (cookieName[0] == "scale") {
                     pugScale = cookieSplit[1];
-                } else if (cookieSplit[0] == "multiplier") {
+                } else if (cookieName[0] == "multiplier") {
                     pugMultiplier = cookieSplit[1];
                 }
             }
