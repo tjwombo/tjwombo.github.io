@@ -53,9 +53,6 @@
         const content = document.querySelector('.content');
         const [file] = document.querySelector('input[type=file]').files;
         const reader = new FileReader();
-        console.log(fileHandle);
-        console.log(file);
-        console.log(fileHandle == file);
 
         reader.addEventListener("load", () => {
             // this will then display a text file
