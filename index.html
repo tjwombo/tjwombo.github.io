@@ -80,7 +80,7 @@
             pugScale = parseInt(reader.result);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
             pugScale++;
-            writeFile(reader, pugScale);
+            writeFile(fileHandle, pugScale);
         }, false);
 
         if (file) {
