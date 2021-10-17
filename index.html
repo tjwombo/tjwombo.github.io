@@ -47,6 +47,7 @@
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
     async function cookiesWrite(names, values) {
         try {
+            document.cookie = names + "=";
             document.cookie = names + "=" + values;
             console.log(pugScale);
             console.log("write = " + document.cookie);
