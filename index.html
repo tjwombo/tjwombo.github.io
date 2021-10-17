@@ -67,6 +67,18 @@
     var pugMultiplier=.5;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
+    var IDBReq = indexedDB.open("myFileStorageDataBase");
+
+    IDBReq.onsuccess = function(){
+        var DB = this.result;
+        var buildHandle = DB.createMutableFile("test.txt", "plain/text");
+
+        buildHandle.onsuccess = function(){
+            var myFileHandle = this.result;
+            console.log('handle', myFileHandle);
+        };
+    };
+
     var fileHandle;
     async function previewFile() {
         const content = document.querySelector('.content');
