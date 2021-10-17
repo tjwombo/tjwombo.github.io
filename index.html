@@ -5,49 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://rawgit.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>
   <style>
-    .center {
+  
+    .color-box {
+        width: 1980px;
+        height: 1080px;
+        display: inline-block;
+        background-color: #ccc;
         margin: 0;
         position: absolute;
         top: 50%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
-   }
+        opacity: 0.0;
+    }
+    .red {
+        background-color: red;
+    }
 
-    .rotate {
-    animation: rotation 1s 1 linear;
-  }
-  @keyframes rotation {
-    from {
-      transform: rotate(0deg);
+    .blue {
+        background-color: blue;
     }
-    to {
-      transform: rotate(359deg);
-    }
-  }
   </style>
 </head>
 <body>
   <input type="file" id="data" name="data" onchange="previewFile()">
+
   <p class="content"></p>
 
   <pre id="output"></pre>
 
-  <img id="tomat" src="./src/tomat.jpg" width="200" />
+  <input type="file" id="colors" name="colors" onchange="previewFile2()">
 
-  <br>
+  <p class="content"></p>
 
-  <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
+  <pre id="output2"></pre>
+
+  <img id="box" class="color-box red" id="box" />
+    <!-- Replace "#FF850A" to change the color -->
 
   <script>
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
-    // Variables that use cookie values
-    var pugScale=1;
-    var pugMultiplier=.5;
-    //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
+    var opacity = 0;
+
+    // Get the element of the pictures
+    const colorBox = document.getElementById("box");
 
     async function previewFile() {
         const content = document.querySelector('.content');
@@ -55,13 +61,12 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            // this will then display a text file
             content.innerText = reader.result;
-            pugScale = parseInt(reader.result);
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+            opacity = parseFloat(reader.result);
+            document.querySelector("#box").style.opacity = opacity;
 
-            //WRITE TO FILE
-  
+            // WRITE TO FILE
+            
         }, false);
 
         if (file) {
@@ -69,64 +74,71 @@
         }
     }
 
-    // Get the element of the pictures
-    const tomat = document.getElementById("tomat")
-    const pug = document.getElementById("pug")
+    async function previewFile2() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[name=colors]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            content.innerText = reader.result;
+            if (reader.result == "red") {
+                colorBox.classList.add("red");
+            } else if (reader.result == "blue") {
+                colorBox.classList.add("blue");
+            }
+
+            // WRITE TO FILE
+            //document.getElementById("data").value = pugScale;
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
-      // Test twitch chat command
-      if (command === "yeeclaw") {
-        tomat.classList.add("rotate")
-        setTimeout(() => {
-          tomat.classList.remove("rotate")
-        }, 1000)
-
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "grow") {
-        //pugScale = checkInt(pugScale);
-        pugScale += pugMultiplier;
-        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
-        if (pugScale > 12) {
-            pugScale = 12;
-            //pugPercentage = 240;
+      if (command == "red") {
+        //PROBABLY SOME LIMITER
+
+        if (colorBox.classList.contains("red")) {
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
+        } else if (document.getElementById("box").style.opacity == 0) {
+            colorBox.classList.remove("blue");
+            colorBox.classList.add("red")
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
+        } else {
+            opacity = parseFloat(opacity) - 0.1;
+            document.getElementById("box").style.opacity = opacity;
         }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "shrink") {
-        //pugScale = checkInt(pugScale);
-        pugScale -= pugMultiplier;
-        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
-        if (pugScale < -12) {
-            pugScale = -12;
-            //pugPercentage = 240;
-        }
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
+      } else if (command == "blue") {
+        //PROBABLY SOME LIMITER
 
-      // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "change") {
-         //pugScale = checkInt(pugMultiplier);
-         var newMult = parseFloat(message);
-         newMult = Math.round(newMult * 10) / 10;
-         console.log(newMult);
-         if (newMult > 1) {
-              newMult = 1;
-         } else if (newMult < 0) {
-              newMult = .1
-         }
-         pugMultiplier = newMult;
-         //cookiesWrite("multiplier", pugMultiplier)
+        if (colorBox.classList.contains("blue")) {
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
+        } else if (document.getElementById("box").style.opacity == 0) {
+            colorBox.classList.remove("red");
+            colorBox.classList.add("blue");
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
+        } else {
+            opacity = parseFloat(opacity) - 0.1;
+            document.getElementById("box").style.opacity = opacity;
+        }
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
-            pugScale = 0;
-            pugMultiplier = 1;
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            //cookiesWrite("scale", pugScale)
+            colorBox.classList.remove("red")
+            colorBox.classList.remove("blue")
+            opacity = 0.0;
+            document.getElementById("box").style.opacity = opacity;
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
