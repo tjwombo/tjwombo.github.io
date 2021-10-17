@@ -47,9 +47,7 @@
 
     async function previewFile() {
         const content = document.querySelector('.content');
-        console.log(document.querySelector('.content'));
         const [file] = document.querySelector('input[type=file]').files;
-        console.log(document.querySelector('input[type=file]').files);
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
@@ -68,14 +66,15 @@
     async function previewFile2() {
         const content = document.querySelector('.content');
         const [file] = document.querySelector('input[name=colors]').files;
-        console.log(document.querySelector('input[name=colors]').files);
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
             if (reader.result = "red") {
                 colorBox.classList.add("red");
+                console.log("red");
             } else if (reader.result = "blue") {
                 colorBox.classList.add("blue");
+                console.log("blue");
             } else {
                 console.log(reader.result);
             }
