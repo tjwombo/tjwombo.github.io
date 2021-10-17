@@ -53,7 +53,7 @@
                 var cookieSplit = splitCookieList[i].split("=");
                 if (cookieSplit[0] == names) {
                     document.cookie = name + "= ";
-                    //document.cookie = name + "=" + values;
+                    document.cookie = name + "=" + values;
                 }
             }
             //document.cookie = names + "=" + values;
@@ -114,22 +114,6 @@
 
     cookiesRead();
 
-    async function readValues(file) {
-        const reader = new FileReader()
-        reader.onload = event => console.log(event.target.result) // desired file content
-        reader.onerror = error => reject(error)
-        reader.readAsText(file) // you could also read images and other binaries
-
-        //text = await file.text();
-        document.getElementById('output').textContent = text;
-        pugScale = parseInt(text);
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        console.log(pugScale);
-        console.log(text);
-        //document.write(text);
-        console.log(test);
-    }
-
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
     const pug = document.getElementById("pug")
@@ -147,7 +131,9 @@
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
         pugScale = checkInt(pugScale);
+        console.log(pugScale);
         pugScale += pugMultiplier;
+        console.log(pugScale);
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
