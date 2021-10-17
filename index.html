@@ -61,7 +61,7 @@
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
             //WRITE TO FILE
-            var fso = CreateObject("Scripting.FileSystemObject"); 
+            var fso = new ActiveXObject("Scripting.FileSystemObject");
             var s = fso.CreateTextFile("C:\Users\Tim\Documents\GitHub\tjwombo.github.io\src\pugValues.txt", True);
 
             s.writeline(pugScale);
