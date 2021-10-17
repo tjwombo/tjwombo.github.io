@@ -18,18 +18,6 @@
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
-    .rotate {
-    animation: rotation 1s 1 linear;
-  }
-  @keyframes rotation {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(359deg);
-    }
-  }
-
   </style>
 </head>
 <body>
@@ -38,7 +26,7 @@
 
   <pre id="output"></pre>
 
-  <div class="color-box" id="box" style="background-color: #FF850A;"></div>
+  <div class="color-box" id="box" style="color: red;"></div>
     <!-- Replace "#FF850A" to change the color -->
 
   <script>
@@ -71,15 +59,8 @@
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
-      // Test twitch chat command
-      if (command === "yeeclaw") {
-        colorBox.classList.add("rotate")
-        setTimeout(() => {
-          colorBox.classList.remove("rotate")
-        }, 1000)
-
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "red") {
+      if (command == "red") {
         //PROBABLY SOME LIMITER
 
         if (document.getElementById("box").style.color == "red") {
