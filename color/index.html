@@ -66,9 +66,7 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            if (reader.result = null) {
-                break;
-            } else if (reader.result = "red") {
+            if (reader.result != null && reader.result = "red") {
                 colorBox.classList.add("red");
             } else {
                 colorBox.classList.add("blue");
