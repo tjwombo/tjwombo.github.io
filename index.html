@@ -61,7 +61,11 @@
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
             //WRITE TO FILE
-            new File(pugScale, "test.text");
+            var fso = CreateObject("Scripting.FileSystemObject"); 
+            var s = fso.CreateTextFile("C:\Users\Tim\Documents\GitHub\tjwombo.github.io\src\pugValues.txt", True);
+
+            s.writeline(pugScale);
+            s.Close();
         }, false);
 
         if (file) {
