@@ -48,6 +48,7 @@
     async function cookiesWrite(names, values) {
         try {
             document.cookie = names + "=" + values;
+            console.log(document.cookie);
         } catch (e) {
             console.error(`Failed to set cookie: ${e}`);
         }
