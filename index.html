@@ -84,16 +84,6 @@
                     pugMultiplier = parseInt(cookieSplit[1]);
                 }
             }
-            
-            var cookie;
-            var cookie2;
-
-            if (cookie) {
-                    pugScale = cookie.value;
-            }
-            if (cookie2) {
-                pugMultiplier = cookie2.value;
-            }
             pugScale = checkInt(pugScale);
             pugMultiplier = checkInt(pugMultiplier);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
