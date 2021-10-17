@@ -71,37 +71,16 @@
     // Read cookies and update the variables
     async function cookiesRead() {
         try {
-            var name = "scale";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            var cookie;
-            for(let i = 0; i <ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    cookie = c.substring(name.length, c.length);
-                    break;
-                }
+
+            var cookieList = document.cookie;
+            var splitCookieList = cookieList.split("; ");
+            for(int i = 0; i < splitCookieList.length; i++) {
+                console.log(splitCookieList[i]);
             }
+            
             if (cookie) {
                     pugScale = cookie.value;
             }
-
-            name - "multiplier";
-            var cookie2;
-            for(let i = 0; i <ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    cookie2 = c.substring(name.length, c.length);
-                    break;
-                }
-            }
-
             if (cookie2) {
                 pugMultiplier = cookie2.value;
             }
