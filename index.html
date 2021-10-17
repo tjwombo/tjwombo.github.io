@@ -44,47 +44,15 @@
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
-
-    // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
-    //async function cookiesWrite(names, values) {
-    //    try {
-    //        document.cookie = names + "=" + values;
-    //    } catch (e) {
-    //        console.error(`Failed to set cookie: ${e}`);
-    //    }
-    //}
-
-    // Makes sure that the cookies that are read are still ints
-    //function checkInt(number) {
-    //    if (isNaN(number)) {
-    //        return 1;
-    //    }
-    //    return number;
-    //}
-
     // Variables that use cookie values
     var pugScale=1;
     var pugMultiplier=.5;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
-    var IDBReq = indexedDB.open("myFileStorageDataBase");
-
-    IDBReq.onsuccess = function(){
-        var DB = this.result;
-        var buildHandle = DB.createMutableFile("test.txt", "plain/text");
-
-        buildHandle.onsuccess = function(){
-            var myFileHandle = this.result;
-            console.log('handle', myFileHandle);
-        };
-    };
-
-    var fileHandle;
     async function previewFile() {
         const content = document.querySelector('.content');
         const [file] = document.querySelector('input[type=file]').files;
         const reader = new FileReader();
-        [fileHandle] = await window.showOpenFilePicker();
         console.log(fileHandle);
         console.log(file);
         console.log(fileHandle == file);
@@ -100,43 +68,6 @@
             reader.readAsText(file);
         }
     }
-
-    async function writeFile(fileHandle, contents) {
-         // Create a FileSystemWritableFileStream to write to.
-        const writable = await fileHandle.createWritable();
-        // Write the contents of the file to the stream.
-        await writable.write(contents);
-        // Close the file and write the contents to disk.
-        await writable.close();
-    }
-
-    // Read cookies and update the variables
-    //async function cookiesRead() {
-    //    try {
-    //        var cookieList = document.cookie;
-    //        var splitCookieList = cookieList.split("; ");
-    //        for(let i = 0; i < splitCookieList.length; i++) {
-    //            var cookieSplit = splitCookieList[i].split("=");
-
-    //            if (cookieSplit[1] != null && cookieSplit[1].endsWith(";")) {
-    //                cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
-    //            }
-
-    //            if (cookieSplit[0] == "scale") {
-    //                pugScale = parseInt(cookieSplit[1]);
-    //            } else if (cookieSplit[0] == "multiplier") {
-    //                pugMultiplier = parseInt(cookieSplit[1]);
-    //            }
-    //        }
-    //        pugScale = checkInt(pugScale);
-    //        pugMultiplier = checkInt(pugMultiplier);
-    //        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-    //    } catch (e) {
-    //        console.error(`Cookie store error: ${e}`);
-    //    }
-    //}
-
-    //cookiesRead();
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
@@ -162,7 +93,6 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        writeFile(fileHandle, pugScale);
         //cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
@@ -175,7 +105,6 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        writeFile(fileHandle, pugScale);
         //cookiesWrite("scale", pugScale);
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
@@ -197,7 +126,6 @@
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            writeFile(fileHandle, pugScale);
             //cookiesWrite("scale", pugScale)
       }
     }
