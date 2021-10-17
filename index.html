@@ -74,6 +74,8 @@
         const reader = new FileReader();
         [fileHandle] = await window.showOpenFilePicker();
         console.log(fileHandle);
+        console.log(document.getElementById("data"));
+        console.log(fileHandle == document.getElementById("data"));
 
         reader.addEventListener("load", () => {
             // this will then display a text file
