@@ -30,9 +30,8 @@
 </head>
 <body>
   <input type="file" id="data" name="data" onchange="previewFile()">
-  <p class="content"></p>
 
-  <pre id="output"></pre>
+  <input type="file" id="colors" name="colors" onchange="previewFile2()">
 
   <div class="color-box red" id="box"></div>
     <!-- Replace "#FF850A" to change the color -->
@@ -51,6 +50,29 @@
         reader.addEventListener("load", () => {
             opacity = parseInt(reader.result);
             document.querySelector("#box").style.opacity = opacity;
+
+            // WRITE TO FILE
+            //document.getElementById("data").value = pugScale;
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+    async function previewFile2() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[type=file]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            if (reader.result = null) {
+                break;
+            } else if (reader.result = "red") {
+                colorBox.classList.add("red");
+            } else {
+                colorBox.classList.add("blue");
+            }
 
             // WRITE TO FILE
             //document.getElementById("data").value = pugScale;
