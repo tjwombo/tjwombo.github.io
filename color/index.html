@@ -69,11 +69,11 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            if (reader.result = "red") {
+            if (reader.result = "color:red") {
                 colorBox.classList.add("red");
                 console.log("red");
             } else if (reader.result = "blue") {
-                colorBox.classList.add("blue");
+                colorBox.classList.add("color:blue");
                 console.log("blue");
             } else {
                 console.log(reader.result);
