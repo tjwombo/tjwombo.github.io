@@ -66,6 +66,12 @@
     var pugMultiplier=.5;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
+    const fileSelector = document.getElementById('data');
+    fileSelector.addEventListener('change', (event) => {
+        const fileList = event.target.files;
+        console.log(fileList);
+    });
+
      async function readValues(file) {
         const reader = new FileReader()
         reader.onload = event => console.log(event.target.result) // desired file content
