@@ -45,21 +45,21 @@
 
 
     // Sets a cookie on the page so you can read/write a persistent value, this one writes to it
-    async function cookiesWrite(names, values) {
-        try {
-            document.cookie = names + "=" + values;
-        } catch (e) {
-            console.error(`Failed to set cookie: ${e}`);
-        }
-    }
+    //async function cookiesWrite(names, values) {
+    //    try {
+    //        document.cookie = names + "=" + values;
+    //    } catch (e) {
+    //        console.error(`Failed to set cookie: ${e}`);
+    //    }
+    //}
 
     // Makes sure that the cookies that are read are still ints
-    function checkInt(number) {
-        if (isNaN(number)) {
-            return 1;
-        }
-        return number;
-    }
+    //function checkInt(number) {
+    //    if (isNaN(number)) {
+    //        return 1;
+    //    }
+    //    return number;
+    //}
 
     // Variables that use cookie values
     var pugScale=1;
@@ -67,32 +67,32 @@
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
     // Read cookies and update the variables
-    async function cookiesRead() {
-        try {
-            var cookieList = document.cookie;
-            var splitCookieList = cookieList.split("; ");
-            for(let i = 0; i < splitCookieList.length; i++) {
-                var cookieSplit = splitCookieList[i].split("=");
+    //async function cookiesRead() {
+    //    try {
+    //        var cookieList = document.cookie;
+    //        var splitCookieList = cookieList.split("; ");
+    //        for(let i = 0; i < splitCookieList.length; i++) {
+    //            var cookieSplit = splitCookieList[i].split("=");
 
-                if (cookieSplit[1] != null && cookieSplit[1].endsWith(";")) {
-                    cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
-                }
+    //            if (cookieSplit[1] != null && cookieSplit[1].endsWith(";")) {
+    //                cookieSplit[1] = cookieSplit[1].substring(0, cookieSplit[1].length - 1);
+    //            }
 
-                if (cookieSplit[0] == "scale") {
-                    pugScale = parseInt(cookieSplit[1]);
-                } else if (cookieSplit[0] == "multiplier") {
-                    pugMultiplier = parseInt(cookieSplit[1]);
-                }
-            }
-            pugScale = checkInt(pugScale);
-            pugMultiplier = checkInt(pugMultiplier);
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        } catch (e) {
-            console.error(`Cookie store error: ${e}`);
-        }
-    }
+    //            if (cookieSplit[0] == "scale") {
+    //                pugScale = parseInt(cookieSplit[1]);
+    //            } else if (cookieSplit[0] == "multiplier") {
+    //                pugMultiplier = parseInt(cookieSplit[1]);
+    //            }
+    //        }
+    //        pugScale = checkInt(pugScale);
+    //        pugMultiplier = checkInt(pugMultiplier);
+    //        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+    //    } catch (e) {
+    //        console.error(`Cookie store error: ${e}`);
+    //    }
+    //}
 
-    cookiesRead();
+    //cookiesRead();
 
     // Get the element of the pictures
     const tomat = document.getElementById("tomat")
@@ -110,21 +110,19 @@
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
-        console.log(document.cookie);
-        pugScale = checkInt(pugScale);
+        //pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
-        console.log(document.cookie);
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        cookiesWrite("scale", pugScale);
+        //cookiesWrite("scale", pugScale);
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "shrink") {
-        pugScale = checkInt(pugScale);
+        //pugScale = checkInt(pugScale);
         pugScale -= pugMultiplier;
         //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale < -12) {
@@ -132,11 +130,11 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        cookiesWrite("scale", pugScale);
+        //cookiesWrite("scale", pugScale);
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
-         pugScale = checkInt(pugMultiplier);
+         //pugScale = checkInt(pugMultiplier);
          var newMult = parseFloat(message);
          newMult = Math.round(newMult * 10) / 10;
          console.log(newMult);
@@ -146,14 +144,14 @@
               newMult = .1
          }
          pugMultiplier = newMult;
-         cookiesWrite("multiplier", pugMultiplier)
+         //cookiesWrite("multiplier", pugMultiplier)
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            cookiesWrite("scale", pugScale);
+            //cookiesWrite("scale", pugScale);
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
