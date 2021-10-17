@@ -51,7 +51,7 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            opacity = parseInt(reader.result);
+            opacity = parseFloat(reader.result);
             document.querySelector("#box").style.opacity = opacity;
 
             // WRITE TO FILE
