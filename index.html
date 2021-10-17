@@ -75,7 +75,12 @@
             var cookieList = document.cookie;
             var splitCookieList = cookieList.split("; ");
             for(let i = 0; i < splitCookieList.length; i++) {
-                console.log(splitCookieList[i]);
+                var cookieSplit = splitCookieList[i].split("=");
+                if (cookieSplit[0] == "scale") {
+                    pugScale = cookieSplit[1];
+                } else if (cookieSplit[0] == "multiplier") {
+                    pugMultiplier = cookieSplit[1];
+                }
             }
             
             var cookie;
