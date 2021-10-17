@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="https://rawgit.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>
   <style>
     .center {
         margin: 0;
@@ -61,8 +60,7 @@
             pugScale = parseInt(reader.result);
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
 
-            var file = new File(["Hello, world!"], "hello world.txt", {type: "text/plain;charset=utf-8"});
-            FileSaver.saveAs(file);
+            //WRITE TO FILE
         }, false);
 
         if (file) {
