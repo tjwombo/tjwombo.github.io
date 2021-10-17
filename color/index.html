@@ -72,16 +72,16 @@
         //PROBABLY SOME LIMITER
 
         if (colorBox.classList.contains("red")) {
-            opacity += 0.1;
-            document.getElementById("box").style.opacity += 0.1;
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
         } else if (document.getElementById("box").style.opacity == 0) {
             colorBox.classList.remove("blue");
             colorBox.classList.add("red")
-            opacity += 0.1;
-            document.getElementById("box").style.opacity += 0.1;
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
         } else {
-            opacity -= 0.1;
-            document.getElementById("box").style.opacity -= 0.1;
+            opacity = parseFloat(opacity) - 0.1;
+            document.getElementById("box").style.opacity = opacity;
         }
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
@@ -89,16 +89,16 @@
         //PROBABLY SOME LIMITER
 
         if (colorBox.classList.contains("blue")) {
-            opacity++;
-            document.getElementById("box").style.opacity += 0.1;
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
         } else if (document.getElementById("box").style.opacity == 0) {
             colorBox.classList.remove("red");
             colorBox.classList.add("blue");
-            opacity += 0.1;
-            document.getElementById("box").style.opacity += 0.1;
+            opacity = parseFloat(opacity) + 0.1;
+            document.getElementById("box").style.opacity = opacity;
         } else {
-            opacity -= 0.1;
-            document.getElementById("box").style.opacity -= 0.1;
+            opacity = parseFloat(opacity) - 0.1;
+            document.getElementById("box").style.opacity = opacity;
         }
 
       // Reset the pug (more of a in case of fire command, only I can use it)
