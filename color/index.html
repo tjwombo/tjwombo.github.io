@@ -32,15 +32,7 @@
 <body>
   <input type="file" id="data" name="data" onchange="previewFile()">
 
-  <p class="content"></p>
-
-  <pre id="output"></pre>
-
   <input type="file" id="colors" name="colors" onchange="previewFile2()">
-
-  <p class="content"></p>
-
-  <pre id="output2"></pre>
 
   <img id="box" class="color-box red" id="box" />
     <!-- Replace "#FF850A" to change the color -->
@@ -60,7 +52,6 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            content.innerText = reader.result;
             opacity = parseFloat(reader.result);
             document.querySelector("#box").style.opacity = opacity;
 
@@ -79,7 +70,6 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            content.innerText = reader.result;
             if (reader.result == "red") {
                 colorBox.classList.add("red");
             } else if (reader.result == "blue") {
