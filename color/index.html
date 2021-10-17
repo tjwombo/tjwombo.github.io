@@ -71,12 +71,8 @@
         reader.addEventListener("load", () => {
             if (reader.result == "red") {
                 colorBox.classList.add("red");
-                console.log("color:red");
             } else if (reader.result == "blue") {
                 colorBox.classList.add("blue");
-                console.log("color:blue");
-            } else {
-                console.log(reader.result);
             }
 
             // WRITE TO FILE
