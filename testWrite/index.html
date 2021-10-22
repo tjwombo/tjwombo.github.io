@@ -1,7 +1,56 @@
-var link = document.createElement("a");
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  delete link;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If you're not OBS, Go Away</title>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://rawgit.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>
+  <style>
+  
+    .color-box {
+        width: 500px;
+        height: 500px;
+        display: inline-block;
+        background-color: #ccc;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        opacity: 0.0;
+    }
+    .red {
+        background-color: red;
+    }
+
+    .blue {
+        background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <input type="file" id="data" name="data" onchange="previewFile()">
+
+  <input type="file" id="colors" name="colors" onchange="previewFile2()">
+
+  <img id="box" class="color-box red" id="box" />
+    <!-- Replace "#FF850A" to change the color -->
+
+  <script>
+    function write(name, uri) {
+    var link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    delete link;
+  }
+    
+  write("data:text/html,HelloWorld!", "helloWorld.txt");
+
+  </script>
+</body>
+</html>
