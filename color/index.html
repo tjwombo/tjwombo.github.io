@@ -99,6 +99,7 @@
                 console.log(document.cookie);
                 console.log(document.cookie.split('; ')[i].includes("opacity"))
                 if (document.cookie.split('; ')[i].includes("opacity")) {
+                    console.log(document.cookie.split('; ')[i]);
                     document.cookie.replace(document.cookie.split('; ')[i], "opacity="+opacity);
                     console.log(opacity);
                     console.log(document.cookie);
