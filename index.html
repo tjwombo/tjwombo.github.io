@@ -131,6 +131,9 @@
          // Round the number so the style is consistent
          newMult = Math.round(newMult * 10) / 10;
 
+         // Truncate trailing numbers just in case
+        newMult = Math.trunc(newMult*10)/10;
+
          // Limits the multiplier to +/- 1
          if (newMult > 1) {
               newMult = 1;
