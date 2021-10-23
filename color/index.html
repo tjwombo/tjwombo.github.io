@@ -79,7 +79,9 @@
     console.log(document.cookie);
     for (i = 0; i < document.cookie.split('; ').length; i++) {
         if (document.cookie.split('; ')[i].includes("opacity")) {
-            console.log(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")));
+            console.log(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            opacity = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            console.log(opacity);
         }
     }
 
