@@ -179,14 +179,8 @@
             document.getElementById("box").style.opacity = opacity;
         }
 
-        for(i = 0; i < document.cookie.split('; ').length; i++) {
-
-            if (document.cookie.split('; ')[i].name == "opacity") {
-                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-            } else if (document.cookie.split('; ')[i].name == "color") {
-                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
-            }
-        }
+        // Write values to cookies
+        document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
@@ -211,14 +205,8 @@
             document.getElementById("box").style.opacity = opacity;
         }
 
-        for(i = 0; i < document.cookie.split('; ').length; i++) {
-
-            if (document.cookie.split('; ')[i].name == "opacity") {
-                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-            } else if (document.cookie.split('; ')[i].name == "color") {
-                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
-            }
-        }
+        // Write values to cookies
+        document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
@@ -227,13 +215,7 @@
             opacity = 0.0;
             document.getElementById("box").style.opacity = opacity;
 
-            for(i = 0; i < document.cookie.split('; ').length; i++) {
-                if (document.cookie.split('; ')[i].name == "opacity") {
-                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-                } else if (document.cookie.split('; ')[i].name == "color") {
-                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
-                }
-            }
+            document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
