@@ -66,7 +66,7 @@
     for (i = 0; i < document.cookie.split('; ').length; i++) {
 
         if (document.cookie.split('; ')[i].includes("scale")) {
-            pugScale = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            pugScale = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         }
     }
@@ -80,6 +80,10 @@
         if (pugScale > 12) {
             pugScale = 12;
         }
+
+        // Truncate trailing numbers
+        pugScale = Math.trunc(pugScale*10)/10;
+
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         
         // Write the value to the cookie
@@ -94,6 +98,10 @@
             pugScale = -12;
             //pugPercentage = 240;
         }
+
+        // Truncate trailing numbers
+        pugScale = Math.trunc(pugScale*10)/10;
+
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
         
         // Write the value to the cookie
