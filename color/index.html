@@ -95,6 +95,7 @@
             document.querySelector("#box").style.opacity = opacity;
 
             // Write the opacity to the cookie
+            console.log(document.cookie);
             for(i = 0; i < document.cookie.split('; ').length; i++) {
                 console.log(opacity);
                 if (document.cookie.split('; ')[i].name = "opacity") {
