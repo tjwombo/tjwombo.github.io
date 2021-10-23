@@ -43,7 +43,7 @@
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
     // Variables that we are adjusting
-    var opacity = 0;
+    var opacity = 1;
 
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
@@ -78,7 +78,7 @@
     }
     if (!colorExists) {
         if (document.cookie != null) {
-            document.cookie = document.cookie+"; color=red";
+            document.cookie = document.cookie+"color=red";
         } else {
             document.cookie = "opacity=0";
         }
