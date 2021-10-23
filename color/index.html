@@ -48,18 +48,50 @@
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
 
+    // Check to see if we have cookies and write them if they dont exist
+    opacityExists = false;
+    colorExists = false;
+    if (document.cookie != null) {
+        allCookies = document.cookie.split('; ');
+   
+        for(i = 0; i < allCookies.length; i++) {
+            if (allCookies[i].name = "opacity") {
+                opacityExists = true;
+                continue;
+            } else if (allCookies[i].name = "color") {
+                colorExists = true;
+                continue;
+            } else {
+                if (opacityExists & colorExists) {
+                    break;
+                }
+            }
+        }
+    }
+   
+    if (!opacityExists) {
+      document.cookie = "opacity=0";
+    }
+    if (!colorExists) {
+        document.cookie = "color=red";
+    }
+
     async function previewFile() {
         const content = document.querySelector('.content');
         const [file] = document.querySelector('input[type=file]').files;
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
+            // Set the opacity to the opacity
             opacity = parseFloat(reader.result);
             document.querySelector("#box").style.opacity = opacity;
 
-            // WRITE TO FILE
-            var blob = new Blob([opacity], { type: "text/plain;charset=utf-8" });
-            saveAs(blob, "dynamic.txt");
+            // Write the opacity to the cookie
+            for(i = 0; i < document.cookie.split('; ').length; i++) {
+                if (document.cookie.split('; ')[i].name = "opacity") {
+                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
+                }
+            }
             
         }, false);
 
@@ -74,14 +106,23 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
+            color;
+
+            // Set the color to the color
             if (reader.result == "red") {
+                color = "red";
                 colorBox.classList.add("red");
             } else if (reader.result == "blue") {
+                color = "blue";
                 colorBox.classList.add("blue");
             }
 
-            // WRITE TO FILE
-            //document.getElementById("data").value = pugScale;
+            // Write the value to the cookie
+            for(i = 0; i < document.cookie.split('; ').length; i++) {
+                if (document.cookie.split('; ')[i].name = "color") {
+                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
+                }
+            }
         }, false);
 
         if (file) {
@@ -95,35 +136,59 @@
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       if (command == "red") {
         //PROBABLY SOME LIMITER
+        color;
 
         if (colorBox.classList.contains("red")) {
+            color = "red";
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
         } else if (document.getElementById("box").style.opacity == 0) {
+            color = "red";
             colorBox.classList.remove("blue");
             colorBox.classList.add("red")
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
         } else {
+            color = "blue";
             opacity = parseFloat(opacity) - 0.1;
             document.getElementById("box").style.opacity = opacity;
+        }
+
+        for(i = 0; i < document.cookie.split('; ').length; i++) {
+            if (document.cookie.split('; ')[i].name = "opacity") {
+                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
+            } else if (document.cookie.split('; ')[i].name = "color") {
+                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
+            }
         }
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
         //PROBABLY SOME LIMITER
+        color;
 
         if (colorBox.classList.contains("blue")) {
+            color = "blue";
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
         } else if (document.getElementById("box").style.opacity == 0) {
+            color = "blue";
             colorBox.classList.remove("red");
             colorBox.classList.add("blue");
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
         } else {
+            color = "red";
             opacity = parseFloat(opacity) - 0.1;
             document.getElementById("box").style.opacity = opacity;
+        }
+
+        for(i = 0; i < document.cookie.split('; ').length; i++) {
+            if (document.cookie.split('; ')[i].name = "opacity") {
+                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
+            } else if (document.cookie.split('; ')[i].name = "color") {
+                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
+            }
         }
 
       // Reset the pug (more of a in case of fire command, only I can use it)
@@ -132,6 +197,14 @@
             colorBox.classList.remove("blue")
             opacity = 0.0;
             document.getElementById("box").style.opacity = opacity;
+
+            for(i = 0; i < document.cookie.split('; ').length; i++) {
+                if (document.cookie.split('; ')[i].name = "opacity") {
+                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
+                } else if (document.cookie.split('; ')[i].name = "color") {
+                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
+                }
+            }
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
