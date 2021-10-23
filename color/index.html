@@ -121,10 +121,12 @@
             document.getElementById("box").style.opacity = opacity;
         }
 
+        // Truncate trailing numbers
         opacity = Math.trunc(opacity*10)/10;
 
         // Write values to cookies
         document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "color=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
@@ -149,10 +151,12 @@
             document.getElementById("box").style.opacity = opacity;
         }
 
+        // Truncate trailing numbers
         opacity = Math.trunc(opacity*10)/10;
 
         // Write values to cookies
         document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "color=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
@@ -162,6 +166,7 @@
             document.getElementById("box").style.opacity = opacity;
 
             document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
