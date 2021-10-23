@@ -102,6 +102,7 @@
                     console.log(document.cookie.split('; ')[i]);
                     console.log("opacity="+opacity);
                     document.cookie.replace(document.cookie.split('; ')[i], "opacity="+opacity);
+                    document.cookie.split('; ')[i] = "opacity="+opacity;
                     console.log(opacity);
                     console.log(document.cookie);
                 }
