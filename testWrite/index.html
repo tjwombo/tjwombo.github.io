@@ -5,16 +5,12 @@
 
 <body>
 
-<form name="form1" action="next.html" method="get">
-name:<input type ="text" id="name" name="n">
-<input type="submit" value="next" >
 <button type="button" id="print" onClick="testJS()"> Print </button>
 </form>
   
 <script>
   function testJS() {
-    var b = document.getElementById('name').value,
-        url = 'https://tjwombo.github.io/testWrite/next.html?name=' + encodeURIComponent(b);
+        url = 'https://tjwombo.github.io/testWrite/next.html?name=' + 5;
 
     document.location.href = url;
 }
