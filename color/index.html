@@ -31,10 +31,6 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="previewFile()">
-
-  <input type="file" id="colors" name="colors" onchange="previewFile2()">
-
   <img id="box" class="color-box red" id="box" />
     <!-- Replace "#FF850A" to change the color -->
 
@@ -79,9 +75,14 @@
     console.log(document.cookie);
     for (i = 0; i < document.cookie.split('; ').length; i++) {
         if (document.cookie.split('; ')[i].includes("opacity")) {
-            console.log(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
             opacity = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
-            console.log(opacity);
+            document.querySelector("#box").style.opacity = opacity;
+        } else if (document.cookie.split('; ')[i].includes("color")) {
+            if (document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1) == "red") {
+                colorBox.classList.add("red");
+            } else {
+                colorBox.classList.add("blue");
+            }
         }
     }
 
