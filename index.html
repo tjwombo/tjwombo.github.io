@@ -75,7 +75,7 @@
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "grow") {
+      if (command == "grow") {
         pugScale += pugMultiplier;
         if (pugScale > 12) {
             pugScale = 12;
