@@ -170,9 +170,9 @@
         }
 
         for(i = 0; i < document.cookie.split('; ').length; i++) {
-            if (document.cookie.split('; ')[i].name = "opacity") {
+            if (document.cookie.split('; ')[i].name == "opacity") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-            } else if (document.cookie.split('; ')[i].name = "color") {
+            } else if (document.cookie.split('; ')[i].name == "color") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
             }
         }
@@ -199,9 +199,9 @@
         }
 
         for(i = 0; i < document.cookie.split('; ').length; i++) {
-            if (document.cookie.split('; ')[i].name = "opacity") {
+            if (document.cookie.split('; ')[i].name == "opacity") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-            } else if (document.cookie.split('; ')[i].name = "color") {
+            } else if (document.cookie.split('; ')[i].name == "color") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
             }
         }
@@ -214,9 +214,9 @@
             document.getElementById("box").style.opacity = opacity;
 
             for(i = 0; i < document.cookie.split('; ').length; i++) {
-                if (document.cookie.split('; ')[i].name = "opacity") {
+                if (document.cookie.split('; ')[i].name == "opacity") {
                     document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
-                } else if (document.cookie.split('; ')[i].name = "color") {
+                } else if (document.cookie.split('; ')[i].name == "color") {
                     document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
                 }
             }
