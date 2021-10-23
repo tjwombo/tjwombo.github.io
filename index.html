@@ -29,71 +29,61 @@
   </style>
 </head>
 <body>
-  <input type="file" id="data" name="data" onchange="previewFile()">
-  <p class="content"></p>
-
-  <pre id="output"></pre>
-
-  <img id="tomat" src="./src/tomat.jpg" width="200" />
-
-  <br>
-
   <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
   <script>
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
+    // Get the element of the pug
+    const pug = document.getElementById("pug");
+
     // Variables that use cookie values
     var pugScale=1;
     var pugMultiplier=.5;
     //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
-    async function previewFile() {
-        const content = document.querySelector('.content');
-        const [file] = document.querySelector('input[type=file]').files;
-        const reader = new FileReader();
-
-        reader.addEventListener("load", () => {
-            // this will then display a text file
-            content.innerText = reader.result;
-            pugScale = parseInt(reader.result);
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-
-            //WRITE TO FILE
-  
-        }, false);
-
-        if (file) {
-            reader.readAsText(file);
+    // Check to see if we have cookies and write them if they dont exist
+    scaleExists = false;
+    if (document.cookie != null) {
+        allCookies = document.cookie.split('; ');
+   
+        for(i = 0; i < allCookies.length; i++) {
+   
+            if (allCookies[i].includes("scale")) {
+                opacityExists = true;
+                break;
+            }
         }
     }
 
-    // Get the element of the pictures
-    const tomat = document.getElementById("tomat")
-    const pug = document.getElementById("pug")
+    // Create the cookie if it doesn't exist
+    if (!scaleExists) {
+        document.cookie = "scale=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+    }
+
+    // Read the cookie and put the value into the variables
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
+
+        if (document.cookie.split('; ')[i].includes("scale")) {
+            pugScale = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        }
+    }
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
-      // Test twitch chat command
-      if (command === "yeeclaw") {
-        tomat.classList.add("rotate")
-        setTimeout(() => {
-          tomat.classList.remove("rotate")
-        }, 1000)
-
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "grow") {
-        //pugScale = checkInt(pugScale);
         pugScale += pugMultiplier;
-        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
         if (pugScale > 12) {
             pugScale = 12;
-            //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
+        
+        // Write the value to the cookie
+        document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "shrink") {
@@ -105,7 +95,9 @@
             //pugPercentage = 240;
         }
         document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        //cookiesWrite("scale", pugScale);
+        
+        // Write the value to the cookie
+        document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "change") {
@@ -119,14 +111,18 @@
               newMult = .1
          }
          pugMultiplier = newMult;
-         //cookiesWrite("multiplier", pugMultiplier)
+         
+         // Write the value to the cookie
+        document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
             pugScale = 0;
             pugMultiplier = 1;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            //cookiesWrite("scale", pugScale)
+            
+            // Write the value to the cookie
+            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
       }
     }
     //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
