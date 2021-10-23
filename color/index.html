@@ -96,10 +96,8 @@
 
             // Write the opacity to the cookie
             for(i = 0; i < document.cookie.split('; ').length; i++) {
-                if (document.cookie.split('; ')[i].name = "opacity") {
-                    console.log(i);
+                if (document.cookie.split('; ')[i].name == "opacity") {
                     document.cookie.split('; ')[i].value = opacity;
-                    console.log(document.cookie.split('; ')[i]);
                 }
             }
             
@@ -129,8 +127,7 @@
 
             // Write the value to the cookie
             for(i = 0; i < document.cookie.split('; ').length; i++) {
-                //console.log(color);
-                if (document.cookie.split('; ')[i].name = "color") {
+                if (document.cookie.split('; ')[i].name == "color") {
                     document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
                 }
             }
