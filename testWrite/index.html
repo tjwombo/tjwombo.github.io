@@ -9,8 +9,9 @@
 </form>
   
 <script>
-  allCookies = document.cookie.split('; ');
-  
+  if (document.cookie != null) {
+      allCookies = document.cookie.split('; ');
+  }  
    scaleExists = false;
    
    for(i = 0; i < allCookies.length; i++) {
