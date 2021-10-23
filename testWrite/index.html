@@ -28,7 +28,7 @@
    
    cookieValue = document.cookie.split('; ').find(row => row.startsWith('scale=')).split('=')[1];
    console.log(cookieValue);
-   document.innerText = cookieValue;
+   document.write(cookieValue);
 </script>
 
 </body>
