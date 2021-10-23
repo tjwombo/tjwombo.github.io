@@ -96,6 +96,8 @@
 
             // Write the opacity to the cookie
             for(i = 0; i < document.cookie.split('; ').length; i++) {
+                console.log(document.cookie);
+                console.log(ocument.cookie.split('; ')[i].name)
                 if (document.cookie.split('; ')[i].name == "opacity") {
                     document.cookie.split('; ')[i].value = opacity;
                     console.log(document.cookie);
