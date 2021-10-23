@@ -43,7 +43,7 @@
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
     // Variables that we are adjusting
-    var opacity = 1;
+    var opacity = 0;
 
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
@@ -67,6 +67,7 @@
         }
     }
 
+    // Create the cookie if it doesn't exist
     if (!opacityExists) {
         document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
     }
@@ -74,66 +75,74 @@
         document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
     }
 
-    async function previewFile() {
-        const content = document.querySelector('.content');
-        const [file] = document.querySelector('input[type=file]').files;
-        const reader = new FileReader();
+    // Read the cookie and put the value into the variables
+    for (i = 0; i < document.cookie.split('; '); i++) {
+        if (document.cookie.split('; ')[i].includes("opacity")) {
+            console.log(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("="), document.cookie.split('; ')[i].indexOf(";")));
+        }
+    }
 
-        reader.addEventListener("load", () => {
+
+    //async function previewFile() {
+    //    const content = document.querySelector('.content');
+    //    const [file] = document.querySelector('input[type=file]').files;
+    //    const reader = new FileReader();
+
+    //    reader.addEventListener("load", () => {
             // Set the opacity to the opacity
-            opacity = parseFloat(reader.result);
-            document.querySelector("#box").style.opacity = opacity;
+    //        opacity = parseFloat(reader.result);
+    //        document.querySelector("#box").style.opacity = opacity;
 
             // Write the opacity to the cookie
-            for(i = 0; i < document.cookie.split('; ').length; i++) {
-                console.log(document.cookie);
-                console.log(document.cookie.split('; ')[i].includes("opacity"))
-                if (document.cookie.split('; ')[i].includes("opacity")) {
-                    console.log(document.cookie.split('; ')[i]);
-                    console.log("opacity="+opacity);
-                    document.cookie.replace(document.cookie.split('; ')[i], "opacity="+opacity);
-                    document.cookie.split('; ')[i] = "opacity="+opacity;
-                    console.log(opacity);
-                    console.log(document.cookie);
-                }
-            }
+    //       for(i = 0; i < document.cookie.split('; ').length; i++) {
+    //           console.log(document.cookie);
+    //            console.log(document.cookie.split('; ')[i].includes("opacity"))
+    //            if (document.cookie.split('; ')[i].includes("opacity")) {
+    //                console.log(document.cookie.split('; ')[i]);
+    //                console.log("opacity="+opacity);
+    //                document.cookie.replace(document.cookie.split('; ')[i], "opacity="+opacity);
+    //                document.cookie.split('; ')[i] = "opacity="+opacity;
+    //                console.log(opacity);
+    //                console.log(document.cookie);
+    //            }
+    //        }
             
-        }, false);
+    //    }, false);
 
-        if (file) {
-            reader.readAsText(file);
-        }
-    }
+    //    if (file) {
+    //        reader.readAsText(file);
+    //    }
+    //}
 
-    async function previewFile2() {
-        const content = document.querySelector('.content');
-        const [file] = document.querySelector('input[name=colors]').files;
-        const reader = new FileReader();
+    //async function previewFile2() {
+    //    const content = document.querySelector('.content');
+    //    const [file] = document.querySelector('input[name=colors]').files;
+    //    const reader = new FileReader();
 
-        reader.addEventListener("load", () => {
-            color = "";
+    //    reader.addEventListener("load", () => {
+    //        color = "";
 
             // Set the color to the color
-            if (reader.result == "red") {
-                color = "red";
-                colorBox.classList.add("red");
-            } else if (reader.result == "blue") {
-                color = "blue";
-                colorBox.classList.add("blue");
-            }
+    //        if (reader.result == "red") {
+    //            color = "red";
+    //            colorBox.classList.add("red");
+    //        } else if (reader.result == "blue") {
+    //            color = "blue";
+    //            colorBox.classList.add("blue");
+    //        }
 
             // Write the value to the cookie
-            for(i = 0; i < document.cookie.split('; ').length; i++) {
-                if (document.cookie.split('; ')[i].name == "color") {
-                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
-                }
-            }
-        }, false);
+    //        for(i = 0; i < document.cookie.split('; ').length; i++) {
+    //            if (document.cookie.split('; ')[i].name == "color") {
+    //                document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
+    //            }
+    //        }
+    //    }, false);
 
-        if (file) {
-            reader.readAsText(file);
-        }
-    }
+    //    if (file) {
+    //        reader.readAsText(file);
+    //    }
+    //}
 
     // Twitch chat commands
     ComfyJS.onCommand = (user, command, message, flags, extra) => {
