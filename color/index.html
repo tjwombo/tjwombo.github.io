@@ -106,7 +106,7 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            color;
+            color = "";
 
             // Set the color to the color
             if (reader.result == "red") {
@@ -136,7 +136,7 @@
       // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       if (command == "red") {
         //PROBABLY SOME LIMITER
-        color;
+        color = "";
 
         if (colorBox.classList.contains("red")) {
             color = "red";
@@ -165,7 +165,7 @@
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
         //PROBABLY SOME LIMITER
-        color;
+        color = "";
 
         if (colorBox.classList.contains("blue")) {
             color = "blue";
