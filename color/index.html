@@ -70,10 +70,18 @@
     }
    
     if (!opacityExists) {
-      document.cookie = "opacity=0";
+        if (document.cookie != null) {
+            document.cookie = document.cookie+"; opacity=0";
+        } else {
+            document.cookie = "opacity=0";
+        }
     }
     if (!colorExists) {
-        document.cookie = "color=red";
+        if (document.cookie != null) {
+            document.cookie = document.cookie+"; color=red";
+        } else {
+            document.cookie = "opacity=0";
+        }
     }
 
     async function previewFile() {
