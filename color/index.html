@@ -164,13 +164,11 @@
         color = "";
 
         if (colorBox.classList.contains("red")) {
-            console.log("red");
             color = "red";
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
 
         } else if (document.getElementById("box").style.opacity == 0) {
-            console.log("opacity");
             color = "red";
             colorBox.classList.remove("blue");
             colorBox.classList.add("red")
@@ -178,7 +176,6 @@
             document.getElementById("box").style.opacity = opacity;
 
         } else {
-            console.log("blue");
             color = "blue";
             opacity = parseFloat(opacity) - 0.1;
             document.getElementById("box").style.opacity = opacity;
