@@ -30,9 +30,9 @@
     }
   </style>
 </head>
+
 <body>
   <img id="box" class="color-box red" id="box" />
-    <!-- Replace "#FF850A" to change the color -->
 
   <script>
     //LINK TO TWITCH JS STUFF
@@ -51,10 +51,13 @@
         allCookies = document.cookie.split('; ');
    
         for(i = 0; i < allCookies.length; i++) {
+   
             if (allCookies[i].includes("opacity")) {
                 opacityExists = true;
+
             } else if (allCookies[i].includes("color")) {
                 colorExists = true;
+
             } else {
                 if (opacityExists && colorExists) {
                     break;
@@ -74,9 +77,11 @@
     // Read the cookie and put the value into the variables
     console.log(document.cookie);
     for (i = 0; i < document.cookie.split('; ').length; i++) {
+
         if (document.cookie.split('; ')[i].includes("opacity")) {
             opacity = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
             document.querySelector("#box").style.opacity = opacity;
+
         } else if (document.cookie.split('; ')[i].includes("color")) {
             if (document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1) == "red") {
                 colorBox.classList.add("red");
@@ -160,12 +165,14 @@
             color = "red";
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
+
         } else if (document.getElementById("box").style.opacity == 0) {
             color = "red";
             colorBox.classList.remove("blue");
             colorBox.classList.add("red")
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
+
         } else {
             color = "blue";
             opacity = parseFloat(opacity) - 0.1;
@@ -173,6 +180,7 @@
         }
 
         for(i = 0; i < document.cookie.split('; ').length; i++) {
+
             if (document.cookie.split('; ')[i].name == "opacity") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
             } else if (document.cookie.split('; ')[i].name == "color") {
@@ -189,12 +197,14 @@
             color = "blue";
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
+
         } else if (document.getElementById("box").style.opacity == 0) {
             color = "blue";
             colorBox.classList.remove("red");
             colorBox.classList.add("blue");
             opacity = parseFloat(opacity) + 0.1;
             document.getElementById("box").style.opacity = opacity;
+
         } else {
             color = "red";
             opacity = parseFloat(opacity) - 0.1;
@@ -202,6 +212,7 @@
         }
 
         for(i = 0; i < document.cookie.split('; ').length; i++) {
+
             if (document.cookie.split('; ')[i].name == "opacity") {
                 document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
             } else if (document.cookie.split('; ')[i].name == "color") {
