@@ -125,8 +125,8 @@
         opacity = Math.trunc(opacity*10)/10;
 
         // Write values to cookies
-        document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
       } else if (command == "blue") {
@@ -155,8 +155,8 @@
         opacity = Math.trunc(opacity*10)/10;
 
         // Write values to cookies
-        document.cookie = "opacity=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" +opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
       // Reset the pug (more of a in case of fire command, only I can use it)
       } else if (flags.broadcaster && command == "reset") {
