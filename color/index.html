@@ -76,7 +76,8 @@
     }
 
     // Read the cookie and put the value into the variables
-    for (i = 0; i < document.cookie.split('; '); i++) {
+    console.log(document.cookie);
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
         if (document.cookie.split('; ')[i].includes("opacity")) {
             console.log(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("="), document.cookie.split('; ')[i].indexOf(";")));
         }
