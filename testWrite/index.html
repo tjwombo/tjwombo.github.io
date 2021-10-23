@@ -9,12 +9,24 @@
 </form>
   
 <script>
-  function testJS() {
-        url = 'https://tjwombo.github.io/testWrite/next.html?name=' + 5;
-
-    document.location.href = url;
-}
-  </script>
+  allCookies = document.cookie.split('; ');
+  
+   scaleExists = false;
+   
+   for(i = 0; i < allCookies.size(); i++) {
+      if (allCookies[0].name = "scale") {
+         scaleExists = true;
+         break;
+      }
+   }
+   
+   if (!scaleExists) {
+      document.cookie = "scale=1";
+   }
+   
+   cookieValue = document.cookie.split('; ').find(row => row.startsWith('scale=')).split('=')[1];
+   console.log(cookieValue);
+</script>
 
 </body>
 </html>
