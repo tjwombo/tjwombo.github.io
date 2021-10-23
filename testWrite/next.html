@@ -15,7 +15,7 @@
   <script>
     window.onload = function () {
     console.log(document.location.href);
-    console.log(document.location.href.split(" "));
+    console.log(document.location.href.split("?"));
     var url = document.location.href,
         params = url.split('?')[1].split('&'),
         data = {}, tmp;
