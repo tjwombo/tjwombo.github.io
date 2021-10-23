@@ -33,15 +33,14 @@
 <body>
 
   <script>
-    function write(uri, name) {
-    var link = document.createElement("a");
-    link.download = name;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    delete link;
+   function testJS() {
+    var b = document.getElementById('name').value,
+        url = 'http://path_to_your_html_files/next.html?name=' + encodeURIComponent(b);
+
+    document.location.href = url;
   }
+    
+  testJS();
     
   write("data:text/html,HelloWorld!", "helloWorld.txt");
 
