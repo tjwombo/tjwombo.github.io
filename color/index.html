@@ -55,9 +55,9 @@
         allCookies = document.cookie.split('; ');
    
         for(i = 0; i < allCookies.length; i++) {
-            if (allCookies[i].name = "opacity") {
+            if (allCookies[i].name == "opacity") {
                 opacityExists = true;
-            } else if (allCookies[i].name = "color") {
+            } else if (allCookies[i].name == "color") {
                 colorExists = true;
             } else {
                 if (opacityExists && colorExists) {
