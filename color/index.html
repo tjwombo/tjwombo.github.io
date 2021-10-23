@@ -85,8 +85,10 @@
         } else if (document.cookie.split('; ')[i].includes("color")) {
             if (document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1) == "red") {
                 colorBox.classList.add("red");
+                colorBox.classList.remove("blue");
             } else {
                 colorBox.classList.add("blue");
+                colorBox.classList.remove("red");
             }
         }
     }
