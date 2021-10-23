@@ -67,13 +67,11 @@
         }
     }
 
-    const d = new Date();
-   
     if (!opacityExists) {
-        document.cookie = "opacity=0; expires="+(d.getTime()+(10*365*24*60*60));
+        document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
     }
     if (!colorExists) {
-        document.cookie = "color=red; expires="+(d.getTime()+(10*365*24*60*60));
+        document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
     }
 
     async function previewFile() {
