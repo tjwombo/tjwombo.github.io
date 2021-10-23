@@ -99,7 +99,7 @@
             for(i = 0; i < document.cookie.split('; ').length; i++) {
                 console.log(opacity);
                 if (document.cookie.split('; ')[i].name = "opacity") {
-                    document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
+                    document.cookie.split('; ')[i].value = opacity;
                     console.log(document.cookie);
                 }
             }
