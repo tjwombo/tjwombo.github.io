@@ -80,7 +80,7 @@
 
         if (document.cookie.split('; ')[i].includes("opacity")) {
             opacity = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
-            opacity = Math.trunc(opcaity*10)/10;
+            opacity = Math.trunc(opacity*10)/10;
             document.querySelector("#box").style.opacity = opacity;
 
         } else if (document.cookie.split('; ')[i].includes("color")) {
