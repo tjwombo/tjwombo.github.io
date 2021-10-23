@@ -44,7 +44,7 @@
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
 
-    // Check to see if we have cookies and write them if they dont exist
+    // Check to see if we have cookies
     opacityExists = false;
     colorExists = false;
     if (document.cookie != null) {
@@ -75,7 +75,6 @@
     }
 
     // Read the cookie and put the value into the variables
-    console.log(document.cookie);
     for (i = 0; i < document.cookie.split('; ').length; i++) {
 
         if (document.cookie.split('; ')[i].includes("opacity")) {
