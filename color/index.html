@@ -96,6 +96,7 @@
 
             // Write the opacity to the cookie
             for(i = 0; i < document.cookie.split('; ').length; i++) {
+                console.log(opacity);
                 if (document.cookie.split('; ')[i].name = "opacity") {
                     document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+opacity;
                 }
@@ -127,6 +128,7 @@
 
             // Write the value to the cookie
             for(i = 0; i < document.cookie.split('; ').length; i++) {
+                console.log(color);
                 if (document.cookie.split('; ')[i].name = "color") {
                     document.cookie.split('; ')[i] = document.cookie.split('; ')[i]+"="+color;
                 }
