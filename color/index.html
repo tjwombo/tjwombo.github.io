@@ -79,7 +79,7 @@
     for (i = 0; i < document.cookie.split('; ').length; i++) {
 
         if (document.cookie.split('; ')[i].includes("opacity")) {
-            opacity = parseInt(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            opacity = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
             document.querySelector("#box").style.opacity = opacity;
 
         } else if (document.cookie.split('; ')[i].includes("color")) {
