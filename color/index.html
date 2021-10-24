@@ -40,6 +40,7 @@
 
     // Variables that we are adjusting
     var opacity = 0.0;
+    var key = "";
 
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
@@ -92,6 +93,8 @@
                 colorBox.classList.add("blue");
                 colorBox.classList.remove("red");
             }
+        } else if (document.cookie.split('; ')[i].includes("key")) {
+            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
         }
     }
 
@@ -170,8 +173,8 @@
             document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
       }
     }
-    //ComfyJS.Init( process.env.TWITCHUSER, process.env.OAUTH );
-    ComfyJS.Init("tjwombo");
+    ComfyJS.Init( "tjwombo", key );
+    //ComfyJS.Init("tjwombo");
 
   </script>
 </body>
