@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
   <style>
     .center {
         margin: 0;
@@ -29,6 +30,8 @@
   </style>
 </head>
 <body>
+  <input type="file" id="data" name="data" onchange="previewFile()">
+
   <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
 
   <script>
@@ -60,6 +63,32 @@
             } else if (scaleExists && multiplierExists) {
                 break;
             }
+        }
+    }
+
+
+    async function previewFile() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[type=file]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "key=" + reader.result; "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+            if (document.cookie != null) {
+                allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("key")) {
+                       console.log("key written");
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
         }
     }
 
