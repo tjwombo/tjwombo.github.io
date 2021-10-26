@@ -41,6 +41,7 @@
     var opacity = 0.0;
     var key = "";
     var key2 = "";
+    var client = "";
 
     // Get the element of the pictures
     const colorBox = document.getElementById("box");
@@ -97,6 +98,8 @@
             key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
         } else if (document.cookie.split('; ')[i].includes("myAuth")) {
             key2 = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        } else if (document.cookie.split('; ')[i].includes("client")) {
+            client = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
         }
     }
 
@@ -177,7 +180,7 @@
     }
 
     async function getRewards() {
-        let channelRewards = await ComfyJS.GetChannelRewards( key, true );
+        let channelRewards = await ComfyJS.GetChannelRewards( client, true );
         console.log(channelRewards);
     }
     getRewards();
@@ -186,7 +189,7 @@
         console.log( user + " redeemed " + reward + " for " + cost );
     }
 
-    ComfyJS.Init( "tjwombo", key);
+    ComfyJS.Init( "tjwombo", client);
     //ComfyJS.Init("tjwombo");
 
   </script>
