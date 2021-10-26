@@ -173,6 +173,8 @@
       }
     }
 
+    let channelRewards = await ComfyJS.GetChannelRewards( key, true );
+
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         console.log( user + " redeemed " + reward + " for " + cost );
     }
