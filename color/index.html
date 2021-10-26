@@ -180,7 +180,7 @@
     }
 
     async function getRewards() {
-        let channelRewards = await ComfyJS.GetChannelRewards( key2, true );
+        let channelRewards = await ComfyJS.GetChannelRewards( client, true );
         console.log(channelRewards);
     }
     getRewards();
@@ -191,7 +191,7 @@
 
     //ComfyJS.Init( "tjwombo", key);
     ComfyJS.Init("tjwombo");
-    getRewards();
+    ComfyJS.Init("tjwombo", key);
 
   </script>
 </body>
