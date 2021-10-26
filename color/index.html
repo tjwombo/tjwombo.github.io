@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <script src="https://rawgit.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>
   <style>
   
     .color-box {
@@ -173,6 +172,11 @@
             document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
       }
     }
+
+    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
+        console.log( user + " redeemed " + reward + " for " + cost );
+    }
+
     ComfyJS.Init( "tjwombo", key );
     //ComfyJS.Init("tjwombo");
 
