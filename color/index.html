@@ -179,15 +179,7 @@
       }
     }
 
-    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
-        console.log( user + " redeemed " + reward + " for " + cost );
-    }
-
     ComfyJS.Init( "tjwombo", key);
-    (async () => {
-        let channelRewards2 = await ComfyJS.GetChannelRewards( client, false );
-        console.log(channelRewards2);
-    })();
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
