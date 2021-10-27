@@ -41,7 +41,6 @@
     // Variables that use cookie values
     var pugScale=1;
     var pugMultiplier=.5;
-    //var pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
     var key = "";
     var client = "";
 
@@ -90,86 +89,10 @@
         }
     }
 
-    // Twitch chat commands
-    ComfyJS.onCommand = (user, command, message, flags, extra) => {
-
-      // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      if (command == "grow") {
-        pugScale += pugMultiplier;
-
-        // Limits the size to 12x the original
-        if (pugScale > 12) {
-            pugScale = 12;
-        }
-
-        // Truncate trailing numbers
-        pugScale = Math.trunc(pugScale*10)/10;
-
-        // Updates the page
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        
-        // Write the value to the cookie
-        document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "shrink") {
-        pugScale -= pugMultiplier;
-        //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
-
-        // Limits the size to -12x the original
-        if (pugScale < -12) {
-            pugScale = -12;
-        }
-
-        // Truncate trailing numbers
-        pugScale = Math.trunc(pugScale*10)/10;
-
-        // Write hte value to the cookie
-        document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-        
-        // Write the value to the cookie
-        document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "change") {
-         // Reads the number that comes with the message and turns it to float
-         var newMult = parseFloat(message);
-
-         // Round the number so the style is consistent
-         newMult = Math.round(newMult * 10) / 10;
-
-         // Truncate trailing numbers just in case
-        newMult = Math.trunc(newMult*10)/10;
-
-         // Limits the multiplier to +/- 1
-         if (newMult > 1) {
-              newMult = 1;
-         } else if (newMult < 0) {
-              newMult = .1
-         }
-
-         // Update the variable
-         pugMultiplier = newMult;
-         
-         // Write the value to the cookie
-        document.cookie = "multiplier=" + pugMultiplier + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Reset the pug (more of a in case of fire command, only I can use it)
-      } else if (flags.broadcaster && command == "reset") {
-            pugScale = 0;
-            pugMultiplier = .5;
-            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
-            
-            // Write the value to the cookie
-            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-            document.cookie = "multiplier=.5; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-      }
-    }
-
     ComfyJS.Init( "tjwombo", key);
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
-        // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        // Grow the pug
         if (reward == "What's Up Dog?") {
             pugScale += pugMultiplier;
 
@@ -187,10 +110,9 @@
             // Write the value to the cookie
             document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
-        // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        // Shrink the pug
         } else if (reward == "What the Dog Doin") {
             pugScale -= pugMultiplier;
-            //pugPercentage = (Math.abs(pugMultiplier-1) / .5) * -10;
 
             // Limits the size to -12x the original
             if (pugScale < -12) {
@@ -206,7 +128,7 @@
             // Write the value to the cookie
             document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
-        // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
+        // Change the pug multiplier
         } else if (reward == "dog") {
             // Reads the number that comes with the message and turns it to float
             var newMult = parseFloat(message);
@@ -222,7 +144,7 @@
             // Truncate trailing numbers just in case
             newMult = Math.trunc(newMult*10)/10;
 
-            // Limits the multiplier to +/- 1
+            // Limits the multiplier to -1 to 1
             if (newMult > 1) {
                 newMult = 1;
             } else if (newMult < -1) {
@@ -236,13 +158,15 @@
          
             // Write the value to the cookie
             document.cookie = "multiplier=" + pugMultiplier + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        
+        // Resets the dog
         } else if (reward == "Who Let The Dog Out") {
             pugScale = 0;
             pugMultiplier = .5;
             document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
             
             // Write the value to the cookie
-            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "scale=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             document.cookie = "multiplier=.5; expires=Thu, 01 Jan 2080 00:00:00 UTC";
         }
     }

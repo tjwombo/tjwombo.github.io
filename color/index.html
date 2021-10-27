@@ -101,82 +101,6 @@
         }
     }
 
-
-    // Twitch chat commands
-    ComfyJS.onCommand = (user, command, message, flags, extra) => {
-
-      // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      if (command == "red") {
-        //PROBABLY SOME LIMITER
-        color = "";
-
-        if (colorBox.classList.contains("red")) {
-            color = "red";
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else if (document.getElementById("box").style.opacity == 0) {
-            color = "red";
-            colorBox.classList.remove("blue");
-            colorBox.classList.add("red")
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else {
-            color = "blue";
-            opacity = parseFloat(opacity) - 0.1;
-            document.getElementById("box").style.opacity = opacity;
-        }
-
-        // Truncate trailing numbers
-        opacity = Math.trunc(opacity*10)/10;
-
-        // Write values to cookies
-        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (command == "blue") {
-        //PROBABLY SOME LIMITER
-        color = "";
-
-        if (colorBox.classList.contains("blue")) {
-            color = "blue";
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else if (document.getElementById("box").style.opacity == 0) {
-            color = "blue";
-            colorBox.classList.remove("red");
-            colorBox.classList.add("blue");
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else {
-            color = "red";
-            opacity = parseFloat(opacity) - 0.1;
-            document.getElementById("box").style.opacity = opacity;
-        }
-
-        // Truncate trailing numbers
-        opacity = Math.trunc(opacity*10)/10;
-
-        // Write values to cookies
-        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Reset the pug (more of a in case of fire command, only I can use it)
-      } else if (flags.broadcaster && command == "reset") {
-            colorBox.classList.remove("red")
-            colorBox.classList.remove("blue")
-            opacity = 0.0;
-            document.getElementById("box").style.opacity = opacity;
-
-            document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-            document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-      }
-    }
-
     ComfyJS.Init( "tjwombo", key);
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
@@ -239,6 +163,8 @@
             // Write values to cookies
             document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        
+        // Resets the colorbox
         } else if (reward == "Food\'s Done") {
             colorBox.classList.remove("red")
             colorBox.classList.remove("blue")
