@@ -185,13 +185,13 @@
         console.log( user + " redeemed " + reward + " for " + cost );
     }
 
-    ComfyJS.Init( "tjwombo", client);
+    ComfyJS.Init( "tjwombo", key);
     (async () => {
-        let channelRewards2 = await ComfyJS.GetChannelRewards( client, true );
+        let channelRewards2 = await ComfyJS.GetChannelRewards( client, false );
         console.log(channelRewards2);
     })();
     async function getRewards() {
-        let channelRewards = await ComfyJS.GetChannelRewards( client, true );
+        let channelRewards = await ComfyJS.GetChannelRewards( client, false );
         console.log(channelRewards);
     }
     getRewards();
