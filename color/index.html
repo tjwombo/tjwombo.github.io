@@ -185,7 +185,7 @@
         console.log( user + " redeemed " + reward + " for " + cost );
     }
 
-    ComfyJS.Init( "tjwombo", key);
+    ComfyJS.Init( "tjwombo", myAuth);
     (async () => {
         let channelRewards2 = await ComfyJS.GetChannelRewards( client, true );
         console.log(channelRewards2);
