@@ -190,6 +190,10 @@
     }
 
     ComfyJS.Init( "tjwombo", key);
+    (async () => {
+        let channelRewards2 = awaitComfyJS.GetChannelRewards( client, true );
+        console.log(channelRewards2);
+    })();
     //ComfyJS.Init("tjwombo");
 
   </script>
