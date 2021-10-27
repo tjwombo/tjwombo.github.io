@@ -190,7 +190,7 @@
     ComfyJS.Init( "tjwombo", key);
 
     async function print() {
-        let channelRewards = await ComfyJS.GetChannelRewards( client, true );
+        let channelRewards = await ComfyJS.GetChannelRewards( client, false );
         console.log(channelRewards);
     }
     print();
