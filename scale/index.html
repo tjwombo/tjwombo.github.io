@@ -207,9 +207,14 @@
             document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
         // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
-        } else if (reward == "change") {
+        } else if (reward == "dog") {
             // Reads the number that comes with the message and turns it to float
             var newMult = parseFloat(message);
+
+            // If message wasnt able to convert to float, just set the new multiplier to default
+            if (isNaN(newMult)) {
+                newMult = 0.5;
+            }
 
             // Round the number so the style is consistent
             newMult = Math.round(newMult * 10) / 10;
@@ -220,6 +225,8 @@
             // Limits the multiplier to +/- 1
             if (newMult > 1) {
                 newMult = 1;
+            } else if (newMult < -1) {
+                newMult = -1;
             } else if (newMult < 0) {
                 newMult = .1
             }
