@@ -191,65 +191,65 @@
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      if reward == "food of out hot eat the food") {
-        //PROBABLY SOME LIMITER
-        color = "";
+        if reward == "food of out hot eat the food") {
+            //PROBABLY SOME LIMITER
+            color = "";
 
-        if (colorBox.classList.contains("red")) {
-            color = "red";
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
+            if (colorBox.classList.contains("red")) {
+                color = "red";
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
 
-        } else if (document.getElementById("box").style.opacity == 0) {
-            color = "red";
-            colorBox.classList.remove("blue");
-            colorBox.classList.add("red")
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
+            } else if (document.getElementById("box").style.opacity == 0) {
+                color = "red";
+                colorBox.classList.remove("blue");
+                colorBox.classList.add("red")
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
 
-        } else {
-            color = "blue";
-            opacity = parseFloat(opacity) - 0.1;
-            document.getElementById("box").style.opacity = opacity;
+            } else {
+                color = "blue";
+                opacity = parseFloat(opacity) - 0.1;
+                document.getElementById("box").style.opacity = opacity;
+            }
+
+            // Truncate trailing numbers
+            opacity = Math.trunc(opacity*10)/10;
+
+            // Write values to cookies
+            document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+        // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        } else if (reward == "whyDoTheyCall it oven when you of in the cold") {
+            //PROBABLY SOME LIMITER
+            color = "";
+
+            if (colorBox.classList.contains("blue")) {
+                color = "blue";
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else if (document.getElementById("box").style.opacity == 0) {
+                color = "blue";
+                colorBox.classList.remove("red");
+                colorBox.classList.add("blue");
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else {
+                color = "red";
+                opacity = parseFloat(opacity) - 0.1;
+                document.getElementById("box").style.opacity = opacity;
+            }
+
+            // Truncate trailing numbers
+            opacity = Math.trunc(opacity*10)/10;
+
+            // Write values to cookies
+            document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
         }
-
-        // Truncate trailing numbers
-        opacity = Math.trunc(opacity*10)/10;
-
-        // Write values to cookies
-        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-
-      // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-      } else if (reward == "whyDoTheyCall it oven when you of in the cold") {
-        //PROBABLY SOME LIMITER
-        color = "";
-
-        if (colorBox.classList.contains("blue")) {
-            color = "blue";
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else if (document.getElementById("box").style.opacity == 0) {
-            color = "blue";
-            colorBox.classList.remove("red");
-            colorBox.classList.add("blue");
-            opacity = parseFloat(opacity) + 0.1;
-            document.getElementById("box").style.opacity = opacity;
-
-        } else {
-            color = "red";
-            opacity = parseFloat(opacity) - 0.1;
-            document.getElementById("box").style.opacity = opacity;
-        }
-
-        // Truncate trailing numbers
-        opacity = Math.trunc(opacity*10)/10;
-
-        // Write values to cookies
-        document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-      }
     }
     //ComfyJS.Init("tjwombo");
 
