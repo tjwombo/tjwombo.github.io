@@ -239,6 +239,15 @@
             // Write values to cookies
             document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        } else if (reward == "Food's Done") {
+            console.log("yes");
+            colorBox.classList.remove("red")
+            colorBox.classList.remove("blue")
+            opacity = 0.0;
+            document.getElementById("box").style.opacity = opacity;
+
+            document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
         }
     }
     //ComfyJS.Init("tjwombo");

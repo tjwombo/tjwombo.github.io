@@ -207,7 +207,7 @@
             document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
 
         // Change the pug multiplier *EVENTUALLY MOVE TO CHANNEL POINTS*
-        } else if (command == "change") {
+        } else if (reward == "change") {
             // Reads the number that comes with the message and turns it to float
             var newMult = parseFloat(message);
 
@@ -229,6 +229,14 @@
          
             // Write the value to the cookie
             document.cookie = "multiplier=" + pugMultiplier + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        } else if (reward == "Who Let The Dog Out") {
+            pugScale = 0;
+            pugMultiplier = .5;
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+            
+            // Write the value to the cookie
+            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "multiplier=.5; expires=Thu, 01 Jan 2080 00:00:00 UTC";
         }
     }
 
