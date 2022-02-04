@@ -58,11 +58,11 @@
     }
 
     // Connect to the channel to read channel point redemptions
-    ComfyJS.Init( "tjwombo", key);
+    ComfyJS.Init( "Juzshon", key);
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Play a random fnaf jumpscare
-        if (reward == "dog") {
+        if (reward == "jumpscare") {
 
             // Get a random jumpscare
             var random = Math.floor(Math.random()* numOfJumpscares);

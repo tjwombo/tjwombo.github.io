@@ -1,8 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\color"
+    "\\color",
+    "\\juzshon",
+    "\\juzshon\\jumpscare",
+    "\\juzshon\\jumpscare\\src",
+    "\\scale",
+    "\\scale\\src"
   ],
-  "SelectedNode": "\\index.html",
+  "SelectedNode": "\\juzshon\\jumpscare\\src\\fnaf2_bonnie.gif",
   "PreviewInSolutionExplorer": false
 }
