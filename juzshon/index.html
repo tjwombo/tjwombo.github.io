@@ -24,25 +24,34 @@
 </head>
 
 <body>
+
   <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
-<img id="chika" src="./src/fnaf2_chika.gif" class="image" />
-<img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
-<img id="freddy" src="./src/fnaf2_freddy.gif" class="image" />
-<img id="mangled" src="./src/fnaf2_mangled.gif" class="image" />
-<img id="puppet" src="./src/fnaf2_puppet.gif" class="image" />
-<img id="toy_chika" src="./src/fnaf2_toy_chika.gif" class="image" />
-<img id="toy_freddy" src="./src/fnaf2_toy_freddy.gif" class="image" />
+  <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
+  <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
+  <img id="freddy" src="./src/fnaf2_freddy.gif" class="image" />
+  <img id="mangled" src="./src/fnaf2_mangled.gif" class="image" />
+  <img id="puppet" src="./src/fnaf2_puppet.gif" class="image" />
+  <img id="toy_chika" src="./src/fnaf2_toy_chika.gif" class="image" />
+  <img id="toy_freddy" src="./src/fnaf2_toy_freddy.gif" class="image" />
+
+  <img id="baby" src="./src/fnafs_baby.gif" class="image" />
+  <img id="ballerina" src="./src/fnafs_ballerina.gif" class="image" />
+  <img id="bonnies" src="./src/fnafs_bonnie.gif" class="image" />
+  <img id="clown" src="./src/fnafs_clown.gif" class="image" />
+  <img id="clown2" src="./src/fnafs_clown2.gif" class="image" />
+  <img id="exo" src="./src/fnafs_exo.gif" class="image" />
+  <img id="exo_shadow" src="./src/fnafs_exo_shadow.gif" class="image" />
+  <img id="foxys" src="./src/fnafs_foxy.gif" class="image" />
+  <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
+  <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
 
   <script>
 
 
-  // Determines the max number for the random generation
-  var numOfJumpscares = 8;
+    // Determines the max number for the random generation
+    var numOfJumpscares = 18;
 
-    //LINK TO TWITCH JS STUFF
-    //https://github.com/instafluff/ComfyJS/blob/master/README.md
-
-    // Variables that we are adjusting
+    // Variables that we are adjusting through cookies
     var key = "";
     var client = "";
 
@@ -65,9 +74,6 @@
 
             // Get a random jumpscare
             var random = Math.floor(Math.random()* numOfJumpscares);
-
-            random = 1; //HERE FOR TESTING PURPOSES
-
 
             // Play a different video for a different time based off of the number we got
             switch(random) {
@@ -118,6 +124,66 @@
                     document.querySelector("#puppet").style.opacity = 1;
                     setTimeout(function(){
                         document.querySelector("#puppet").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 8:
+                    document.querySelector("#baby").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#baby").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 9:
+                    document.querySelector("#ballerina").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#ballerina").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 10:
+                    document.querySelector("#bonnies").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#bonnies").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 11:
+                    document.querySelector("#clown").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#clown").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 12:
+                    document.querySelector("#clown2").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#clown2").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 13:
+                    document.querySelector("#exo").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#exo").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 14:
+                    document.querySelector("#exo_shadow").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#exo_shadow").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 15:
+                    document.querySelector("#foxys").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#foxys").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 16:
+                    document.querySelector("#freddys").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#freddys").style.opacity = 0;
+                    }, 1420);
+                    break;
+                case 17:
+                    document.querySelector("#marianette").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#marianette").style.opacity = 0;
                     }, 1420);
                     break;
 
