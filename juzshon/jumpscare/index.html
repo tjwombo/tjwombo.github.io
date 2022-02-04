@@ -30,6 +30,10 @@
 
   <script>
 
+  const foxyTime = 1430;
+
+  var numOfJumpscares = 8;
+
   // test function using button cuz i know that, entire function will go under the reward if statement
   async function toggleOpacity() {
 
@@ -60,6 +64,64 @@
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
         if (reward == "jumpscare") {
+
+
+            var random = Math.floor(Math.random()* numOfJumpscares);
+
+            random = 1; //HERE FOR TESTING PURPOSES
+
+            switch(random) {
+
+                case 0: 
+                    document.querySelector("#chika").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#chika").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 1:
+                    document.querySelector("#foxy").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#foxy").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 2:
+                    document.querySelector("#freddy").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#freddy").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 3:
+                    document.querySelector("#mangled").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#mangled").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 4:
+                    document.querySelector("#toy_chika").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#toy_chika").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 5:
+                    document.querySelector("#toy_freddy").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#toy_freddy").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 6:
+                    document.querySelector("#bonnie").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#bonnie").style.opacity = 0;
+                    }, 1430);
+                    break;
+                case 7:
+                    document.querySelector("#puppet").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#puppet").style.opacity = 0;
+                    }, 1430);
+                    break;
+
+            }
             
             document.querySelector("#test").style.opacity = 1;
             
