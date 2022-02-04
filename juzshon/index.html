@@ -45,11 +45,10 @@
   <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
   <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
 
-  
+  <audio controls autoplay id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" </audio>
 
-  <audio autoplay>
-    <source src="./src/fnafs_foxy.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+  <audio id="foxySounds" controls autoplay>
+    <source src="./src/fnafs_foxy.mps" type="audio/mpeg">
   </audio>
 
 
@@ -64,7 +63,9 @@
     var client = "";
 
     console.log("testing sounds");
-    var vid = document.getElementById("babySounds");
+    var vid = document.getElementById("foxySounds");
+
+    vid.play();
 
 
     // Read the cookie and put the value into the variables and update the page
