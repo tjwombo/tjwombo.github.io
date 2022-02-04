@@ -30,19 +30,17 @@
 
   <script>
 
-  var opacity = 0;
-
   async function toggleOpacity() {
 
-    opacity = 1;
-
-    document.querySelector("#box").style.opacity = opacity;
+    document.querySelector("#box").style.opacity = 1;
 
     //wait however long the duration is
 
-    opacity = 0;
+    setTimeout(function(){
+        document.querySelector("#box").style.opacity = 0;
+    }, 2000);
 
-    document.querySelector("#box").style.opacity = opacity;
+    
   }
 
     //LINK TO TWITCH JS STUFF
