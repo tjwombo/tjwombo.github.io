@@ -24,29 +24,11 @@
 
 <body>
 
-<input type="file" id="data" name="data" onchange="toggleOpacity()">
-
-<img id="test" src="./src/fnaf2_foxy.gif" class="image" />
+<img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
 
   <script>
 
-  const foxyTime = 1430;
-
   var numOfJumpscares = 8;
-
-  // test function using button cuz i know that, entire function will go under the reward if statement
-  async function toggleOpacity() {
-
-    document.querySelector("#test").style.opacity = 1;
-
-    //wait however long the duration is
-
-    setTimeout(function(){
-        document.querySelector("#test").style.opacity = 0;
-    }, 1430);
-
-    
-  }
 
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
@@ -63,7 +45,7 @@
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
-        if (reward == "jumpscare") {
+        if (reward == "Jumpscare") {
 
 
             var random = Math.floor(Math.random()* numOfJumpscares);
