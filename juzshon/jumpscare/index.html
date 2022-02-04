@@ -12,11 +12,24 @@
 
 <body>
 
-
+<input type="file" id="data" name="data" onchange="toggleOpacity()">
 
 <img id="test" src="./src/fnaf2_foxy.gif" width="1920" height="1080" class="center" />
 
   <script>
+
+  var opacity = 1;
+
+  async function toggleOpacity() {
+    if (opacity == 1) {
+        opacity = 0;
+    } else {
+        opacity = 1;
+    }
+
+    document.querySelector("#test").style.transform = `opacity(${opacity})`;
+  }
+
     //LINK TO TWITCH JS STUFF
     //https://github.com/instafluff/ComfyJS/blob/master/README.md
 
