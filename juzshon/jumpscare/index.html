@@ -6,7 +6,19 @@
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
   <style>
-  
+  .image {
+        width: 500px;
+        height: 500px;
+        display: inline-block;
+        background-color: #ccc;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        opacity: 0.0;
+    }
   </style>
 </head>
 
@@ -14,7 +26,7 @@
 
 <input type="file" id="data" name="data" onchange="toggleOpacity()">
 
-<img id="test" src="./src/fnaf2_foxy.gif" width="1920" height="1080" class="center" />
+<img id="test" src="./src/fnaf2_foxy.gif" width="1920" height="1080" class="image" />
 
   <script>
 
@@ -27,7 +39,7 @@
         opacity = 1;
     }
 
-    document.querySelector("#test").style.transform = `opacity(${opacity})`;
+    document.querySelector("#test").style.opacity = opacity;
   }
 
     //LINK TO TWITCH JS STUFF
