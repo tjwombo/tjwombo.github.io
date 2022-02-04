@@ -57,21 +57,20 @@
         }
     }
 
-    // Get the element of the pictures
-    const colorBox = document.getElementById("box");
-
-
+    // Connect to the channel to read channel point redemptions
     ComfyJS.Init( "juzshon", key);
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
-        // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        // Play a random fnaf jumpscare
         if (reward == "Jumpscare") {
 
-
+            // Get a random jumpscare
             var random = Math.floor(Math.random()* numOfJumpscares);
 
             random = 1; //HERE FOR TESTING PURPOSES
 
+
+            // Play a different video for a different time based off of the number we got
             switch(random) {
 
                 case 0: 
@@ -124,11 +123,6 @@
                     break;
 
             }
-            
-            document.querySelector("#test").style.opacity = 1;
-            
-
-        
         }
     }
 
