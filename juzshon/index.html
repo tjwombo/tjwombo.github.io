@@ -45,6 +45,12 @@
   <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
   <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
 
+  <audio id="babySounds" src="./fnafs_baby.mp3" />
+
+
+
+
+
   <script>
 
 
@@ -54,6 +60,13 @@
     // Variables that we are adjusting through cookies
     var key = "";
     var client = "";
+
+    console.log("testing sounds");
+    var vid = document.getElementById("babySounds");
+
+    vid.play();
+
+
 
 
     // Read the cookie and put the value into the variables and update the page
