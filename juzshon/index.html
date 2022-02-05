@@ -109,9 +109,13 @@
     var marianette = document.getElementById("marianetteSounds");
 
 
+    var random = 0;
+
     async function test() {
             // Get a random jumpscare
-            var random = Math.floor(Math.random()* numOfJumpscares);
+            //var random = Math.floor(Math.random()* numOfJumpscares);
+            random++;
+
 
             // Play a different video for a different time based off of the number we got
             switch(random) {
