@@ -47,7 +47,16 @@
   <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
   <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
 
-  <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" </audio>
+  <audio> id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" </audio>
+  <audio> id="ballerinaSounds" src="./src/fnafs_ballerina.mp3" type="audio/mpeg" </audio>
+  <audio> id="bonniesSounds" src="./src/fnafs_bonnies.mp3" type="audio/mpeg" </audio>
+  <audio> id="clownSounds" src="./src/fnafs_clown.mp3" type="audio/mpeg" </audio>
+  <audio> id="clown2Sounds" src="./src/fnafs_clown2.mp3" type="audio/mpeg" </audio>
+  <audio> id="exoSounds" src="./src/fnafs_exo.mp3" type="audio/mpeg" </audio>
+  <audio> id="exosSounds" src="./src/fnafs_exo_shadows.mp3" type="audio/mpeg" </audio>
+  <audio> id="foxysSounds" src="./src/fnafs_foxy.mp3" type="audio/mpeg" </audio>
+  <audio> id="freddysSounds" src="./src/fnafs_freddy.mp3" type="audio/mpeg" </audio>
+  <audio> id="marianetteSounds" src="./src/fnafs_marianette.mp3" type="audio/mpeg" </audio>
 
   
 
@@ -61,21 +70,17 @@
     var key = "";
     var client = "";
 
-    console.log("testing sounds");
-    var vid = document.getElementById("babySounds");
-
-    vid.play();
-
-    async function test() {
-
-        vid.play();
-        document.querySelector("#baby").style.opacity = 1;
-                    setTimeout(function(){
-                        document.querySelector("#baby").style.opacity = 0;
-                        vid.pause();
-                    }, 1350);
-
-    }
+    // Variables to pause and play audio
+    var baby = document.getElementById("babySounds");
+    var ballerina = document.getElementById("ballerinaSounds");
+    var bonnies = document.getElementById("bonniesSounds");
+    var clown = document.getElementById("clownSounds");
+    var clown2 = document.getElementById("clown2Sounds");
+    var exo = document.getElementById("exoSounds");
+    var exoShadow = document.getElementById("exosSounds");
+    var foxys = document.getElementById("foxysSounds");
+    var freddys = document.getElementById("freddysSounds");
+    var marianette = document.getElementById("marianetteSounds");
 
 
     // Read the cookie and put the value into the variables and update the page
@@ -150,65 +155,85 @@
                     break;
                 case 8:
                     document.querySelector("#baby").style.opacity = 1;
+                    baby.play();
                     setTimeout(function(){
                         document.querySelector("#baby").style.opacity = 0;
+                        baby.pause();
                     }, 2060);
                     break;
                 case 9:
                     document.querySelector("#ballerina").style.opacity = 1;
+                    ballerina.play();
                     setTimeout(function(){
                         document.querySelector("#ballerina").style.opacity = 0;
+                        ballerina.pause();
                     }, 2060);
                     break;
                 case 10:
                     document.querySelector("#bonnies").style.opacity = 1;
+                    bonnies.play();
                     setTimeout(function(){
                         document.querySelector("#bonnies").style.opacity = 0;
+                        bonnies.pause();
                     }, 1360);
                     break;
                 case 11:
                     document.querySelector("#clown").style.opacity = 1;
+                    clown.play();
                     setTimeout(function(){
                         document.querySelector("#clown").style.opacity = 0;
+                        clown.pause();
                     }, 2080);
                     break;
                 case 12:
                     document.querySelector("#clown2").style.opacity = 1;
+                    clown2.play();
                     setTimeout(function(){
                         document.querySelector("#clown2").style.opacity = 0;
+                        clown2.pause();
                     }, 1240);
                     break;
                 case 13:
                     document.querySelector("#exo").style.opacity = 1;
+                    exo.play();
                     setTimeout(function(){
                         document.querySelector("#exo").style.opacity = 0;
+                        exo.pause();
                     }, 1400);
                     break;
                 case 14:
                     document.querySelector("#exo_shadow").style.opacity = 1;
+                    exoShadow.play();
                     setTimeout(function(){
                         document.querySelector("#exo_shadow").style.opacity = 0;
+                        exoShadow.pause();
                     }, 1340);
                     break;
                 case 15:
                     document.querySelector("#foxys").style.opacity = 1;
+                    foxys.play();
                     setTimeout(function(){
                         document.querySelector("#foxys").style.opacity = 0;
+                        foxys.pause();
                     }, 1200);
                     break;
                 case 16:
                     document.querySelector("#freddys").style.opacity = 1;
+                    freddys.play();
                     setTimeout(function(){
                         document.querySelector("#freddys").style.opacity = 0;
+                        freddys.pause();
                     }, 1180);
                     break;
                 case 17:
                     document.querySelector("#marianette").style.opacity = 1;
+                    marianette.play();
                     setTimeout(function(){
                         document.querySelector("#marianette").style.opacity = 0;
+                        marianette.pause();
                     }, 1540);
                     break;
-
+                default: break;
             }
         }
     }
