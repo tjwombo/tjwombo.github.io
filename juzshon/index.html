@@ -47,6 +47,7 @@
 
   <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" </audio>
 
+  <button type="button" onclick="test()">Click Me!</button>
 
   <script>
 
@@ -62,6 +63,17 @@
     var vid = document.getElementById("babySounds");
 
     vid.play();
+
+    async function test() {
+
+        vid.play();
+        document.querySelector("#chika").style.opacity = 1;
+                    setTimeout(function(){
+                        document.querySelector("#chika").style.opacity = 0;
+                        vid.pause();
+                    }, 1350);
+
+    }
 
 
     // Read the cookie and put the value into the variables and update the page
