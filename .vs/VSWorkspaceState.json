@@ -3,11 +3,10 @@
     "",
     "\\color",
     "\\juzshon",
-    "\\juzshon\\jumpscare",
-    "\\juzshon\\jumpscare\\src",
+    "\\juzshon\\src",
     "\\scale",
     "\\scale\\src"
   ],
-  "SelectedNode": "\\juzshon\\jumpscare\\src\\fnaf2_bonnie.gif",
+  "SelectedNode": "\\juzshon\\index.html",
   "PreviewInSolutionExplorer": false
 }
