@@ -91,6 +91,7 @@
         form.addEventListener('submit', event => {
             event.preventDefault();
             const toSay = input.value.trim();
+            console.log(toSay);
             const utterance = new SpeechSynthesisUtterance(toSay);
             utterance.voice = currentVoice;
             speechSynthesis.speak(utterance);
