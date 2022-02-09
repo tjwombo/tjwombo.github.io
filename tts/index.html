@@ -100,6 +100,7 @@
 
         ComfyJS.onChat = ( user, message, flags, self, extra ) => {
         if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
+            event.preventDefault();
             const toSay = input.value.trim();
             const utterance = new SpeechSynthesisUtterance(toSay);
             utterance.voice = currentVoice;
