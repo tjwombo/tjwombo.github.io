@@ -49,16 +49,6 @@
 
     ComfyJS.Init( "tjwombo", key);
 
-    ComfyJS.onChat = ( user, message, flags, self, extra ) => {
-        if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
-            const toSay = input.value.trim();
-            const utterance = new SpeechSynthesisUtterance(toSay);
-            utterance.voice = currentVoice;
-            speechSynthesis.speak(utterance);
-            input.value = '';
-        }
-    }
-    
     window.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('voice-form');
         const input = document.getElementById('speech');
@@ -107,8 +97,18 @@
             input.value = '';
         });
 
+
+        ComfyJS.onChat = ( user, message, flags, self, extra ) => {
+        if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
+            const toSay = input.value.trim();
+            const utterance = new SpeechSynthesisUtterance(toSay);
+            utterance.voice = currentVoice;
+            speechSynthesis.speak(utterance);
+            input.value = '';
+        }
+    }
+
     });
-    
     
     
     </script>
