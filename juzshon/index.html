@@ -132,9 +132,9 @@
             setTimeout(function(){
                 
                 // Get a random jumpscare
-             var random = Math.floor(Math.random()* numOfJumpscares);
+                var random = Math.floor(Math.random()* numOfJumpscares);
 
-             // Play a different video for a different time based off of the number we got
+                // Play a different video for a different time based off of the number we got
                 switch(random) {
 
                     case 0: 
@@ -157,24 +157,24 @@
                         setTimeout(function(){
                             document.querySelector("#freddy").style.opacity = 0;
                             freddy.pause();
-                       }, 370);
+                        }, 370);
                         break;
                     case 3:
                         document.querySelector("#mangled").style.opacity = 1;
                         mangled.play();
                         setTimeout(function(){
                           document.querySelector("#mangled").style.opacity = 0;
-                            mangled.pause();
+                          mangled.pause();
                         }, 370);
                         break;
                     case 4:
-                       document.querySelector("#toy_chika").style.opacity = 1;
+                        document.querySelector("#toy_chika").style.opacity = 1;
                         toyChika.play();
                         setTimeout(function(){
                             document.querySelector("#toy_chika").style.opacity = 0;
                             toyChika.pause();
                         }, 370);
-                       break;
+                        break;
                     case 5:
                         document.querySelector("#toy_freddy").style.opacity = 1;
                         toyFreddy.play();
@@ -188,48 +188,48 @@
                         toyBonnie.play();
                         setTimeout(function(){
                             document.querySelector("#toy_bonnie").style.opacity = 0;
-                           toyBonnie.pause();
+                            toyBonnie.pause();
                         }, 380);
                     case 7:
                         document.querySelector("#bonnie").style.opacity = 1;
                         bonnie.play();
                         setTimeout(function(){
                            document.querySelector("#bonnie").style.opacity = 0;
-                            bonnie.pause();
+                           bonnie.pause();
                         }, 430);
                         break;
                     case 8:
                         document.querySelector("#puppet").style.opacity = 1;
-                       puppet.play();
+                        puppet.play();
                         setTimeout(function(){
                             document.querySelector("#puppet").style.opacity = 0;
                             puppet.pause();
                         }, 380);
                         break;
-                   case 9:
+                    case 9:
                         document.querySelector("#baby").style.opacity = 1;
                         baby.play();
                         setTimeout(function(){
                             document.querySelector("#baby").style.opacity = 0;
                             baby.pause();
-                       }, 2060);
+                        }, 2060);
                         break;
                     case 10:
                         document.querySelector("#ballerina").style.opacity = 1;
                         ballerina.play();
                         setTimeout(function(){
                            document.querySelector("#ballerina").style.opacity = 0;
-                            ballerina.pause();
+                           ballerina.pause();
                         }, 2060);
                         break;
                     case 11:
-                       document.querySelector("#bonnies").style.opacity = 1;
+                        document.querySelector("#bonnies").style.opacity = 1;
                         bonnies.play();
                         setTimeout(function(){
                             document.querySelector("#bonnies").style.opacity = 0;
                             bonnies.pause();
                         }, 1360);
-                       break;
+                        break;
                     case 12:
                         document.querySelector("#clown").style.opacity = 1;
                         clown.play();
@@ -243,7 +243,7 @@
                         clown2.play();
                         setTimeout(function(){
                            document.querySelector("#clown2").style.opacity = 0;
-                            clown2.pause();
+                           clown2.pause();
                         }, 1240);
                         break;
                     case 14:
@@ -260,7 +260,7 @@
                         setTimeout(function(){
                             document.querySelector("#exo_shadow").style.opacity = 0;
                             exoShadow.pause();
-                       }, 1340);
+                        }, 1340);
                         break;
                     case 16:
                         document.querySelector("#foxys").style.opacity = 1;
@@ -291,14 +291,12 @@
                         goldenFreddy.play();
                         setTimeout(function(){
                            document.querySelector("#golden_freddy").style.opacity = 0;
-                            goldenFreddy.pause();
+                           goldenFreddy.pause();
                         }, 1420);
                         break;
-                 }
+                }
 
-             }, wait);
-
-
+            }, wait);
             
         }
     }
