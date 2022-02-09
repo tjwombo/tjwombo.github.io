@@ -121,6 +121,10 @@
     // Connect to the channel to read channel point redemptions
     ComfyJS.Init( "tjwombo", key);
 
+    // JUST HERE FOR TESTING
+    var random = -1;
+
+
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Play a random fnaf jumpscare
         if (reward == "Jumpscare") {
@@ -132,7 +136,14 @@
             setTimeout(function(){
                 
                 // Get a random jumpscare
-                var random = Math.floor(Math.random()* numOfJumpscares);
+                //var random = Math.floor(Math.random()* numOfJumpscares);
+
+                // Testing through each one
+                random++;
+                if (random == 19) {
+                    random = 0;
+                }
+
 
                 // Play a different video for a different time based off of the number we got
                 switch(random) {
