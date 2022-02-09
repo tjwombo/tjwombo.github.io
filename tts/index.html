@@ -91,7 +91,6 @@
         form.addEventListener('submit', event => {
             event.preventDefault();
             const toSay = input.value.trim();
-            console.log(toSay);
             const utterance = new SpeechSynthesisUtterance(toSay);
             utterance.voice = currentVoice;
             speechSynthesis.speak(utterance);
@@ -100,18 +99,16 @@
 
 
         ComfyJS.onChat = ( user, message, flags, self, extra ) => {
-        if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
-            event.preventDefault();
-            console.log(message);
-            const toSay = message.trim();
-            console.log(toSay);
-            const utterance = new SpeechSynthesisUtterance(toSay);
-            utterance.voice = currentVoice;
-            speechSynthesis.speak(utterance);
-            input.value = '';
-            console.log("still fires");
+            if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
+                event.preventDefault();
+                const toSay = message.trim();
+                const utterance = new SpeechSynthesisUtterance(toSay);
+                utterance.voice = currentVoice;
+                speechSynthesis.speak(utterance);
+                input.value = '';
+                console.log("still fires");
+            }
         }
-    }
 
     });
     
