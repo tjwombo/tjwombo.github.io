@@ -101,6 +101,7 @@
 
         ComfyJS.onChat = ( user, message, flags, self, extra ) => {
         if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
+            event.preventDefault();
             console.log(message);
             const toSay = message.trim();
             console.log(toSay);
