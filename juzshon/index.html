@@ -25,8 +25,6 @@
 
 <body>
 
-  <input type="file" id="data" name="data" onchange="test()">
-
   <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
   <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
   <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
@@ -111,178 +109,6 @@
     var marianette = document.getElementById("marianetteSounds");
 
 
-    var random = 0;
-
-    async function test() {
-            // Get a random jumpscare
-            //var random = Math.floor(Math.random()* numOfJumpscares);
-            random++;
-
-
-            // Play a different video for a different time based off of the number we got
-            switch(random) {
-
-                case 0: 
-                    document.querySelector("#chika").style.opacity = 1;
-                    setTimeout(function(){
-                        document.querySelector("#chika").style.opacity = 0;
-                    }, 340);
-                    break;
-                case 1:
-                    document.querySelector("#foxy").style.opacity = 1;
-                    foxy.play();
-                    setTimeout(function(){
-                        document.querySelector("#foxy").style.opacity = 0;
-                        foxy.pause();
-                    }, 380);
-                    break;
-                case 2:
-                    document.querySelector("#freddy").style.opacity = 1;
-                    freddy.play();
-                    setTimeout(function(){
-                        document.querySelector("#freddy").style.opacity = 0;
-                        freddy.pause();
-                    }, 370);
-                    break;
-                case 3:
-                    document.querySelector("#mangled").style.opacity = 1;
-                    mangled.play();
-                    setTimeout(function(){
-                        document.querySelector("#mangled").style.opacity = 0;
-                        mangled.pause();
-                    }, 370);
-                    break;
-                case 4:
-                    document.querySelector("#toy_chika").style.opacity = 1;
-                    toyChika.play();
-                    setTimeout(function(){
-                        document.querySelector("#toy_chika").style.opacity = 0;
-                        toyChika.pause();
-                    }, 370);
-                    break;
-                case 5:
-                    document.querySelector("#toy_freddy").style.opacity = 1;
-                    toyFreddy.play();
-                    setTimeout(function(){
-                        document.querySelector("#toy_freddy").style.opacity = 0;
-                        toyFreddy.pause();
-                    }, 340);
-                    break;
-                case 6:
-                    document.querySelector("#toy_bonnie").style.opacity = 1;
-                    toyBonnie.play();
-                    setTimeout(function(){
-                        document.querySelector("#toy_bonnie").style.opacity = 0;
-                        toyBonnie.pause();
-                    }, 380);
-                case 7:
-                    document.querySelector("#bonnie").style.opacity = 1;
-                    bonnie.play();
-                    setTimeout(function(){
-                        document.querySelector("#bonnie").style.opacity = 0;
-                        bonnie.pause();
-                    }, 430);
-                    break;
-                case 8:
-                    document.querySelector("#puppet").style.opacity = 1;
-                    puppet.play();
-                    setTimeout(function(){
-                        document.querySelector("#puppet").style.opacity = 0;
-                        puppet.pause();
-                    }, 380);
-                    break;
-                case 9:
-                    document.querySelector("#baby").style.opacity = 1;
-                    baby.play();
-                    setTimeout(function(){
-                        document.querySelector("#baby").style.opacity = 0;
-                        baby.pause();
-                    }, 2060);
-                    break;
-                case 10:
-                    document.querySelector("#ballerina").style.opacity = 1;
-                    ballerina.play();
-                    setTimeout(function(){
-                        document.querySelector("#ballerina").style.opacity = 0;
-                        ballerina.pause();
-                    }, 2060);
-                    break;
-                case 11:
-                    document.querySelector("#bonnies").style.opacity = 1;
-                    bonnies.play();
-                    setTimeout(function(){
-                        document.querySelector("#bonnies").style.opacity = 0;
-                        bonnies.pause();
-                    }, 1360);
-                    break;
-                case 12:
-                    document.querySelector("#clown").style.opacity = 1;
-                    clown.play();
-                    setTimeout(function(){
-                        document.querySelector("#clown").style.opacity = 0;
-                        clown.pause();
-                    }, 2080);
-                    break;
-                case 13:
-                    document.querySelector("#clown2").style.opacity = 1;
-                    clown2.play();
-                    setTimeout(function(){
-                        document.querySelector("#clown2").style.opacity = 0;
-                        clown2.pause();
-                    }, 1240);
-                    break;
-                case 14:
-                    document.querySelector("#exo").style.opacity = 1;
-                    exo.play();
-                    setTimeout(function(){
-                        document.querySelector("#exo").style.opacity = 0;
-                        exo.pause();
-                    }, 1400);
-                    break;
-                case 15:
-                    document.querySelector("#exo_shadow").style.opacity = 1;
-                    exoShadow.play();
-                    setTimeout(function(){
-                        document.querySelector("#exo_shadow").style.opacity = 0;
-                        exoShadow.pause();
-                    }, 1340);
-                    break;
-                case 16:
-                    document.querySelector("#foxys").style.opacity = 1;
-                    foxys.play();
-                    setTimeout(function(){
-                        document.querySelector("#foxys").style.opacity = 0;
-                        foxys.pause();
-                    }, 1200);
-                    break;
-                case 17:
-                    document.querySelector("#freddys").style.opacity = 1;
-                    freddys.play();
-                    setTimeout(function(){
-                        document.querySelector("#freddys").style.opacity = 0;
-                        freddys.pause();
-                    }, 1180);
-                    break;
-                case 18:
-                    document.querySelector("#marianette").style.opacity = 1;
-                    marianette.play();
-                    setTimeout(function(){
-                        document.querySelector("#marianette").style.opacity = 0;
-                        marianette.pause();
-                    }, 1540);
-                    break;
-                default:
-                    document.querySelector("#golden_freddy").style.opacity = 1;
-                    goldenFreddy.play();
-                    setTimeout(function(){
-                        document.querySelector("#golden_freddy").style.opacity = 0;
-                        goldenFreddy.pause();
-                    }, 1420);
-                    break;
-            }
-    }
-
-
     // Read the cookie and put the value into the variables and update the page
     for (i = 0; i < document.cookie.split('; ').length; i++) {
         if (document.cookie.split('; ')[i].includes("key")) {
@@ -298,6 +124,15 @@
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Play a random fnaf jumpscare
         if (reward == "Jumpscare") {
+
+            // Get a random time between 0 delay and 4 and a half minutes
+            var wait = Math.floor(Math.random()*270000);
+
+            // Wait for that amount of time
+            setTimeout(function(){
+                console.log("time up");
+            }, wait;
+
 
             // Get a random jumpscare
             var random = Math.floor(Math.random()* numOfJumpscares);
