@@ -37,6 +37,16 @@
 
     <script>
 
+
+    // Read the cookie and put the value into the variables and update the page
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
+        if (document.cookie.split('; ')[i].includes("key")) {
+            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        } else if (document.cookie.split('; ')[i].includes("client")) {
+            client = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        }
+    }
+
     ComfyJS.Init( "tjwombo", key);
 
     ComfyJS.onChat = ( user, message, flags, self, extra ) => {
