@@ -119,7 +119,7 @@
     }
 
     // Connect to the channel to read channel point redemptions
-    ComfyJS.Init( "tjwombo", key);
+    ComfyJS.Init( "JuzShon", key);
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Play a random fnaf jumpscare
@@ -130,10 +130,7 @@
 
             // Wait for that amount of time
             setTimeout(function(){
-                console.log("time up");
-            }, wait);
-
-
+                
             // Get a random jumpscare
             var random = Math.floor(Math.random()* numOfJumpscares);
 
@@ -298,6 +295,11 @@
                     }, 1420);
                     break;
             }
+
+            }, wait);
+
+
+            
         }
     }
 
