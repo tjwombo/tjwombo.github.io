@@ -122,8 +122,7 @@
     ComfyJS.Init( "tjwombo", key);
 
     // JUST HERE FOR TESTING
-    var random = -1;
-
+    var random = 0;
 
     ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
         // Play a random fnaf jumpscare
@@ -138,12 +137,12 @@
                 // Get a random jumpscare
                 //var random = Math.floor(Math.random()* numOfJumpscares);
 
+
                 // Testing through each one
                 random++;
                 if (random == 19) {
                     random = 0;
                 }
-
 
                 // Play a different video for a different time based off of the number we got
                 switch(random) {
@@ -223,7 +222,7 @@
                         setTimeout(function(){
                             document.querySelector("#baby").style.opacity = 0;
                             baby.pause();
-                        }, 2060);
+                        }, 2000 + 700/6.0);
                         break;
                     case 10:
                         document.querySelector("#ballerina").style.opacity = 1;
@@ -231,7 +230,7 @@
                         setTimeout(function(){
                            document.querySelector("#ballerina").style.opacity = 0;
                            ballerina.pause();
-                        }, 2060);
+                        }, 2000 + 700/6.0);
                         break;
                     case 11:
                         document.querySelector("#bonnies").style.opacity = 1;
@@ -239,7 +238,7 @@
                         setTimeout(function(){
                             document.querySelector("#bonnies").style.opacity = 0;
                             bonnies.pause();
-                        }, 1360);
+                        }, 1000 + 3700/6.0);
                         break;
                     case 12:
                         document.querySelector("#clown").style.opacity = 1;
@@ -247,7 +246,7 @@
                         setTimeout(function(){
                             document.querySelector("#clown").style.opacity = 0;
                             clown.pause();
-                        }, 2080);
+                        }, 2000 + 800/6.0);
                         break;
                     case 13:
                         document.querySelector("#clown2").style.opacity = 1;
@@ -255,7 +254,7 @@
                         setTimeout(function(){
                            document.querySelector("#clown2").style.opacity = 0;
                            clown2.pause();
-                        }, 1240);
+                        }, 1000 + 2600/6.0);
                         break;
                     case 14:
                         document.querySelector("#exo").style.opacity = 1;
@@ -263,7 +262,7 @@
                         setTimeout(function(){
                             document.querySelector("#exo").style.opacity = 0;
                             exo.pause();
-                        }, 1400);
+                        }, 1000 + 4000/6.0);
                         break;
                     case 15:
                         document.querySelector("#exo_shadow").style.opacity = 1;
@@ -271,7 +270,7 @@
                         setTimeout(function(){
                             document.querySelector("#exo_shadow").style.opacity = 0;
                             exoShadow.pause();
-                        }, 1340);
+                        }, 1000 + 3400/6.0);
                         break;
                     case 16:
                         document.querySelector("#foxys").style.opacity = 1;
@@ -279,7 +278,7 @@
                         setTimeout(function(){
                             document.querySelector("#foxys").style.opacity = 0;
                             foxys.pause();
-                        }, 1200);
+                        }, 1000 + 2000/6.0);
                         break;
                     case 17:
                         document.querySelector("#freddys").style.opacity = 1;
@@ -287,7 +286,7 @@
                         setTimeout(function(){
                             document.querySelector("#freddys").style.opacity = 0;
                             freddys.pause();
-                        }, 1180);
+                        }, 1000 + 1900/6.0);
                         break;
                     case 18:
                         document.querySelector("#marianette").style.opacity = 1;
@@ -295,7 +294,7 @@
                         setTimeout(function(){
                             document.querySelector("#marianette").style.opacity = 0;
                             marianette.pause();
-                        }, 1540);
+                        }, 1000 + 5500/6.0);
                         break;
                     default:
                         document.querySelector("#golden_freddy").style.opacity = 1;
