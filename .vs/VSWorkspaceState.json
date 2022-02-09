@@ -3,10 +3,10 @@
     "",
     "\\color",
     "\\juzshon",
-    "\\juzshon\\src",
     "\\scale",
-    "\\scale\\src"
+    "\\scale\\src",
+    "\\tts"
   ],
-  "SelectedNode": "\\juzshon\\index.html",
+  "SelectedNode": "\\tts\\style.css",
   "PreviewInSolutionExplorer": false
 }
