@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Browser voices</title>
+    <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -35,6 +36,18 @@
 
 
     <script>
+
+    ComfyJS.Init( "tjwombo", key);
+
+    ComfyJS.onChat = ( user, message, flags, self, extra ) => {
+        if (flags.broadcaster || user == "tjwombo" || user == "JuzShon") {
+            const toSay = input.value.trim();
+            const utterance = new SpeechSynthesisUtterance(toSay);
+            utterance.voice = currentVoice;
+            speechSynthesis.speak(utterance);
+            input.value = '';
+        }
+    }
     
     window.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('voice-form');
