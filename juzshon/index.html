@@ -25,6 +25,8 @@
 
 <body>
 
+  <button type="button" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+
   <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
   <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
   <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
@@ -77,6 +79,11 @@
 
   <script>
 
+    function removeButton() {
+        button.style.visibility = "hidden";
+        console.log("it worked");
+    }
+
 
     // Determines the max number for the random generation
     var numOfJumpscares = 19;
@@ -119,7 +126,7 @@
     }
 
     // Connect to the channel to read channel point redemptions
-    ComfyJS.Init( "JuzShon", key);
+    ComfyJS.Init( "tjwombo", key);
 
     // JUST HERE FOR TESTING
     var random = 0;
