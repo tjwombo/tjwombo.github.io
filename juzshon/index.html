@@ -22,7 +22,7 @@
     }
 
     .shownButton {
-        opacity: 1;
+        display: inline-block;
     }
 
   </style>
@@ -31,10 +31,10 @@
 <body>
 
   <div class="shownButton">
-    <button onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+    <button id="butt" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
   </div>
 
-  <div class="videos">
+  <div id="videos">
     <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
     <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
     <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
@@ -90,8 +90,11 @@
 
     function removeButton() {
         console.log("it worked");
-        document.getElementByClassName("shownButton").opacity = 0
-        document.getElementByClassName("image").displaay = inline-block
+        document.getElementById("butt").display = none
+        var vidElement = document.getElementById("videos").getElementsByClassName();
+        for (const vid of vidElement) {
+            vid.displaay = inline-block;
+        }
     }
 
 
