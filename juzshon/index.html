@@ -25,7 +25,7 @@
 
 <body>
 
-  <button type="button" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+  <button type="button" id="butt" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
 
   <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
   <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
@@ -80,8 +80,8 @@
   <script>
 
     function removeButton() {
-        button.style.visibility = "hidden";
         console.log("it worked");
+        document.getElementById("butt").opacity = 0
     }
 
 
