@@ -92,8 +92,8 @@
         console.log("it worked");
         document.getElementById("butt").style.display = "none"
         var vidElement = document.getElementById("videos").getElementsByClassName();
-        for (const vid of vidElement) {
-            vid.displaay = inline-block;
+        for (let i = 0; i < vidElement.length; i++) {
+            vidElement[i].style.display = "inline-block";
         }
     }
 
