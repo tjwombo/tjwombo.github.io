@@ -20,60 +20,69 @@
         transform: translate(-50%, -50%);
         opacity: 0.0;
     }
+
+    .shownButton {
+        opacity: 1;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <button type="button" id="butt" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+  <div class="shownButton">
+    <button type="button" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+  </div>
 
-  <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
-  <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
-  <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
-  <img id="freddy" src="./src/fnaf2_freddy.gif" class="image" />
-  <img id="mangled" src="./src/fnaf2_mangled.gif" class="image" />
-  <img id="puppet" src="./src/fnaf2_puppet.gif" class="image" />
-  <img id="toy_chika" src="./src/fnaf2_toy_chika.gif" class="image" />
-  <img id="toy_freddy" src="./src/fnaf2_toy_freddy.gif" class="image" />
-  <img id="toy_bonnie" src="./src/fnaf2_toy_bonnie.gif" class="image" />
-  <img id="golden_freddy" src="./src/fnaf2_golden_freddy.gif" class="image" />
+  <div class="videos">
+    <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
+    <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
+    <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
+    <img id="freddy" src="./src/fnaf2_freddy.gif" class="image" />
+    <img id="mangled" src="./src/fnaf2_mangled.gif" class="image" />
+    <img id="puppet" src="./src/fnaf2_puppet.gif" class="image" />
+    <img id="toy_chika" src="./src/fnaf2_toy_chika.gif" class="image" />
+    <img id="toy_freddy" src="./src/fnaf2_toy_freddy.gif" class="image" />
+    <img id="toy_bonnie" src="./src/fnaf2_toy_bonnie.gif" class="image" />
+    <img id="golden_freddy" src="./src/fnaf2_golden_freddy.gif" class="image" />
 
-  <img id="baby" src="./src/fnafs_baby.gif" class="image" />
-  <img id="ballerina" src="./src/fnafs_ballerina.gif" class="image" />
-  <img id="bonnies" src="./src/fnafs_bonnie.gif" class="image" />
-  <img id="clown" src="./src/fnafs_clown.gif" class="image" />
-  <img id="clown2" src="./src/fnafs_clown2.gif" class="image" />
-  <img id="exo" src="./src/fnafs_exo.gif" class="image" />
-  <img id="exo_shadow" src="./src/fnafs_exo_shadow.gif" class="image" />
-  <img id="foxys" src="./src/fnafs_foxy.gif" class="image" />
-  <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
-  <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
-
-
-
-
-  <audio id="bonnieSounds" src="./src/fnaf2_bonnie.mp3" type="audio/mpeg">
-  <audio id="chikaSounds" src="./src/fnaf2_chika.mp3" type="audio/mpeg">
-  <audio id="foxySounds" src="./src/fnaf2_foxy.mp3" type="audio/mpeg">
-  <audio id="freddySounds" src="./src/fnaf2_freddy.mp3" type="audio/mpeg">
-  <audio id="mangledSounds" src="./src/fnaf2_mangled.mp3" type="audio/mpeg">
-  <audio id="puppetSounds" src="./src/fnaf2_puppet.mp3" type="audio/mpeg">
-  <audio id="tchikaSounds" src="./src/fnaf2_toy_chika.mp3" type="audio/mpeg">
-  <audio id="tfreddySounds" src="./src/fnaf2_toy_freddy.mp3" type="audio/mpeg">
-  <audio id="tbonnieSounds" src="./src/fnaf2_toy_bonnie.mp3" type="audio/mpeg">
-  <audio id="gfreddySounds" src="./src/fnaf2_golden_freddy.mp3" type="audio/mpeg">
+    <img id="baby" src="./src/fnafs_baby.gif" class="image" />
+    <img id="ballerina" src="./src/fnafs_ballerina.gif" class="image" />
+    <img id="bonnies" src="./src/fnafs_bonnie.gif" class="image" />
+    <img id="clown" src="./src/fnafs_clown.gif" class="image" />
+    <img id="clown2" src="./src/fnafs_clown2.gif" class="image" />
+    <img id="exo" src="./src/fnafs_exo.gif" class="image" />
+    <img id="exo_shadow" src="./src/fnafs_exo_shadow.gif" class="image" />
+    <img id="foxys" src="./src/fnafs_foxy.gif" class="image" />
+    <img id="freddys" src="./src/fnafs_freddy.gif" class="image" />
+    <img id="marianette" src="./src/fnafs_marianette.gif" class="image" />
 
 
-  <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" />
-  <audio id="ballerinaSounds" src="./src/fnafs_ballerina.mp3" type="audio/mpeg" />
-  <audio id="bonniesSounds" src="./src/fnafs_bonnie.mp3" type="audio/mpeg" />
-  <audio id="clownSounds" src="./src/fnafs_clown.mp3" type="audio/mpeg" />
-  <audio id="clown2Sounds" src="./src/fnafs_clown2.mp3" type="audio/mpeg" />
-  <audio id="exoSounds" src="./src/fnafs_exo.mp3" type="audio/mpeg" />
-  <audio id="exosSounds" src="./src/fnafs_exo_shadow.mp3" type="audio/mpeg" />
-  <audio id="foxysSounds" src="./src/fnafs_foxy.mp3" type="audio/mpeg" />
-  <audio id="freddysSounds" src="./src/fnafs_freddy.mp3" type="audio/mpeg" />
-  <audio id="marianetteSounds" src="./src/fnafs_marianette.mp3" type="audio/mpeg" />
+
+
+    <audio id="bonnieSounds" src="./src/fnaf2_bonnie.mp3" type="audio/mpeg">
+    <audio id="chikaSounds" src="./src/fnaf2_chika.mp3" type="audio/mpeg">
+    <audio id="foxySounds" src="./src/fnaf2_foxy.mp3" type="audio/mpeg">
+    <audio id="freddySounds" src="./src/fnaf2_freddy.mp3" type="audio/mpeg">
+    <audio id="mangledSounds" src="./src/fnaf2_mangled.mp3" type="audio/mpeg">
+    <audio id="puppetSounds" src="./src/fnaf2_puppet.mp3" type="audio/mpeg">
+    <audio id="tchikaSounds" src="./src/fnaf2_toy_chika.mp3" type="audio/mpeg">
+    <audio id="tfreddySounds" src="./src/fnaf2_toy_freddy.mp3" type="audio/mpeg">
+    <audio id="tbonnieSounds" src="./src/fnaf2_toy_bonnie.mp3" type="audio/mpeg">
+    <audio id="gfreddySounds" src="./src/fnaf2_golden_freddy.mp3" type="audio/mpeg">
+
+
+    <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" />
+    <audio id="ballerinaSounds" src="./src/fnafs_ballerina.mp3" type="audio/mpeg" />
+    <audio id="bonniesSounds" src="./src/fnafs_bonnie.mp3" type="audio/mpeg" />
+    <audio id="clownSounds" src="./src/fnafs_clown.mp3" type="audio/mpeg" />
+    <audio id="clown2Sounds" src="./src/fnafs_clown2.mp3" type="audio/mpeg" />
+    <audio id="exoSounds" src="./src/fnafs_exo.mp3" type="audio/mpeg" />
+    <audio id="exosSounds" src="./src/fnafs_exo_shadow.mp3" type="audio/mpeg" />
+    <audio id="foxysSounds" src="./src/fnafs_foxy.mp3" type="audio/mpeg" />
+    <audio id="freddysSounds" src="./src/fnafs_freddy.mp3" type="audio/mpeg" />
+    <audio id="marianetteSounds" src="./src/fnafs_marianette.mp3" type="audio/mpeg" />
+  </div>
 
   
 
@@ -81,7 +90,7 @@
 
     function removeButton() {
         console.log("it worked");
-        document.getElementById("butt").opacity = 0
+        document.getElementByClassName("shownButton").opacity = 0
     }
 
 
