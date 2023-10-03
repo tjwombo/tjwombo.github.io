@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html onmouse="stop()" onmousemove="move()">
+<html onmouse="stopEl()" onmousemove="moveEl()">
 <body>
 <head>
 <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
@@ -259,17 +259,18 @@ function buttonR() {
 }
 
 function readyTransform() {
+    console.log(this);
     var pos = this.getBoundingClientRect();
     el = this;
     move = true;
     offset = [event.clientX - pos.x, event.clientY - pos.y];
 }
 
-function stop() {
+function stopEl() {
     move = false;
 }
 
-function move() {
+function moveEl() {
     if (move == true) {
         el.style.left = (event.clientX - offset[0]) + "px";
         el.style.top = (event.clientY - offset[1]) + "px";
