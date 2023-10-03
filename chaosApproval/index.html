@@ -267,22 +267,6 @@ function moveEl() {
         el.style.left = (event.clientX - offset[0]) + "px";
         el.style.top = (event.clientY - offset[1]) + "px";
         console.log(el.style.left + " " + el.style.top);
-        /*
-        var parent = document.getElementById("c");
-        var parentBox = parent.getBoundingClientRect();
-        var elBox = el.getBoundingClientRect();
-
-        if (elBox.top < parentBox.top) {
-            el.style.top = parent.style.top;
-        } else if (elBox.bottom > parentBox.bottom) {
-            
-        }
-        if (elBox.left < parentBox.left) {
-            el.style.left = parent.style.left;
-        } else if (elBox.right > parentBox.right) {
-            
-        }
-        /*
     }
 }
 </script>
