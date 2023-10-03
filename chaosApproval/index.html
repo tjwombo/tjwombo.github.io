@@ -1,0 +1,244 @@
+<script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<button id="start" onclick="myFunction()">Start</button>
+<h1 id="error"> </h1>
+<div id="text"> </div>
+<label for="w" id="wLabel" style="display: none;">Width:</label>
+<input type="text" id="w" name="w" style="display: none;" onchange="changeW(this.value)">
+<label for="h" id="hLabel" style="display: none;">Height:</label>
+<input type="text" id="h" name="h" style="display: none;" onchange="changeH(this.value)">
+<br>
+<label for="l" id="lLabel" style="display:none;">Link:</label>
+<input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
+<br>
+<div id="c">
+<img id="1" src="" alt="No Images Yet" style="display: none;">
+<iframe
+    src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io"
+    height=1000
+    width=562.5
+    allowfullscreen=false>
+</iframe>
+</div>
+<br>
+<button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
+<button id="r" style="display: none;" type="button" onclick="buttonR()">Click Me!</button>
+<iframe src="https://www.twitch.tv/embed/tjwombo/chat?parent=tjwombo.github.io"
+</iframe>
+
+<script>
+// client that makes connection requests
+var oauth = document.location.hash.split("&")[0].split("=")[1];
+var peer = new Peer('womboModCheck '+ oauth);
+peer.on('open', function(id) {
+	console.log('My peer ID is: ' + id);
+});
+var c;
+var verified = false;
+var ratio = 0 // width being numerator
+var isStatic = false;
+var src = "";
+const message = ". Hit enter to see dimension change. 0 to reset scale (but not double 0)";
+
+peer.on('error', function(err) { console.log(err); });
+
+function myFunction() {
+   	c = peer.connect('womboModServer');
+
+	c.on('open', function() {
+		c.on('data', function(data) {
+			if (verified) {
+			    var img = document.getElementById("1");
+			    if (data == null) {
+			        return;
+			    }
+			    console.log(data);
+			    console.log(data[1].node);
+			    if (data[0] != "womboModServer") {
+			        return;
+			    }
+			    try {
+			        img.src = data[1].node[0];
+			    } catch (err) {
+			        img.src = "";
+			    }
+			    src = img.src;
+			    img.style.display = "";
+			    document.getElementById("wLabel").style.display = "";
+			    document.getElementById("w").style.display = "";
+			    document.getElementById("hLabel").style.display = "";
+			    document.getElementById("h").style.display = "";
+			    document.getElementById("lLabel").style.display = "";
+			    document.getElementById("l").style.display = "";
+			    document.getElementById("a").style.display = "";
+			    document.getElementById("r").style.display = "";
+			    if (data[1].node[1] == "img") {
+				isStatic = true;
+			        stopAnimatedGifs("1");
+			    }
+			    img.onload = function() {
+			        document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+			        ratio = img.width / img.height;		        
+			    }
+			    document.getElementById("l").value = src;
+			} else {
+				console.log(data);
+				if (typeof data == "string") {				
+					if (data.includes("good")) {
+						verified = true;
+						document.getElementById("1").style.visibility = "";	
+					} else if (data == "Ready") {
+						c.send("Ready");
+					}
+				} else {
+					console.log('bad', data);
+					c.close();
+					peer.destroy();
+					document.getElementById("error").innerHTML = "Retry as you aren't a mod or you didn't authorize twitch";
+					return;
+				}
+			}
+			console.log('Received', data);
+		});
+ 	});
+	c.send("Ready");
+	c.on('close', function() {
+		console.log("connection closed");
+	});
+	document.getElementById("start").remove();
+	document.getElementById("error").remove();
+}
+
+// Code to prevent gifs to being played. Use when static is redememd incase they try to send a gif
+function getCanvas(){
+    canvas = document.createElement('canvas');
+    canvas.id = "1";
+    document.getElementById("c").appendChild(canvas);
+    canvas.ctx = canvas.getContext('2d');
+    return canvas;
+};
+
+function preventAnimation( gif ){
+    var self = arguments.callee;
+    canvas = getCanvas();
+    var w = gif.width;
+    var h =  gif.height;
+    canvas.width  = w;
+    canvas.height = h;
+    canvas.ctx.drawImage( gif, 0, 0, w, h);
+    parent = gif.parentNode;
+    parent.replaceChild( canvas, gif );
+};
+
+function stopAnimatedGifs(ids){
+     // make sure the images are fully loaded before preventing animation
+     var images = document.images;
+     var i = images.length;
+     while( ( image = images[ --i ] ) ){
+          var src = image.src;
+          if( (/\.gif/).test( src ) && ids.includes(image.id)){
+               var gif = new Image()
+               gif.onload = (function( img ){ 
+                    return function(){ preventAnimation( img ) }
+               })( image );
+               gif.src = src;
+          };  
+     };
+};
+
+function changeW(val) {
+    if (isStatic) {
+        var canvas = document.getElementById("1");
+        var height = canvas.height;
+        var width = canvas.width;
+        canvas.remove();
+        img = document.createElement('img');
+        img.id = "1";
+	console.log(src);
+        img.src = src;
+        document.getElementById("c").appendChild(img);
+        if (document.getElementById("h").value == 0) {
+            document.getElementById("1").height = val / ratio;
+        } else if (val == 0) {
+            document.getElementById("1").width = height * ratio;
+        } else {
+            document.getElementById("1").width = val;
+            document.getElementById("1").height = height;
+        }
+        stopAnimatedGifs("1");
+    } else {
+        if (val == 0) {
+            document.getElementById("1").width = height * ratio;
+        } else {
+            document.getElementById("1").width = val;
+        }
+    }
+}
+
+function changeH(val) {
+    if (isStatic) {
+        var canvas = document.getElementById("1");
+        var height = canvas.height;
+        var width = canvas.width;
+        canvas.remove();
+        img = document.createElement('img');
+        img.id = "1";
+        img.src = src;
+        document.getElementById("c").appendChild(img);
+        if (document.getElementById("w").value == 0) {
+            document.getElementById("1").width = val * ratio;
+        } else if (val == 0) {
+            document.getElementById("1").height = width / ratio;
+        } else {
+            document.getElementById("1").height = val;
+            document.getElementById("1").width = width;
+        }
+        stopAnimatedGifs("1");
+    } else {
+        if (val == 0) {
+            document.getElementById("1").height = width / ratio;
+        } else {
+            document.getElementById("1").height = val;
+        }
+    }
+}
+
+function changeL(val) {
+    src = val;
+    var img = document.createElement('img');
+    img.src = src;
+    if (isStatic) {
+        var canvas = document.getElementById("1");
+        canvas.remove();
+        img.id = "1";
+        ratio = img.width / img.height;
+        img.onload = function() {
+            document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+	    ratio = img.width / img.height;	
+            img.height = canvas.height;
+            img.width = canvas.width;
+        }
+        document.getElementById("c").appendChild(img);
+        stopAnimatedGifs("1");
+    } else {
+	var oldImg = document.getElementById("1");
+        oldImg.src = src;
+        img.onload = function() {
+            document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+	    ratio = img.width / img.height;	
+	    oldImg.height = img.height;
+	    oldImg.width = img.width;
+	    img.remove();
+        }
+    }
+}
+
+function buttonA() {
+    var img = document.getElementById("1");
+    c.send(["Accept", img.src, img.width, img.height]); // Add cords when thats figured out
+}
+
+function buttonR() {
+    c.send(["Reject"]);
+}
+</script>

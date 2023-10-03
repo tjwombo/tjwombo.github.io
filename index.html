@@ -1,0 +1,96 @@
+<html>
+<head>
+   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+</head>
+
+<body>
+
+  <input type="file" id="data" name="data" onchange="previewFile()">
+
+  <input type="file" id="personalKey" name="personalKey" onchange="previewFile2()">
+
+  <input type="file" id="clientID" name="clientID" onchange="previewFile3()">
+  
+  <script>
+    async function previewFile() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[type=file]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "key=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+            if (document.cookie != null) {
+                allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("key")) {
+                       console.log("key written");
+                       break;
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+    async function previewFile2() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[name=personalKey]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "myAuth=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+            if (document.cookie != null) {
+                allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("myAuth")) {
+                       console.log("key written");
+                       break;
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+    async function previewFile3() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[name=clientID]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "client=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+            if (document.cookie != null) {
+                allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("client")) {
+                       console.log("key written");
+                       break;
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+  </script>
+
+</body>
+</html>

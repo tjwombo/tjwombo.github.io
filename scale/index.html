@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If you're not OBS, Go Away</title>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <style>
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+   }
+
+    .rotate {
+    animation: rotation 1s 1 linear;
+  }
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+  </style>
+</head>
+<body>
+  <img id="pug" src="./src/pug.gif" width="200" height="200" class="center" />
+
+  <script>
+    //LINK TO TWITCH JS STUFF
+    //https://github.com/instafluff/ComfyJS/blob/master/README.md
+
+    // Get the element of the pug
+    const pug = document.getElementById("pug");
+
+    // Variables that use cookie values
+    var pugScale=1;
+    var pugMultiplier=.5;
+    var key = "";
+    var client = "";
+
+    // Check to see if we have cookies
+    scaleExists = false;
+    multiplierExists = false;
+    if (document.cookie != null) {
+        allCookies = document.cookie.split('; ');
+   
+        for(i = 0; i < allCookies.length; i++) {
+   
+            if (allCookies[i].includes("scale")) {
+                scaleExists = true;
+                
+            } else if (allCookies[i].includes("multiplier")) {
+                multiplierExists = true;
+
+            } else if (scaleExists && multiplierExists) {
+                break;
+            }
+        }
+    }
+
+    // Create the cookie if it doesn't exist
+    if (!scaleExists) {
+        document.cookie = "scale=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+    }
+    if (!multiplierExists) {
+        document.cookie = "multiplier=.5; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+    }
+
+    // Read the cookie and put the value into the variables and update the page
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
+
+        if (document.cookie.split('; ')[i].includes("scale")) {
+            pugScale = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+
+        } else if (document.cookie.split('; ')[i].includes("multiplier")) {
+            pugMultiplier = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+        
+        } else if (document.cookie.split('; ')[i].includes("key")) {
+            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        } else if (document.cookie.split('; ')[i].includes("client")) {
+            client = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        }
+    }
+
+    ComfyJS.Init( "tjwombo", key);
+
+    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
+        // Grow the pug
+        if (reward == "What's Up Dog?") {
+            pugScale += pugMultiplier;
+
+            // Limits the size to 12x the original
+            if (pugScale > 12) {
+                pugScale = 12;
+            }
+
+            // Truncate trailing numbers
+            pugScale = Math.trunc(pugScale*10)/10;
+
+            // Updates the page
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        
+            // Write the value to the cookie
+            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+        // Shrink the pug
+        } else if (reward == "What the Dog Doin") {
+            pugScale -= pugMultiplier;
+
+            // Limits the size to -12x the original
+            if (pugScale < -12) {
+                pugScale = -12;
+            }
+
+            // Truncate trailing numbers
+            pugScale = Math.trunc(pugScale*10)/10;
+
+            // Write hte value to the cookie
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+        
+            // Write the value to the cookie
+            document.cookie = "scale=" + pugScale + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+        // Change the pug multiplier
+        } else if (reward == "dog") {
+            // Reads the number that comes with the message and turns it to float
+            var newMult = parseFloat(message);
+
+            // If message wasnt able to convert to float, just set the new multiplier to default
+            if (isNaN(newMult)) {
+                newMult = 0.5;
+            }
+
+            // Round the number so the style is consistent
+            newMult = Math.round(newMult * 10) / 10;
+
+            // Truncate trailing numbers just in case
+            newMult = Math.trunc(newMult*10)/10;
+
+            // Limits the multiplier to -1 to 1
+            if (newMult > 1) {
+                newMult = 1;
+            } else if (newMult < -1) {
+                newMult = -1;
+            } else if (newMult < 0) {
+                newMult = .1
+            }
+
+            // Update the variable
+            pugMultiplier = newMult;
+         
+            // Write the value to the cookie
+            document.cookie = "multiplier=" + pugMultiplier + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        
+        // Resets the dog
+        } else if (reward == "Who Let The Dog Out") {
+            pugScale = 0;
+            pugMultiplier = .5;
+            document.querySelector("#pug").style.transform = `scale(${pugScale}, ${pugScale})`;
+            
+            // Write the value to the cookie
+            document.cookie = "scale=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "multiplier=.5; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        }
+    }
+
+  </script>
+</body>
+</html>

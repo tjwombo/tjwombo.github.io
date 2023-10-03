@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If you're not OBS, Go Away</title>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <style>
+  
+    .color-box {
+        width: 500px;
+        height: 500px;
+        display: inline-block;
+        background-color: #ccc;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        opacity: 0.0;
+    }
+    .red {
+        background-color: red;
+    }
+
+    .blue {
+        background-color: blue;
+    }
+  </style>
+</head>
+
+<body>
+  <img id="box" class="color-box red" id="box" />
+
+  <script>
+    //LINK TO TWITCH JS STUFF
+    //https://github.com/instafluff/ComfyJS/blob/master/README.md
+
+    // Variables that we are adjusting
+    var opacity = 0.0;
+    var key = "";
+    var client = "";
+
+    // Get the element of the pictures
+    const colorBox = document.getElementById("box");
+
+    // Check to see if we have cookies
+    opacityExists = false;
+    colorExists = false;
+    if (document.cookie != null) {
+        allCookies = document.cookie.split('; ');
+   
+        for(i = 0; i < allCookies.length; i++) {
+   
+            if (allCookies[i].includes("opacity")) {
+                opacityExists = true;
+
+            } else if (allCookies[i].includes("color")) {
+                colorExists = true;
+
+            } else {
+                if (opacityExists && colorExists) {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Create the cookie if it doesn't exist
+    if (!opacityExists) {
+        document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+    }
+    if (!colorExists) {
+        document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+    }
+
+
+
+    // Read the cookie and put the value into the variables
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
+
+        if (document.cookie.split('; ')[i].includes("opacity")) {
+            opacity = parseFloat(document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1));
+            opacity = Math.trunc(opacity*10)/10;
+            document.querySelector("#box").style.opacity = opacity;
+
+        } else if (document.cookie.split('; ')[i].includes("color")) {
+            if (document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1) == "red") {
+                colorBox.classList.add("red");
+                colorBox.classList.remove("blue");
+            } else {
+                colorBox.classList.add("blue");
+                colorBox.classList.remove("red");
+            }
+        
+        } else if (document.cookie.split('; ')[i].includes("key")) {
+            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        } else if (document.cookie.split('; ')[i].includes("client")) {
+            client = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        }
+    }
+
+    ComfyJS.Init( "tjwombo", key);
+
+    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
+        // Grow the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        if (reward == "food of out hot eat the food") {
+            //PROBABLY SOME LIMITER
+            color = "";
+
+            if (colorBox.classList.contains("red")) {
+                color = "red";
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else if (document.getElementById("box").style.opacity == 0) {
+                color = "red";
+                colorBox.classList.remove("blue");
+                colorBox.classList.add("red")
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else {
+                color = "blue";
+                opacity = parseFloat(opacity) - 0.1;
+                document.getElementById("box").style.opacity = opacity;
+            }
+
+            // Truncate trailing numbers
+            opacity = Math.trunc(opacity*10)/10;
+
+            // Write values to cookies
+            document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+
+        // Shrink the pug *EVENTUALLY MOVE TO CHANNEL POINTS*
+        } else if (reward == "whyDoTheyCall it oven when you of in the cold") {
+            //PROBABLY SOME LIMITER
+            color = "";
+
+            if (colorBox.classList.contains("blue")) {
+                color = "blue";
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else if (document.getElementById("box").style.opacity == 0) {
+                color = "blue";
+                colorBox.classList.remove("red");
+                colorBox.classList.add("blue");
+                opacity = parseFloat(opacity) + 0.1;
+                document.getElementById("box").style.opacity = opacity;
+
+            } else {
+                color = "red";
+                opacity = parseFloat(opacity) - 0.1;
+                document.getElementById("box").style.opacity = opacity;
+            }
+
+            // Truncate trailing numbers
+            opacity = Math.trunc(opacity*10)/10;
+
+            // Write values to cookies
+            document.cookie = "opacity=" + opacity + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=" + color + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        
+        // Resets the colorbox
+        } else if (reward == "Food\'s Done") {
+            colorBox.classList.remove("red")
+            colorBox.classList.remove("blue")
+            opacity = 0.0;
+            document.getElementById("box").style.opacity = opacity;
+
+            document.cookie = "opacity=0; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            document.cookie = "color=red; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        }
+    }
+    //ComfyJS.Init("tjwombo");
+
+  </script>
+</body>
+</html>
