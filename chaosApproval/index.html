@@ -17,7 +17,7 @@
 <input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
 <br>
 <div id="c">
-<img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false" onmousedown="readyTransform()">
+<img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false" onmousedown="readyTransform(this)">
 <iframe
     src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io"
     height=562.5
@@ -133,7 +133,7 @@ function preventAnimation( gif ){
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     canvas.style.position = "asbolute";
     canvas.style.draggable = "false";
-    canvas.onmousedown = readyTransform();
+    canvas.onmousedown = readyTransform(this);
     parent = gif.parentNode;
     parent.replaceChild( canvas, gif );
 };
@@ -163,9 +163,6 @@ function changeW(val) {
         img.id = "1";
 	console.log(src);
         img.src = src;
-	img.style.position = "asbolute";
-	img.style.draggable = "false";
-	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         if (document.getElementById("h").value == 0) {
             document.getElementById("1").height = val / ratio;
@@ -194,9 +191,6 @@ function changeH(val) {
         img = document.createElement('img');
         img.id = "1";
         img.src = src;
-	img.style.position = "asbolute";
-	img.style.draggable = "false";
-	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         if (document.getElementById("w").value == 0) {
             document.getElementById("1").width = val * ratio;
@@ -231,9 +225,6 @@ function changeL(val) {
             img.height = canvas.height;
             img.width = canvas.width;
         }
-	img.style.position = "asbolute";
-	img.style.draggable = "false";
-	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         stopAnimatedGifs("1");
     } else {
@@ -258,10 +249,10 @@ function buttonR() {
     c.send(["Reject"]);
 }
 
-function readyTransform() {
-    console.log(this);
-    var pos = this.getBoundingClientRect();
-    el = this;
+function readyTransform(e) {
+    console.log(e);
+    var pos = e.getBoundingClientRect();
+    el = e;
     move = true;
     offset = [event.clientX - pos.x, event.clientY - pos.y];
 }
