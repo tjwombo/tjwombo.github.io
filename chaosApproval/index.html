@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html onmouse="stopEl()" onmousemove="moveEl()">
+<html onmouseup="stopEl()" onmousemove="moveEl()">
 <body>
 <head>
 <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
@@ -130,10 +130,10 @@ function preventAnimation( gif ){
     var h =  gif.height;
     canvas.width  = w;
     canvas.height = h;
-    canvas.ctx.drawImage( gif, 0, 0, w, h);
     canvas.style.position = "asbolute";
     canvas.style.draggable = "false";
     canvas.onmousedown = readyTransform(this);
+    canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
     parent.replaceChild( canvas, gif );
 };
@@ -242,7 +242,7 @@ function changeL(val) {
 
 function buttonA() {
     var img = document.getElementById("1");
-    c.send(["Accept", img.src, img.width, img.height]); // Add cords when thats figured out
+    c.send(["Accept", img.src, img.width, img.height, img.style.left, img.style.top]);
 }
 
 function buttonR() {
@@ -250,11 +250,9 @@ function buttonR() {
 }
 
 function readyTransform(e) {
-    console.log(e);
-    var pos = e.getBoundingClientRect();
     el = e;
     move = true;
-    offset = [event.clientX - pos.x, event.clientY - pos.y];
+    offset = [event.clientX, event.clientY];
 }
 
 function stopEl() {
