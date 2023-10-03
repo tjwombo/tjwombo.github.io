@@ -131,8 +131,11 @@ function preventAnimation( gif ){
     canvas.width  = w;
     canvas.height = h;
     canvas.style.position = "asbolute";
-    canvas.draggable = "false";
-    canvas.onmousedown = readyTransform(this);
+    canvas.draggable = false;
+    canvas.onmousedown = readyTransform();
+    //img.onload = function() {
+    //    readyTransform()
+    //}
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
     parent.replaceChild( canvas, gif );
