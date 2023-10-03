@@ -259,9 +259,12 @@ function stopEl() {
 
 function moveEl() {
     if (move == true) {
-	var el = document.getElementById("1");
+        var el = document.getElementById("1");
+        console.log(el);
+        console.log(event.clientX + " " + event.clientY);
         el.style.left = (event.clientX - offset[0]) + "px";
         el.style.top = (event.clientY - offset[1]) + "px";
+        console.log(el.style.left + " " + el.style.top);
     }
 }
 </script>
