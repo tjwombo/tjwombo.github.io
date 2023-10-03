@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html onmouse="stop()" onmousemove="move()">
 <body>
+<head>
 <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
 <script src="https://embed.twitch.tv/embed/v1.js"></script>
 <button id="start" onclick="myFunction()">Start</button>
+</head>
 <h1 id="error"> </h1>
 <div id="text"> </div>
 <label for="w" id="wLabel" style="display: none;">Width:</label>
@@ -19,8 +21,7 @@
 <iframe
     src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io"
     height=562.5
-    width=1000
-    allowfullscreen=false>
+    width=1000>
 </iframe>
 </div>
 <br>
@@ -130,6 +131,9 @@ function preventAnimation( gif ){
     canvas.width  = w;
     canvas.height = h;
     canvas.ctx.drawImage( gif, 0, 0, w, h);
+    canvas.style.position = "asbolute";
+    canvas.style.draggable = "false";
+    canvas.onmousedown = readyTransform();
     parent = gif.parentNode;
     parent.replaceChild( canvas, gif );
 };
@@ -149,7 +153,6 @@ function stopAnimatedGifs(ids){
           };  
      };
 };
-
 function changeW(val) {
     if (isStatic) {
         var canvas = document.getElementById("1");
@@ -160,6 +163,9 @@ function changeW(val) {
         img.id = "1";
 	console.log(src);
         img.src = src;
+	img.style.position = "asbolute";
+	img.style.draggable = "false";
+	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         if (document.getElementById("h").value == 0) {
             document.getElementById("1").height = val / ratio;
@@ -188,6 +194,9 @@ function changeH(val) {
         img = document.createElement('img');
         img.id = "1";
         img.src = src;
+	img.style.position = "asbolute";
+	img.style.draggable = "false";
+	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         if (document.getElementById("w").value == 0) {
             document.getElementById("1").width = val * ratio;
@@ -222,6 +231,9 @@ function changeL(val) {
             img.height = canvas.height;
             img.width = canvas.width;
         }
+	img.style.position = "asbolute";
+	img.style.draggable = "false";
+	img.onmousedown = readyTransform();
         document.getElementById("c").appendChild(img);
         stopAnimatedGifs("1");
     } else {
