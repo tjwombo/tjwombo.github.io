@@ -42,7 +42,6 @@ var isStatic = false;
 var src = "";
 const message = ". Hit enter to see dimension change. 0 to reset scale (but not double 0)";
 var move = false;
-var el;
 var offset = [];
 
 peer.on('error', function(err) { console.log(err); });
@@ -249,8 +248,7 @@ function buttonR() {
     c.send(["Reject"]);
 }
 
-function readyTransform(e) {
-    el = e;
+function readyTransform() {
     move = true;
     offset = [event.clientX, event.clientY];
 }
@@ -261,6 +259,7 @@ function stopEl() {
 
 function moveEl() {
     if (move == true) {
+	var el = document.getElementById("1");
         el.style.left = (event.clientX - offset[0]) + "px";
         el.style.top = (event.clientY - offset[1]) + "px";
     }
