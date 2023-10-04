@@ -7,14 +7,15 @@
 <button id="start" onclick="myFunction()">Start</button>
 </head>
 <h1 id="error"> </h1>
-<div id="text"> </div>
-<label for="w" id="wLabel" style="display: none;">Width:</label>
+<div id="text" onmousedown="return false"> </div>
+<div onmousedown="return false"><label for="w" id="wLabel" style="display: none;">Width:</label></div>
 <input type="text" id="w" name="w" style="display: none;" onchange="changeW(this.value)">
-<label for="h" id="hLabel" style="display: none;">Height:</label>
+<div onmousedown="return false"><label for="h" id="hLabel" style="display: none;">Height:</label></div>
 <input type="text" id="h" name="h" style="display: none;" onchange="changeH(this.value)">
 <br>
-<label for="l" id="lLabel" style="display:none;">Link:</label>
+<div onmousedown="return false"><label for="l" id="lLabel" style="display:none;">Link:</label></div>
 <input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
+<div onmousedown="return false">
 <button id="r"" style="display: none;" type="button" onclick="buttonR">Reset</button>
 <br>
 <div id="c" style="position:absolute;" draggable="false" onmousedown="readyTransform()">
@@ -24,6 +25,7 @@
 <br>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
 <button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
+</div>
 
 <script>
 // client that makes connection requests
