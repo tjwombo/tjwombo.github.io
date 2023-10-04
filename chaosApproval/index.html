@@ -45,14 +45,14 @@ function myFunction() {
                 }
                 if (document.getElementById("w") == null) {
                     var div = document.createElement("div");
-                    div.onmousedown = "return false";
+                    div.onmousedown = function(){return false};
                     div.style = "display: inline-block; user-select: none";
                     var inpt = document.createElement("input");
                     inpt.type = "text";
                     inpt.id = "w";
                     inpt.name = "w";
                     inpt.style = "user-select: none";
-                    inpt.onchange = "changeW(this.value)";
+                    inpt.onchange = function(){changeW(this.value)};
                     document.body.appendChild(inpt);
                     var label = document.createElement("label");
                     label.innerHTML = "Width:";
@@ -61,14 +61,14 @@ function myFunction() {
                     document.body.insertBefore(div, inpt);
 
                     div = document.createElement("div");
-                    div.onmousedown = "return false";
+                    div.onmousedown = function(){return false};
                     div.style = "display: inline-block; user-select: none";
                     inpt = document.createElement("input");
                     inpt.type = "text";
                     inpt.id = "w";
                     inpt.name = "w";
                     inpt.style = "user-select: none";
-                    inpt.onchange = "changeH(this.value)";
+                    inpt.onchange = function(){changeH(this.value)};
                     document.body.appendChild(inpt);
                     label = document.createElement("label");
                     label.innerHTML = "Height:";
@@ -77,14 +77,14 @@ function myFunction() {
                     document.body.insertBefore(div, inpt);
 
                     div = document.createElement("div");
-                    div.onmousedown = "return false";
+                    div.onmousedown = function(){return false};
                     div.style = "display: inline-block; user-select: none";
                     inpt = document.createElement("input");
                     inpt.type = "text";
                     inpt.id = "l";
                     inpt.name = "l";
                     inpt.stlye = "user-select: none";
-                    inpt.onchange = "changeL(this.value)";
+                    inpt.onchange = function{changeL(this.value)};
                     document.body.appendChild(inpt);
                     label = document.createElement("label");
                     label.innerHTML = "Line:";
@@ -96,7 +96,7 @@ function myFunction() {
                     div.id = "c";
                     div.style = "position:absolute; z-index: 100";
                     div.draggable = false;
-                    div.onmousedown = "readyTransform()";
+                    div.onmousedown = function(){readyTransform()};
                     var img = document.createElement("img");
                     img.id = "1";
                     img.draggable = false;
@@ -104,7 +104,7 @@ function myFunction() {
                     document.body.appendChild(div);
 
                     div = document.createElement("div");
-                    div.onmousedown = "return false";
+                    div.onmousedown = function(){return false};
                     div.style = "user-select:none; display: flex";
                     var ig = document.createElement("img");
                     ig.src= "https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg";
@@ -121,35 +121,35 @@ function myFunction() {
                     div.appendChild(ifame);
                     var div2 = document.createElement("div");
                     div2.style = "float: right; display: flex; flex-direction: column; user-select: none";
-                    div2.onmousedown = "return false";
+                    div2.onmousedown = function(){return false};
                     var but = document.createElement("button");
                     but.id = "rp";
                     but.type = "button";
-                    but.onclick = "buttonRP()";
+                    but.onclick = function(){buttonRP()};
                     but.innerHTML = "Reset Position";
                     div2.appendChild(but);
                     but = document.createElement("button");
                     but.id = "rl";
                     but.type = "button";
-                    but.onclick = "buttonRL()";
+                    but.onclick = function(){buttonRL()};
                     but.innerHTML = "Reset Link";
                     div2.appendChild(but);
                     but = document.createElement("button");
                     but.id = "pr";
                     but.type = "button";
-                    but.onclick = "buttonPR()";
+                    but.onclick = function(){buttonPR()};
                     but.innerHTML = "Random Position";
                     div2.appendChild(but);
                     but = document.createElement("button");
                     but.id = "a";
                     but.type = "button";
-                    but.onclick = "buttonA()";
+                    but.onclick = function(){buttonA()};
                     but.innerHTML = "Accept";
                     div2.appendChild(but);
                     but = document.createElement("button");
                     but.id = "d";
                     but.type = "button";
-                    but.onclick = "buttonD()";
+                    but.onclick = function(){buttonD()};
                     but.innerHTML = "Deny";
                     div2.appendChild(but);
                     div.appendChild(div2);
