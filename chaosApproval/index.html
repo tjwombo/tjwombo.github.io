@@ -77,7 +77,8 @@ function myFunction() {
                 document.getElementById("h").style.display = "";
                 document.getElementById("lLabel").style.display = "";
                 document.getElementById("l").style.display = "";
-                document.getElementById("r").style.display = "";
+                document.getElementById("rp").style.display = "";
+                document.getElementById("rl").style.display = "";
                 document.getElementById("a").style.display = "";
                 document.getElementById("d").style.display = "";
                 if (data[1].node[1] == "img") {
@@ -251,10 +252,11 @@ function buttonD() {
 }
 
 function readyTransform() {
-    var pos = document.getElementById("c");
+    var pos = document.getElementById("c").getBoundingClientRect();
     move = true;
-    offset = [event.clientX - pos.style.left, event.clientY - pos.style.top];
-    console.log("ready");
+    offset = [event.clientX - pos.x, event.clientY - pos.y];
+    console.log(pos.x + " " + pos.y);
+    console.log(event.clientX + " " + event.clientY);
 }
 
 function stopEl() {
