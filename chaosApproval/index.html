@@ -213,7 +213,11 @@ function changeH(val) {
 }
 
 function changeL(val) {
-    src = val;
+    if (val == "") {
+        src = orgSrc;
+    } else {
+        src = val;
+    }
     var img = document.createElement('img');
     img.src = src;
     if (isStatic) {
