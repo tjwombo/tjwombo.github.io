@@ -15,9 +15,10 @@
 <br>
 <div onmousedown="return false" style="display:inline-block"><label for="l" id="lLabel" style="display:none;">Link:</label></div>
 <input type="text" id="l" name="l" style="display: none; user-select:none" onchange="changeL(this.value)" size="50">
-<div onmousedown="return false" style="display:inline-block"><button id="r"" style="display: none;" type="button" onclick="buttonR">Reset</button></div>
+<div onmousedown="return false" style="display:inline-block"><button id="rp"" style="display: none;" type="button" onclick="buttonRP">Reset Position</button></div>
+<div onmousedown="return false" style="display:inline-block"><button id="rl"" style="display: none;" type="button" onclick="buttonRL">Reset Link</button></div>
 <br>
-<div id="c" style="position:absolute; user-select:none; z-index: 100" draggable="false" onmousedown="readyTransform()">
+<div id="c" style="position:absolute; z-index: 100" draggable="false" onmousedown="readyTransform()">
 <img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false">
 </div>
 <div onmousedown="return false" style="user-select:none">
@@ -40,6 +41,7 @@ var verified = false;
 var ratio = 0 // width being numerator
 var isStatic = false;
 var src = "";
+var orgSrc = "";
 const message = ". Hit enter to see dimension change. 0 to reset scale (but not double 0)";
 var move = false;
 var offset = [];
@@ -67,6 +69,7 @@ function myFunction() {
                     img.src = "";
                 }
                 src = img.src;
+                orgSrc = src;
                 img.style.display = "";
                 document.getElementById("wLabel").style.display = "";
                 document.getElementById("w").style.display = "";
@@ -250,7 +253,7 @@ function buttonD() {
 function readyTransform() {
     var pos = document.getElementById("c");
     move = true;
-    offset = [event.clientX - pos.stlye.left, event.clientY - pos.style.top];
+    offset = [event.clientX - pos.style.left, event.clientY - pos.style.top];
     console.log("ready");
 }
 
@@ -266,10 +269,14 @@ function moveEl() {
     }
 }
 
-document.addEventListener("visibilitychange", onleave);
+function buttonRP() {
+    var el = document.getElementById("c");
+    el.style.left = "0px";
+    el.style.top = "0px";
+}
 
-function onleave() {
-    move = false;
+function buttonRL() {
+    changeL(orgSrc);
 }
 </script>
 </body>
