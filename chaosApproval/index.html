@@ -35,7 +35,6 @@ function myFunction() {
     c.on('open', function() {
         c.on('data', function(data) {
             if (verified) {
-                var img = document.getElementById("1");
                 if (data == null) {
                     return;
                 }
@@ -43,14 +42,6 @@ function myFunction() {
                 console.log(data[1].node);
                 if (data[0] != "womboModServer") {
                     return;
-                }
-                console.log(img);
-                try {
-                    img.src = data[1].node[0];
-                } catch (err) {
-                    if (img != null) {
-                        img.src = "";
-                    }
                 }
                 src = img.src;
                 orgSrc = src;
@@ -107,8 +98,21 @@ function myFunction() {
                 div.style = "position:absolute; z-index: 100";
                 div.draggable = false;
                 div.onmousedown = "readyTransform()";
+                var img = document.createElement("img");
+                img.id = "1";
+                try {
+                    img.src = data[1].node[0];
+                } catch (err) {
+                    img.src = "";
+                }
+                img.draggable = false;
+                div.appendChild(img);
+
+                div = document.createElement("div");
+                div.onmousedown = "return false";
+                div.style = "user-select:none; display: flex";
                 var ig = document.createElement("img");
-                ig.src = "";
+                ig.src= "https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg";
                 ig.style = "opacity:0; position:absolute";
                 ig.width = 1652;
                 ig.height = 931;
@@ -116,7 +120,7 @@ function myFunction() {
                 div.appendChild(ig);
                 var ifame = document.createElement("iframe");
                 ifame.id = "i";
-                ifame.src = "";
+                ifame.src = "https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io";
                 ifame.height = 927;
                 ifame.width = 1648;
                 div.appendChild(ifame);
