@@ -43,8 +43,6 @@ function myFunction() {
                 if (data[0] != "womboModServer") {
                     return;
                 }
-                src = img.src;
-                orgSrc = src;
                 var div = document.createElement("div");
                 div.onmousedown = "return false";
                 div.style = "display: inline-block; user-select: none";
@@ -106,6 +104,8 @@ function myFunction() {
                     img.src = "";
                 }
                 img.draggable = false;
+                src = img.src;
+                orgSrc = src;
                 div.appendChild(img);
 
                 div = document.createElement("div");
