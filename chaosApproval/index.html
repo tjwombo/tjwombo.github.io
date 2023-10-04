@@ -171,9 +171,11 @@ function myFunction() {
                 //document.getElementById("rl").style.display = "";
                 //document.getElementById("a").style.display = "";
                 //document.getElementById("d").style.display = "";
-                if (data[1].node[1] == "img") {
-                    isStatic = true;
-                    stopAnimatedGifs("1");
+                try {
+                    if (data[1].node[1] == "img") {
+                        isStatic = true;
+                        stopAnimatedGifs("1");
+                    }
                 }
                 img.onload = function() {
                     console.log(img.width);
