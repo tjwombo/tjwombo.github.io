@@ -8,8 +8,6 @@
 </head>
 <h1 id="error"> </h1>
 <div id="text" onmousedown="return false" style="user-select:none; display:inline-block"> </div>
-<div onmousedown="return false" style="display:inline-block; user-select:none"><label for="h" id="hLabel" style="display: none;">Height:</label></div>
-<input type="text" id="h" name="h" style="display: none; user-select:none" onchange="changeH(this.value)">
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="l" id="lLabel" style="display:none;">Link:</label></div>
 <input type="text" id="l" name="l" style="display: none; user-select:none" onchange="changeL(this.value)" size="50">
 <br>
@@ -84,6 +82,22 @@ function myFunction() {
                 var label = document.createElement("label");
                 label.innerHTML = "Width:";
                 labal.htmlFor = "w";
+                document.body.appendChild(label, div);
+                document.body.insertBefore(div, inpt);
+                div = document.createElement("div");
+                div.onmousedown = "return false";
+                div.style.display = "inline-block";
+                div.style.user-select = "none";
+                inpt = document.createElement("input");
+                inpt.type = "text";
+                inpt.id = "w";
+                inpt.name = "w";
+                inpt.style.user-select = "none";
+                inpt.onchange = "changeH(this.value)";
+                document.body.appendChild(inpt);
+                label = document.createElement("label");
+                label.innerHTML = "Height:";
+                label.htmlFor = "h";
                 document.body.appendChild(label, div);
                 document.body.insertBefore(div, inpt);
                 img.style.display = "";
