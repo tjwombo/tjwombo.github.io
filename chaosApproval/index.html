@@ -214,17 +214,18 @@ function changeH(val) {
 
 function changeL(val) {
     var img = document.createElement('img');
-    img.src = src;
+    img.src = val;
     if (isStatic) {
         var canvas = document.getElementById("1");
+        var h = canvas.h;
+        var w = canvas.w
         canvas.remove();
         img.id = "1";
-        ratio = img.width / img.height;
         img.onload = function() {
             document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
 	    ratio = img.width / img.height;	
-            img.height = canvas.height;
-            img.width = canvas.width;
+            img.height = h;
+            img.width = w;
         }
         document.getElementById("c").appendChild(img);
         stopAnimatedGifs("1");
