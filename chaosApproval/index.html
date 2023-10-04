@@ -176,7 +176,7 @@ function myFunction() {
                         isStatic = true;
                         stopAnimatedGifs("1");
                     }
-                }
+                } catch (err) {}
                 img.onload = function() {
                     console.log(img.width);
                     console.log(img.height);
