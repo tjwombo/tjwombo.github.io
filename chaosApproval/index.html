@@ -19,11 +19,12 @@
 <img id="1" src="" alt="No Images Yet" style="display: none;" draggable="false">
 </div>
 <div onmousedown="return false" style="user-select:none; display:flex">
-<img src="https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg" style="opacity:0; position:absolute" width="1648" height="927" draggable="false">
+<img src="https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg" style="opacity:0; position:absolute" width="1652" height="931" draggable="false">
 <iframe id="i" src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io" height=927 width=1648></iframe>
 <div style="float:right; display: flex; flex-direction: column; user-select:none" onmousedown="return false">
 <button id="rp" type="button" onclick="buttonRP()">Reset Position</button>
 <button id="rl" type="button" onclick="buttonRL()">Reset Link</button>
+<button id="pr" type="button" onclick="buttonPR()">Random Position</button>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
 <button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
 </div>
@@ -89,8 +90,7 @@ function myFunction() {
                 img.onload = function() {
                     console.log(img.width);
                     console.log(img.height);
-                    img.width = img.width / screenCompression;
-                    img.height = img.height / screenCompression;
+                    img.width = Math.floor(img.width / screenCompression);
                     console.log(img.width);
                     console.log(img.height);
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
@@ -232,7 +232,7 @@ function changeL(val) {
         img.id = "1";
         img.draggable = false;
         img.onload = function() {
-            document.getElementById("text").innerHTML = "Original dimensions: " + (img.width/screenCompression) + "x" + (img.height/screenCompression) + message;
+            document.getElementById("text").innerHTML = "Original dimensions: " + (Math.floor(img.width/screenCompression)) + "x" + (Math.floor(img.height/screenCompression)) + message;
 	    ratio = img.width / img.height;	
             img.height = h;
             img.width = w;
@@ -289,6 +289,12 @@ function buttonRP() {
 function buttonRL() {
     document.getElementById("l").value = orgSrc;
     changeL(orgSrc);
+}
+
+function buttonPR() {
+    var el = document.getElementById("c");
+    el.style.left = (Math.floor(Math.random() * 1649) + 9) + "px";
+    el.style.top = (Math.floor(Math.random() * 928) + 50) + "px";
 }
 </script>
 </body>
