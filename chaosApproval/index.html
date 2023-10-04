@@ -254,8 +254,8 @@ function changeL(val) {
 
 function buttonA() {
     var img = document.getElementById("1");
-    var c = document.getElementById("c");
-    c.send(["Accept", img.src, (img.width*screenCompression), (img.height*screenCompression), c.style.left, c.style.top]); // going to need to modify this in respects to the players coords
+    var can = document.getElementById("c");
+    c.send(["Accept", img.src, (img.width*screenCompression), (img.height*screenCompression), can.style.left, can.style.top]); // going to need to modify this in respects to the players coords
 }
 
 function buttonD() {
