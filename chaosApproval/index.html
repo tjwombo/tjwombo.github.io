@@ -7,7 +7,7 @@
 <button id="start" onclick="myFunction()">Start</button>
 </head>
 <h1 id="error"> </h1>
-<div id="text" onmousedown="return false" style="user-select:none"> </div>
+<div id="text" onmousedown="return false" style="user-select:none; display:inline-block"> </div>
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="w" id="wLabel" style="display: none;">Width:</label></div>
 <input type="text" id="w" name="w" style="display: none; user-select:none" onchange="changeW(this.value)">
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="h" id="hLabel" style="display: none;">Height:</label></div>
@@ -22,8 +22,8 @@
 <img id="1" src="" alt="No Images Yet" style="display: none;" draggable="false">
 </div>
 <div onmousedown="return false" style="user-select:none">
-<img src="https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg" style="opacity:0; position:absolute" width="1000" height="562.5" draggable="false">
-<iframe id="i" src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io" height=562.5 width=1000></iframe>
+<img src="https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg" style="opacity:0; position:absolute" width="1648" height="927" draggable="false">
+<iframe id="i" src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io" height=927 width=1648></iframe>
 <br>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
 <button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
@@ -43,6 +43,7 @@ var isStatic = false;
 var src = "";
 var orgSrc = "";
 const message = ". Hit enter to see dimension change. 0 to reset scale (but not double 0)";
+const screenCompression = 1.16504854368932;
 var move = false;
 var offset = [];
 
@@ -86,6 +87,8 @@ function myFunction() {
                     stopAnimatedGifs("1");
                 }
                 img.onload = function() {
+                    img.width = img.width / screenCompression;
+                    img.height = img.height / screenCompression;
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
                     ratio = img.width / img.height;		        
                 }
@@ -225,7 +228,7 @@ function changeL(val) {
         img.id = "1";
         img.draggable = false;
         img.onload = function() {
-            document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+            document.getElementById("text").innerHTML = "Original dimensions: " + (img.width/screenCompression) + "x" + (img.height/screenCompression) + message;
 	    ratio = img.width / img.height;	
             img.height = h;
             img.width = w;
@@ -236,7 +239,7 @@ function changeL(val) {
 	var oldImg = document.getElementById("1");
         oldImg.src = src;
         img.onload = function() {
-            document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+            document.getElementById("text").innerHTML = "Original dimensions: " + (img.width/screenCompression) + "x" + (img.height/screenCompression) + message;
 	    ratio = img.width / img.height;	
 	    oldImg.height = img.height;
 	    oldImg.width = img.width;
@@ -247,7 +250,8 @@ function changeL(val) {
 
 function buttonA() {
     var img = document.getElementById("1");
-    c.send(["Accept", img.src, img.width, img.height, img.style.left, img.style.top]);
+    var c = document.getElementById("c");
+    c.send(["Accept", img.src, (img.width*screenCompression), (img.height*screenCompression), c.style.left, c.style.top]); // going to need to modify this in respects to the players coords
 }
 
 function buttonD() {
