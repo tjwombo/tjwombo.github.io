@@ -213,11 +213,6 @@ function changeH(val) {
 }
 
 function changeL(val) {
-    if (val == "") {
-        src = orgSrc;
-    } else {
-        src = val;
-    }
     var img = document.createElement('img');
     img.src = src;
     if (isStatic) {
@@ -281,7 +276,7 @@ function buttonRP() {
 
 function buttonRL() {
     document.getElementById("l").value = orgSrc;
-    //changeL(orgSrc);
+    changeL(orgSrc);
 }
 </script>
 </body>
