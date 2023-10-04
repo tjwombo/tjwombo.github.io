@@ -264,6 +264,12 @@ function moveEl() {
         el.style.top = (event.clientY - offset[1]) + "px";
     }
 }
+
+document.addEventListener("visibilitychange", onleave);
+
+function onleave() {
+    move = false;
+}
 </script>
 </body>
 </html>
