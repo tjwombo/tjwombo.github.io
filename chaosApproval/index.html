@@ -17,14 +17,10 @@
 <input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
 <button id="r"" style="display: none;" type="button" onclick="buttonR">Reset</button>
 <br>
-<div id="c">
-<img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false" onmousedown="readyTransform(this)">
-<iframe
-    src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io"
-    height=562.5
-    width=1000>
-</iframe>
+<div id="c" position:absolute;" draggable="false" onmousedown="readyTransform()">
+<img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false">
 </div>
+<iframe id="i" src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io" height=562.5 width=1000></iframe>
 <br>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
 <button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
@@ -131,12 +127,6 @@ function preventAnimation( gif ){
     var h =  gif.height;
     canvas.width  = w;
     canvas.height = h;
-    canvas.style.position = "asbolute";
-    canvas.draggable = false;
-    //canvas.onmousedown = readyTransform();
-    canvas.onmousedown = function() {
-        readyTransform()
-    }
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
     parent.replaceChild( canvas, gif );
