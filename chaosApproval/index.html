@@ -134,7 +134,7 @@ function preventAnimation( gif ){
     canvas.style.position = "asbolute";
     canvas.draggable = false;
     //canvas.onmousedown = readyTransform();
-    canvas.onload = function() {
+    canvas.onmousedown = function() {
         readyTransform()
     }
     canvas.ctx.drawImage( gif, 0, 0, w, h);
