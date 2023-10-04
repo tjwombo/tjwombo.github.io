@@ -15,6 +15,7 @@
 <br>
 <label for="l" id="lLabel" style="display:none;">Link:</label>
 <input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
+<button id="r"" style="display: none;" type="button" onclick="buttonR">Reset</button>
 <br>
 <div id="c">
 <img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false" onmousedown="readyTransform(this)">
@@ -26,7 +27,7 @@
 </div>
 <br>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
-<button id="r" style="display: none;" type="button" onclick="buttonR()">Click Me!</button>
+<button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
 
 <script>
 // client that makes connection requests
@@ -47,71 +48,71 @@ var offset = [];
 peer.on('error', function(err) { console.log(err); });
 
 function myFunction() {
-   	c = peer.connect('womboModServer');
+    c = peer.connect('womboModServer');
 
-	c.on('open', function() {
-		c.on('data', function(data) {
-			if (verified) {
-			    var img = document.getElementById("1");
-			    if (data == null) {
-			        return;
-			    }
-			    console.log(data);
-			    console.log(data[1].node);
-			    if (data[0] != "womboModServer") {
-			        return;
-			    }
-			    try {
-			        img.src = data[1].node[0];
-			    } catch (err) {
-			        img.src = "";
-			    }
-			    src = img.src;
-			    img.style.display = "";
-			    document.getElementById("wLabel").style.display = "";
-			    document.getElementById("w").style.display = "";
-			    document.getElementById("hLabel").style.display = "";
-			    document.getElementById("h").style.display = "";
-			    document.getElementById("lLabel").style.display = "";
-			    document.getElementById("l").style.display = "";
-			    document.getElementById("a").style.display = "";
-			    document.getElementById("r").style.display = "";
-			    if (data[1].node[1] == "img") {
-				isStatic = true;
-			        stopAnimatedGifs("1");
-			    }
-			    img.onload = function() {
-			        document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
-			        ratio = img.width / img.height;		        
-			    }
-			    document.getElementById("l").value = src;
-			} else {
-				console.log(data);
-				if (typeof data == "string") {				
-					if (data.includes("good")) {
-						verified = true;
-						document.getElementById("1").style.visibility = "";	
-					} else if (data == "Ready") {
-						c.send("Ready");
-					}
-				} else {
-					console.log('bad', data);
-					c.close();
-					peer.destroy();
-					document.getElementById("error").innerHTML = "Retry as you aren't a mod or you didn't authorize twitch";
-					return;
-				}
-			}
-			console.log('Received', data);
-		});
- 	});
-	c.send("Ready");
-	c.on('close', function() {
-		console.log("connection closed");
-	});
-	document.getElementById("start").remove();
-	document.getElementById("error").remove();
-	move = false;
+    c.on('open', function() {
+        c.on('data', function(data) {
+            if (verified) {
+                var img = document.getElementById("1");
+                if (data == null) {
+                    return;
+                }
+                console.log(data);
+                console.log(data[1].node);
+                if (data[0] != "womboModServer") {
+                    return;
+                }
+                try {
+                    img.src = data[1].node[0];
+                } catch (err) {
+                    img.src = "";
+                }
+                src = img.src;
+                img.style.display = "";
+                document.getElementById("wLabel").style.display = "";
+                document.getElementById("w").style.display = "";
+                document.getElementById("hLabel").style.display = "";
+                document.getElementById("h").style.display = "";
+                document.getElementById("lLabel").style.display = "";
+                document.getElementById("l").style.display = "";
+                document.getElementById("a").style.display = "";
+                document.getElementById("d").style.display = "";
+                if (data[1].node[1] == "img") {
+                    isStatic = true;
+                    stopAnimatedGifs("1");
+                }
+                img.onload = function() {
+                    document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
+                    ratio = img.width / img.height;		        
+                }
+                document.getElementById("l").value = src;
+            } else {
+                console.log(data);
+                if (typeof data == "string") {				
+                    if (data.includes("good")) {
+                        verified = true;
+                        document.getElementById("1").style.visibility = "";	
+                    } else if (data == "Ready") {
+                        c.send("Ready");
+                    }
+                } else {
+                    console.log('bad', data);
+                    c.close();
+                    peer.destroy();
+                    document.getElementById("error").innerHTML = "Retry as you aren't a mod or you didn't authorize twitch";
+                    return;
+                }
+            }
+            console.log('Received', data);
+        });
+    });
+    c.send("Ready");
+    c.on('close', function() {
+        console.log("connection closed");
+    });
+    document.getElementById("start").remove();
+    document.getElementById("error").remove();
+    move = false;
 }
 
 // Code to prevent gifs to being played. Use when static is redememd incase they try to send a gif
@@ -248,14 +249,15 @@ function buttonA() {
     c.send(["Accept", img.src, img.width, img.height, img.style.left, img.style.top]);
 }
 
-function buttonR() {
-    c.send(["Reject"]);
+function buttonD() {
+    c.send(["Deny"]);
 }
 
 function readyTransform() {
     var pos = document.getElementById("1").getBoundingClientRect();
     move = true;
     offset = [event.clientX - pos.x, event.clientY - pos.y];
+    console.log("ready");
 }
 
 function stopEl() {
@@ -265,11 +267,8 @@ function stopEl() {
 function moveEl() {
     if (move == true) {
         var el = document.getElementById("1");
-        console.log(el);
-        console.log(event.clientX + " " + event.clientY);
         el.style.left = (event.clientX - offset[0]) + "px";
         el.style.top = (event.clientY - offset[1]) + "px";
-        console.log(el.style.left + " " + el.style.top);
     }
 }
 </script>
