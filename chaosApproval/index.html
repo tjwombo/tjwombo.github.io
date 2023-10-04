@@ -44,10 +44,13 @@ function myFunction() {
                 if (data[0] != "womboModServer") {
                     return;
                 }
+                console.log(img);
                 try {
                     img.src = data[1].node[0];
                 } catch (err) {
-                    img.src = "";
+                    if (img != null) {
+                        img.src = "";
+                    }
                 }
                 src = img.src;
                 orgSrc = src;
@@ -152,7 +155,8 @@ function myFunction() {
                 div2.appendChild(but);
                 div.appendChild(div2);
 
-                img.style.display = "";
+                console.log("test");
+                //img.style.display = "";
                 //document.getElementById("wLabel").style.display = "";
                 //document.getElementById("w").style.display = "";
                 //document.getElementById("hLabel").style.display = "";
