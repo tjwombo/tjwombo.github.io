@@ -223,6 +223,7 @@ function changeL(val) {
         var w = canvas.width;
         canvas.remove();
         img.id = "1";
+        img.draggable = false;
         img.onload = function() {
             document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
 	    ratio = img.width / img.height;	
