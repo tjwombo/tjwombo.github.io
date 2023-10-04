@@ -17,12 +17,12 @@
 <input type="text" id="l" name="l" style="display: none;" onchange="changeL(this.value)" size="50">
 <div onmousedown="return false" style="display:inline-block"><button id="r"" style="display: none;" type="button" onclick="buttonR">Reset</button></div>
 <br>
-<div id="c" style="position:absolute;" draggable="false" onmousedown="readyTransform()">
+<div id="c" style="position:absolute; z-index: 100" draggable="false" onmousedown="readyTransform()">
 <img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false">
 </div>
 <div onmousedown="return false">
 <img src="https://hips.hearstapps.com/hmg-prod/images/red-fresh-apple-isolated-on-white-background-royalty-free-image-1627314996.jpg" style="opacity:0; position:absolute" width="562.5" height="1000" draggable="false">
-<iframe id="i" src="https://player.twitch.tv/?channel=peldor_hots&parent=tjwombo.github.io" height=562.5 width=1000></iframe>
+<iframe id="i" src="https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io" height=1000 width=562.5></iframe>
 <br>
 <button id="a" style="display: none;" type="button" onclick="buttonA()">Click Me!</button>
 <button id="d" style="display: none;" type="button" onclick="buttonD()">Click Me!</button>
