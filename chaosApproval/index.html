@@ -15,8 +15,8 @@
 <br>
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="l" id="lLabel" style="display:none;">Link:</label></div>
 <input type="text" id="l" name="l" style="display: none; user-select:none" onchange="changeL(this.value)" size="50">
-<div onmousedown="return false" style="display:inline-block; user-select:none"><button id="rp"" style="display: none;" type="button" onclick="buttonRP">Reset Position</button></div>
-<div onmousedown="return false" style="display:inline-block"><button id="rl"" style="display: none;" type="button" onclick="buttonRL">Reset Link</button></div>
+<div onmousedown="return false" style="display:inline-block; user-select:none"><button id="rp"" style="display: none;" type="button" onclick="buttonRP()">Reset Position</button></div>
+<div onmousedown="return false" style="display:inline-block"><button id="rl"" style="display: none;" type="button" onclick="buttonRL()">Reset Link</button></div>
 <br>
 <div id="c" style="position:absolute; z-index: 100" draggable="false" onmousedown="readyTransform()">
 <img id="1" src="" alt="No Images Yet" style="display: none; position:absolute;" draggable="false">
@@ -255,8 +255,6 @@ function readyTransform() {
     var pos = document.getElementById("c").getBoundingClientRect();
     move = true;
     offset = [event.clientX - pos.x, event.clientY - pos.y];
-    console.log(pos.x + " " + pos.y);
-    console.log(event.clientX + " " + event.clientY);
 }
 
 function stopEl() {
@@ -275,12 +273,10 @@ function buttonRP() {
     var el = document.getElementById("c");
     el.style.left = "0px";
     el.style.top = "0px";
-    console.log("L");
 }
 
 function buttonRL() {
     changeL(orgSrc);
-    console.log("P);
 }
 </script>
 </body>
