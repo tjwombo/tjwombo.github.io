@@ -215,8 +215,8 @@ function changeH(val) {
 function changeL(val) {
     var img = document.createElement('img');
     src = val;
-    img.src = src;
     if (isStatic) {
+        img.src = src;
         var canvas = document.getElementById("1");
         var h = canvas.height;
         var w = canvas.width;
