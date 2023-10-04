@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html onmouseup="stopEl()" onmousemove="moveEl()">
+<html onmouseup="stopEl()" onmousemove="moveEl()" onmouseleave="stopEl()">
 <body>
 <head>
 <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
@@ -214,11 +214,12 @@ function changeH(val) {
 
 function changeL(val) {
     var img = document.createElement('img');
-    img.src = val;
+    src = val;
+    img.src = src;
     if (isStatic) {
         var canvas = document.getElementById("1");
-        var h = canvas.h;
-        var w = canvas.w
+        var h = canvas.height;
+        var w = canvas.width;
         canvas.remove();
         img.id = "1";
         img.onload = function() {
