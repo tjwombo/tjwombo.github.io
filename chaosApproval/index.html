@@ -43,7 +43,7 @@ function myFunction() {
                 if (data[0] != "womboModServer") {
                     return;
                 }
-                if (orgSrc == "") {
+                if (document.getElementById("w") == null) {
                     var div = document.createElement("div");
                     div.onmousedown = "return false";
                     div.style = "display: inline-block; user-select: none";
@@ -99,14 +99,7 @@ function myFunction() {
                     div.onmousedown = "readyTransform()";
                     var img = document.createElement("img");
                     img.id = "1";
-                    try {
-                        img.src = data[1].node[0];
-                    } catch (err) {
-                        img.src = "";
-                    }
                     img.draggable = false;
-                    src = img.src;
-                    orgSrc = src;
                     div.appendChild(img);
                     document.body.appendChild(div);
 
@@ -162,24 +155,20 @@ function myFunction() {
                     div.appendChild(div2);
                     document.body.appendChild(div);
                 }
-                //img.style.display = "";
-                //document.getElementById("wLabel").style.display = "";
-                //document.getElementById("w").style.display = "";
-                //document.getElementById("hLabel").style.display = "";
-                //document.getElementById("h").style.display = "";
-                //document.getElementById("lLabel").style.display = "";
-                //document.getElementById("l").style.display = "";
-                //document.getElementById("rp").style.display = "";
-                //document.getElementById("rl").style.display = "";
-                //document.getElementById("a").style.display = "";
-                //document.getElementById("d").style.display = "";
+                var img = document.getElementById("1");
+                try {
+                    img.src = data[1].node[0];
+                } catch (err) {
+                    img.src = "";
+                }
+                src = img.src;
+                orgSrc = src;
                 try {
                     if (data[1].node[1] == "img") {
                         isStatic = true;
                         stopAnimatedGifs("1");
                     }
                 } catch (err) {}
-                var img = document.getElementById("1");
                 img.onload = function() {
                     console.log(img.width);
                     console.log(img.height);
