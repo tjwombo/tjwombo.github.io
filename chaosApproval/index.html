@@ -12,7 +12,6 @@
 <input type="text" id="w" name="w" style="display: none; user-select:none" onchange="changeW(this.value)">
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="h" id="hLabel" style="display: none;">Height:</label></div>
 <input type="text" id="h" name="h" style="display: none; user-select:none" onchange="changeH(this.value)">
-<br>
 <div onmousedown="return false" style="display:inline-block; user-select:none"><label for="l" id="lLabel" style="display:none;">Link:</label></div>
 <input type="text" id="l" name="l" style="display: none; user-select:none" onchange="changeL(this.value)" size="50">
 <br>
@@ -88,8 +87,12 @@ function myFunction() {
                     stopAnimatedGifs("1");
                 }
                 img.onload = function() {
+                    console.log(img.width);
+                    console.log(img.height);
                     img.width = img.width / screenCompression;
                     img.height = img.height / screenCompression;
+                    console.log(img.width);
+                    console.log(img.height);
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
                     ratio = img.width / img.height;		        
                 }
