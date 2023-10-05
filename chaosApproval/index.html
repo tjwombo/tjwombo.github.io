@@ -343,13 +343,15 @@ function changeL(val) {
         img.id = "1";
         img.draggable = false;
         img.onload = function() {
+            orgW = img.width;
+            orgH = img.height;
             document.getElementById("text").innerHTML = "Original dimensions: " + (Math.floor(img.width/screenCompression)) + "x" + (Math.floor(img.height/screenCompression)) + message;
             ratio = img.width / img.height;	
             img.height = h;
             img.width = w;
         }
-        document.getElementById("c").appendChild(img);
-        stopAnimatedGifs("1");
+        document.body.appendChild(img);
+        gifToImg();
     } else {
 	var oldImg = document.getElementById("1");
         oldImg.src = src;
