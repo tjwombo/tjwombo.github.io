@@ -19,6 +19,8 @@ peer.on('open', function(id) {
 var c;
 var verified = false;
 var ratio = 0 // width being numerator
+var orgW = 0;
+var orgH = 0;
 var isStatic = false;
 var src = "";
 var orgSrc = "";
@@ -26,6 +28,7 @@ const message = ". Hit enter to see dimension change. 0 to reset scale (but not 
 const screenCompression = 1.16504854368932;
 var move = false;
 var offset = [];
+var def = true;
 
 peer.on('error', function(err) { console.log(err); });
 
@@ -177,13 +180,15 @@ function myFunction() {
                     console.log(img.width);
                     img.width = Math.floor(img.width / screenCompression);
                     if (isStatic) {
-                        //img.width = Math.floor(img.width / screenCompression);
+                        img.height = Math.floor(img.height / screenCompression);
                         gifToImg();
                     } // No real good way to go about it for gifs
                     console.log(img.width);
                     console.log(img.height);
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
                     ratio = img.width / img.height;
+                    orgW = img.width;
+                    orgH = img.height;
                 }
                 document.getElementById("l").value = src;
             } else {
@@ -240,16 +245,27 @@ function changeW(val) {
         img.id = "1";
         img.src = src;
         img.draggable = false;
+        img.height = height;
         if (val == 0) {
-            img.width = height * ratio;
+            if (document.getElementById("h").value == 0) {
+                def = true;
+                img.width = orgW;
+                img.height = orgH;
+            } else {
+                img.width = height * ratio;
+            }
         } else {
+            if (def) {
+                img.removeAttribute("height");
+                def = false;
+            }
             img.width = val;
         }
-        img.height = height;
         gifToImg();
     } else {
-        if (val == 0) {
+        if (val == 0 || def) {
             el.removeAttribute("width");
+            default = false;
         } else {
             el.width = val;
         }
@@ -267,12 +283,22 @@ function changeH(val) {
         img.id = "1";
         img.src = src;
         img.draggable = false;
+        img.width = width;
         if (val == 0) {
-            img.height = width / ratio;
+            if (document.getElementById("w").value == 0) {
+                def = true;
+                img.height = orgH;
+                img.width = orgW;
+            } else {
+                img.height = width / ratio;
+            }
         } else {
+            if (def) {
+                img.removeAttribute("width");
+                def = false;
+            }
             img.height = val;
         }
-        img.width = width;
         gifToImg();
     } else {
         if (val == 0) {
