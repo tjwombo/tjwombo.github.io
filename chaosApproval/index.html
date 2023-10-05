@@ -221,6 +221,7 @@ function getCanvas(){
     canvas.id = "1";
     document.getElementById("c").appendChild(canvas);
     canvas.ctx = canvas.getContext('2d');
+    canvas.draggable = false;
     return canvas;
 };
 
@@ -267,13 +268,16 @@ function changeW(val) {
         img.id = "1";
         img.src = src;
         img.draggable = false;
-        document.getElementById("c").appendChild(img);
         if (document.getElementById("h").value == 0) {
             img.height = val / ratio;
         } else {
             img.width = val
         }
-        stopAnimatedGifs("1");
+        canvas = getCanvas();
+        canvas.width = img.width;
+        canvas.width = img.height;
+        canvas.ctx.drawImage( gif, 0, 0, img.width, img.height);
+        document.remove(img);
     } else {
         if (val == 0) {
             el.removeAttribute("width");
