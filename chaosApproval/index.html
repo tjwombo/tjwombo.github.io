@@ -233,7 +233,12 @@ function preventAnimation( gif ){
     canvas.height = h;
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
-    parent.replaceChild( canvas, gif );
+    if (parent != null) {
+        parent.replaceChild( canvas, gif );
+    } else {
+        document.appendChild(canvas);
+        gif.remove();
+    }
 };
 
 function stopAnimatedGifs(ids){
@@ -316,7 +321,7 @@ function changeL(val) {
         img.draggable = false;
         img.onload = function() {
             document.getElementById("text").innerHTML = "Original dimensions: " + (Math.floor(img.width/screenCompression)) + "x" + (Math.floor(img.height/screenCompression)) + message;
-	    ratio = img.width / img.height;	
+            ratio = img.width / img.height;	
             img.height = h;
             img.width = w;
         }
@@ -327,10 +332,10 @@ function changeL(val) {
         oldImg.src = src;
         img.onload = function() {
             document.getElementById("text").innerHTML = "Original dimensions: " + (img.width/screenCompression) + "x" + (img.height/screenCompression) + message;
-	    ratio = img.width / img.height;	
-	    oldImg.height = img.height;
-	    oldImg.width = img.width;
-	    img.remove();
+            ratio = img.width / img.height;	
+            oldImg.height = img.height;
+            oldImg.width = img.width;
+            img.remove();
         }
     }
 }
