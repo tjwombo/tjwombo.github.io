@@ -276,7 +276,7 @@ function changeW(val) {
         canvas.width = img.width;
         canvas.width = img.height;
         canvas.ctx.drawImage( img, 0, 0, img.width, img.height);
-        document.remove(img);
+        img.remove();
     } else {
         if (val == 0) {
             el.removeAttribute("width");
@@ -302,7 +302,11 @@ function changeH(val) {
         } else {
             img.height = val;
         }
-        stopAnimatedGifs("1");
+        canvas = getCanvas();
+        canvas.width = img.width;
+        canvas.width = img.height;
+        canvas.ctx.drawImage( img, 0, 0, img.width, img.height);
+        img.remove();
     } else {
         if (val == 0) {
             el.removeAttribute("height");
