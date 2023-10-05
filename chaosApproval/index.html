@@ -236,7 +236,7 @@ function preventAnimation( gif ){
     if (parent != null) {
         parent.replaceChild( canvas, gif );
     } else {
-        document.appendChild(canvas);
+        document.body.appendChild(canvas);
         gif.remove();
     }
 };
