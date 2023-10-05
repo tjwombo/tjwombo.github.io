@@ -267,11 +267,11 @@ function changeW(val) {
         img.id = "1";
         img.src = src;
         img.draggable = false;
-        if (document.getElementById("h").value == 0) {
-            img.height = val / ratio;
-        } else {
+        //if (document.getElementById("h").value == 0) {
+        //    img.height = val / ratio;
+        //} else {
             img.width = val
-        }
+        //}
         canvas = getCanvas();
         canvas.width = img.width;
         canvas.width = img.height;
@@ -297,11 +297,11 @@ function changeH(val) {
         img.src = src;
         img.draggable = false;
         document.getElementById("c").appendChild(img);
-        if (document.getElementById("w").value == 0) {
-            img.width = val * ratio;
-        } else {
+        //if (document.getElementById("w").value == 0) {
+        //    img.width = val * ratio;
+        //} else {
             img.height = val;
-        }
+        //}
         canvas = getCanvas();
         canvas.width = img.width;
         canvas.width = img.height;
