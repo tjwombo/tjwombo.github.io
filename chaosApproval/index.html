@@ -229,8 +229,9 @@ function preventAnimation( gif ){
     canvas = getCanvas();
     var w = gif.width;
     var h =  gif.height;
-    canvas.width  = w;
-    canvas.height = h;
+    canvas.style = "object-fit:fill";
+    //canvas.width  = w;
+    //canvas.height = h;
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
     if (parent != null) {
