@@ -263,11 +263,21 @@ function changeW(val) {
         }
         gifToImg();
     } else {
-        if (val == 0 || def) {
-            el.removeAttribute("width");
-            default = false;
+        if (val == 0) {
+        	if (el.getAttribute("height") == null) {
+            	def = true;
+                el.width = orgW;
+                el.height = orgH;
+                return;
+            } else {
+	            el.removeAttribute("width");
+            }
         } else {
-            el.width = val;
+        	el.width = val;
+        }
+        if (def) {
+        	el.removeAttribute("height");
+            def = false;
         }
     }
 }
@@ -302,9 +312,20 @@ function changeH(val) {
         gifToImg();
     } else {
         if (val == 0) {
-            el.removeAttribute("height");
+        	if (el.getAttribute("width") == null) {
+            	def = true;
+                el.width = orgW;
+                el.height = orgH;
+                return;
+            } else {
+	            el.removeAttribute("height");
+            }
         } else {
-            el.height = val;
+        	el.height = val;
+        }
+        if (def) {
+        	el.removeAttribute("width");
+            def = false;
         }
     }
 }
