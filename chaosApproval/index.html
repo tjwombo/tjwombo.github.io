@@ -171,19 +171,19 @@ function myFunction() {
                 try {
                     if (data[1].node[1] == "img") {
                         isStatic = true;
-                        stopAnimatedGifs("1");
                     }
                 } catch (err) {}
                 img.onload = function() {
                     console.log(img.width);
-                    console.log(img.height);
+                    img.width = Math.floor(img.width / screenCompression);
                     if (isStatic) {
-                        img.width = Math.floor(img.width / screenCompression);
+                        //img.width = Math.floor(img.width / screenCompression);
+                        gifToImg();
                     } // No real good way to go about it for gifs
                     console.log(img.width);
                     console.log(img.height);
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
-                    ratio = img.width / img.height;		        
+                    ratio = img.width / img.height;
                 }
                 document.getElementById("l").value = src;
             } else {
