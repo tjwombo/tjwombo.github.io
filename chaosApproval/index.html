@@ -115,7 +115,7 @@ function myFunction() {
                     div.appendChild(ig);
                     var ifame = document.createElement("iframe");
                     ifame.id = "i";
-                    ifame.src = "https://player.twitch.tv/?channel=peldor_hots&parent=tjwombo.github.io";
+                    ifame.src = "https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io";
                     ifame.height = 918;
                     ifame.width = 1632;
                     div.appendChild(ifame);
@@ -264,11 +264,8 @@ function changeW(val) {
         document.getElementById("c").appendChild(img);
         if (document.getElementById("h").value == 0) {
             img.height = val / ratio;
-        }
-        if (val != 0) {
-            img.width = val;
         } else {
-            img.width = height * ratio; // didn't like it when we just removed it
+            img.width = val
         }
         stopAnimatedGifs("1");
     } else {
@@ -293,11 +290,8 @@ function changeH(val) {
         document.getElementById("c").appendChild(img);
         if (document.getElementById("w").value == 0) {
             img.width = val * ratio;
-        }
-        if (val != 0) {
-            img.height = val;
         } else {
-            img.height = width / ratio; // didn't like it when we just removed it
+            img.height = val;
         }
         stopAnimatedGifs("1");
     } else {
