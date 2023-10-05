@@ -230,9 +230,8 @@ function preventAnimation( gif ){
     canvas = getCanvas();
     var w = gif.width;
     var h =  gif.height;
-    canvas.style = "object-fit:fill";
-    //canvas.width  = w;
-    //canvas.height = h;
+    canvas.width  = w;
+    canvas.height = h;
     canvas.ctx.drawImage( gif, 0, 0, w, h);
     parent = gif.parentNode;
     if (parent != null) {
@@ -276,7 +275,7 @@ function changeW(val) {
         canvas = getCanvas();
         canvas.width = img.width;
         canvas.width = img.height;
-        canvas.ctx.drawImage( gif, 0, 0, img.width, img.height);
+        canvas.ctx.drawImage( img, 0, 0, img.width, img.height);
         document.remove(img);
     } else {
         if (val == 0) {
