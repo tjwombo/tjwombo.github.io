@@ -253,10 +253,6 @@ function stopAnimatedGifs(ids){
 };
 function changeW(val) {
     var el = document.getElementById("1");
-    if (val == 0) {
-        el.removeAttribute("height");
-        return;
-    }
     if (isStatic) {
         var height = el.height;
         var width = el.width;
@@ -266,19 +262,26 @@ function changeW(val) {
         img.src = src;
         img.draggable = false;
         document.getElementById("c").appendChild(img);
-        document.getElementById("1").width = val;
+        if (document.getElementById("h").value == 0) {
+            img.height = val / ratio;
+        }
+        if (val != 0) {
+            img.width = val;
+        } else {
+            img.width = height * ratio; // didn't like it when we just removed it
+        }
         stopAnimatedGifs("1");
     } else {
-        document.getElementById("1").width = val;
+        if (val == 0) {
+            el.removeAttribute("width");
+        } else {
+            el.width = val;
+        }
     }
 }
 
 function changeH(val) {
     var el = document.getElementById("1");
-    if (val == 0) {
-        el.removeAttribute("height");
-        return;
-    }
     if (isStatic) {
         var height = el.height;
         var width = el.width;
@@ -288,10 +291,21 @@ function changeH(val) {
         img.src = src;
         img.draggable = false;
         document.getElementById("c").appendChild(img);
-        img.height = val;
+        if (document.getElementById("w").value == 0) {
+            img.width = val * ratio;
+        }
+        if (val != 0) {
+            img.height = val;
+        } else {
+            img.height = width / ratio; // didn't like it when we just removed it
+        }
         stopAnimatedGifs("1");
     } else {
-        document.getElementById("1").height = val;
+        if (val == 0) {
+            el.removeAttribute("height");
+        } else {
+            el.height = val;
+        }
     }
 }
 
