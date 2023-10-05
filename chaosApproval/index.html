@@ -24,7 +24,7 @@ var orgH = 0;
 var isStatic = false;
 var src = "";
 var orgSrc = "";
-const message = ". Hit enter to see dimension change. 0 to reset scale (but not double 0)";
+const message = ". Hit enter to see dimension change. 0 to reset scale";
 const screenCompression = 1.16504854368932;
 var move = false;
 var offset = [];
@@ -179,8 +179,9 @@ function myFunction() {
                 img.onload = function() {
                     console.log(img.width);
                     img.width = Math.floor(img.width / screenCompression);
+                    img.height = img.height; //feels redundant but pretty sure it doesnt work if i dont do this
                     if (isStatic) {
-                        img.height = Math.floor(img.height / screenCompression);
+                        //img.height = Math.floor(img.height / screenCompression);
                         gifToImg();
                     } // No real good way to go about it for gifs
                     console.log(img.width);
