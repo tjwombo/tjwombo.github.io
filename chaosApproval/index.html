@@ -252,60 +252,46 @@ function stopAnimatedGifs(ids){
      };
 };
 function changeW(val) {
+    var el = document.getElementById("1");
+    if (val == 0) {
+        el.removeAttribute("height");
+        return;
+    }
     if (isStatic) {
-        var canvas = document.getElementById("1");
-        var height = canvas.height;
-        var width = canvas.width;
-        canvas.remove();
+        var height = el.height;
+        var width = el.width;
+        el.remove();
         img = document.createElement('img');
         img.id = "1";
         img.src = src;
         img.draggable = false;
         document.getElementById("c").appendChild(img);
-        if (document.getElementById("h").value == 0) {
-            document.getElementById("1").height = val / ratio;
-        } else if (val == 0) {
-            document.getElementById("1").width = height * ratio;
-        } else {
-            document.getElementById("1").width = val;
-            document.getElementById("1").height = height;
-        }
+        document.getElementById("1").width = val;
         stopAnimatedGifs("1");
     } else {
-        if (val == 0) {
-            document.getElementById("1").width = height * ratio;
-        } else {
-            document.getElementById("1").width = val;
-        }
+        document.getElementById("1").width = val;
     }
 }
 
 function changeH(val) {
+    var el = document.getElementById("1");
+    if (val == 0) {
+        el.removeAttribute("height");
+        return;
+    }
     if (isStatic) {
-        var canvas = document.getElementById("1");
-        var height = canvas.height;
-        var width = canvas.width;
-        canvas.remove();
+        var height = el.height;
+        var width = el.width;
+        el.remove();
         img = document.createElement('img');
         img.id = "1";
         img.src = src;
         img.draggable = false;
         document.getElementById("c").appendChild(img);
-        if (document.getElementById("w").value == 0) {
-            document.getElementById("1").width = val * ratio;
-        } else if (val == 0) {
-            document.getElementById("1").height = width / ratio;
-        } else {
-            document.getElementById("1").height = val;
-            document.getElementById("1").width = width;
-        }
+        img.height = val;
         stopAnimatedGifs("1");
     } else {
-        if (val == 0) {
-            document.getElementById("1").height = width / ratio;
-        } else {
-            document.getElementById("1").height = val;
-        }
+        document.getElementById("1").height = val;
     }
 }
 
@@ -372,7 +358,7 @@ function moveEl() {
 function buttonRP() {
     var el = document.getElementById("c");
     el.style.left = "9px";
-    el.style.top = "50px";
+    el.style.top = "30px";
 }
 
 function buttonRL() {
@@ -384,7 +370,7 @@ function buttonPR() {
     var el = document.getElementById("c");
     var realEl = document.getElementById("1");
     el.style.left = (Math.floor(Math.random() * (1633 - realEl.width)) + 9) + "px";
-    el.style.top = (Math.floor(Math.random() * (919 - realEl.height)) + 50) + "px";
+    el.style.top = (Math.floor(Math.random() * (919 - realEl.height)) + 30) + "px";
 }
 </script>
 </body>
