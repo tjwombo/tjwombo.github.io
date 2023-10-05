@@ -115,7 +115,7 @@ function myFunction() {
                     div.appendChild(ig);
                     var ifame = document.createElement("iframe");
                     ifame.id = "i";
-                    ifame.src = "https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io";
+                    ifame.src = "https://player.twitch.tv/?channel=peldor_hots&parent=tjwombo.github.io";
                     ifame.height = 918;
                     ifame.width = 1632;
                     div.appendChild(ifame);
@@ -177,9 +177,9 @@ function myFunction() {
                 img.onload = function() {
                     console.log(img.width);
                     console.log(img.height);
-                    //if (isStatic) {
+                    if (isStatic) {
                         img.width = Math.floor(img.width / screenCompression);
-                    //} // No real good way to go about it for gifs
+                    } // No real good way to go about it for gifs
                     console.log(img.width);
                     console.log(img.height);
                     document.getElementById("text").innerHTML = "Original dimensions: " + img.width + "x" +img.height + message;
@@ -273,7 +273,7 @@ function changeW(val) {
         stopAnimatedGifs("1");
     } else {
         if (val == 0) {
-            document.getElementById("1").width = null;
+            document.getElementById("1").width = height * ratio;
         } else {
             document.getElementById("1").width = val;
         }
@@ -294,7 +294,7 @@ function changeH(val) {
         if (document.getElementById("w").value == 0) {
             document.getElementById("1").width = val * ratio;
         } else if (val == 0) {
-            document.getElementById("1").height = null;
+            document.getElementById("1").height = width / ratio;
         } else {
             document.getElementById("1").height = val;
             document.getElementById("1").width = width;
