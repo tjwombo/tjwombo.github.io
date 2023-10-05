@@ -215,48 +215,20 @@ function myFunction() {
     move = false;
 }
 
-// Code to prevent gifs to being played. Use when static is redememd incase they try to send a gif
-function getCanvas(){
-    canvas = document.createElement('canvas');
+function gifToImg() {
+    var canvas = document.createElement('canvas');
+    var img = document.getElementById("1");
+    console.log(img);
     canvas.id = "1";
-    document.getElementById("c").appendChild(canvas);
     canvas.ctx = canvas.getContext('2d');
     canvas.draggable = false;
-    return canvas;
-};
+    canvas.width = img.width;
+    canvas.height = img.height;
+    canvas.ctx.drawImage(img, 0, 0, img.width, img.height);
+    img.remove();
+    document.getElementById("c").appendChild(canvas);
+}
 
-function preventAnimation( gif ){
-    var self = arguments.callee;
-    canvas = getCanvas();
-    var w = gif.width;
-    var h =  gif.height;
-    canvas.width  = w;
-    canvas.height = h;
-    canvas.ctx.drawImage( gif, 0, 0, w, h);
-    parent = gif.parentNode;
-    if (parent != null) {
-        parent.replaceChild( canvas, gif );
-    } else {
-        document.body.appendChild(canvas);
-        gif.remove();
-    }
-};
-
-function stopAnimatedGifs(ids){
-     // make sure the images are fully loaded before preventing animation
-     var images = document.images;
-     var i = images.length;
-     while( ( image = images[ --i ] ) ){
-          var src = image.src;
-          if( (/\.gif/).test( src ) && ids.includes(image.id)){
-               var gif = new Image()
-               gif.onload = (function( img ){ 
-                    return function(){ preventAnimation( img ) }
-               })( image );
-               gif.src = src;
-          };  
-     };
-};
 function changeW(val) {
     var el = document.getElementById("1");
     if (isStatic) {
@@ -264,19 +236,17 @@ function changeW(val) {
         var width = el.width;
         el.remove();
         img = document.createElement('img');
+        document.body.appendChild(img);
         img.id = "1";
         img.src = src;
         img.draggable = false;
-        //if (document.getElementById("h").value == 0) {
-        //    img.height = val / ratio;
-        //} else {
-            img.width = val
-        //}
-        canvas = getCanvas();
-        canvas.width = img.width;
-        canvas.width = img.height;
-        canvas.ctx.drawImage( img, 0, 0, img.width, img.height);
-        img.remove();
+        if (val == 0) {
+            img.width = height * ratio;
+        } else {
+            img.width = val;
+        }
+        img.height = height;
+        gifToImg();
     } else {
         if (val == 0) {
             el.removeAttribute("width");
@@ -293,20 +263,17 @@ function changeH(val) {
         var width = el.width;
         el.remove();
         img = document.createElement('img');
+        document.body.appendChild(img);
         img.id = "1";
         img.src = src;
         img.draggable = false;
-        document.getElementById("c").appendChild(img);
-        //if (document.getElementById("w").value == 0) {
-        //    img.width = val * ratio;
-        //} else {
+        if (val == 0) {
+            img.height = width / ratio;
+        } else {
             img.height = val;
-        //}
-        canvas = getCanvas();
-        canvas.width = img.width;
-        canvas.width = img.height;
-        canvas.ctx.drawImage( img, 0, 0, img.width, img.height);
-        img.remove();
+        }
+        img.width = width;
+        gifToImg();
     } else {
         if (val == 0) {
             el.removeAttribute("height");
