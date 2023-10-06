@@ -130,7 +130,7 @@ function myFunction() {
                     but.type = "button";
                     but.onclick = function(){buttonRP()};
                     but.innerHTML = "Reset Position";
-                    but.style = "width:280px; height:180px"
+                    but.style = "width:270px; height:180px"
                     div2.appendChild(but);
                     but = document.createElement("button");
                     but.id = "rl";
@@ -349,9 +349,9 @@ function changeL(val) {
             ratio = img.width / img.height;	
             img.height = h;
             img.width = w;
+            gifToImg();
         }
         document.body.appendChild(img);
-        gifToImg();
     } else {
 	var oldImg = document.getElementById("1");
         oldImg.src = src;
