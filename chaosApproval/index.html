@@ -181,6 +181,7 @@ function myFunction() {
                     console.log(img.width);
                     if (first) {
                         img.width = Math.floor(img.width / screenCompression);
+                        first = false;
                     } else {
                         img.width = img.width;
                     }
