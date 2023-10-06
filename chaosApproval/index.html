@@ -25,10 +25,11 @@ var isStatic = false;
 var src = "";
 var orgSrc = "";
 const message = ". Hit enter to see dimension change. 0 to reset scale";
-const screenCompression = 1.16504854368932;
+const screenCompression = 1.2;
 var move = false;
 var offset = [];
 var def = true;
+var first = true;
 
 peer.on('error', function(err) { console.log(err); });
 
@@ -112,15 +113,15 @@ function myFunction() {
                     var ig = document.createElement("img");
                     ig.src= "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1024px-HD_transparent_picture.png";
                     ig.style = "position:absolute";
-                    ig.width = 1636;
-                    ig.height = 922;
+                    ig.width = 1604;
+                    ig.height = 904;
                     ig.draggable = false;
                     div.appendChild(ig);
                     var ifame = document.createElement("iframe");
                     ifame.id = "i";
                     ifame.src = "https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io";
-                    ifame.height = 918;
-                    ifame.width = 1632;
+                    ifame.height = 900;
+                    ifame.width = 1600;
                     div.appendChild(ifame);
                     var div2 = document.createElement("div");
                     div2.style = "float: right; display: flex; flex-direction: column; user-select: none";
@@ -178,7 +179,11 @@ function myFunction() {
                 } catch (err) {}
                 img.onload = function() {
                     console.log(img.width);
-                    img.width = Math.floor(img.width / screenCompression);
+                    if (first) {
+                        img.width = Math.floor(img.width / screenCompression);
+                    } else {
+                        img.width = img.width;
+                    }
                     img.height = img.height; //feels redundant but pretty sure it doesnt work if i dont do this
                     if (isStatic) {
                         //img.height = Math.floor(img.height / screenCompression);
@@ -355,13 +360,6 @@ function changeL(val) {
     } else {
 	var oldImg = document.getElementById("1");
         oldImg.src = src;
-        img.onload = function() {
-            document.getElementById("text").innerHTML = "Original dimensions: " + (img.width/screenCompression) + "x" + (img.height/screenCompression) + message;
-            ratio = img.width / img.height;	
-            oldImg.height = img.height;
-            oldImg.width = img.width;
-            img.remove();
-        }
     }
 }
 
