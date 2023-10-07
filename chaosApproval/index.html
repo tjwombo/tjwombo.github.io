@@ -33,6 +33,10 @@ var first = true;
 
 peer.on('error', function(err) { console.log(err); });
 
+window.onbeforeunload = function() {
+    peer.destroy();
+}
+
 function myFunction() {
     c = peer.connect('womboModServer');
 
