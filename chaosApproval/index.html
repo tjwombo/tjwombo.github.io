@@ -374,7 +374,7 @@ function changeL(val) {
 function buttonA() {
     var img = document.getElementById("1");
     var can = document.getElementById("c");
-    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), can.style.left, can.style.top]); // going to need to modify this in respects to the players coords
+    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), can.style.left - (9*screenCompression), can.style.top - (30*screenCompression)]);
 }
 
 function buttonD() {
