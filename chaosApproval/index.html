@@ -46,6 +46,10 @@ function myFunction() {
         c.on('data', function(data) {
             if (verified) {
                 if (data == null) {
+                    var img = document.getElementById("1");
+                    if (img != null) {
+                        img.remove();
+                    }
                     return;
                 }
                 console.log(data);
@@ -106,11 +110,6 @@ function myFunction() {
                     div.style = "position:absolute; z-index: 100";
                     div.draggable = false;
                     div.onmousedown = function(){readyTransform()};
-                    var img = document.createElement("img");
-                    img.id = "1";
-                    img.draggable = false;
-                    div.appendChild(img);
-                    document.body.appendChild(div);
 
                     div = document.createElement("div");
                     div.onmousedown = function(){return false};
@@ -168,6 +167,12 @@ function myFunction() {
                     div2.appendChild(but);
                     div.appendChild(div2);
                     document.body.appendChild(div);
+                }
+                if (document.getElementById("1") == null) {
+                    var img = document.createElement("img");
+                    img.id = "1";
+                    img.draggable = false;
+                    document.getElementById("c").appendChild(img);
                 }
                 var img = document.getElementById("1");
                 try {
@@ -375,7 +380,13 @@ function changeL(val) {
 function buttonA() {
     var img = document.getElementById("1");
     var can = document.getElementById("c");
-    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), can.style.left, can.style.top, checkNum]);
+    if (img.style.left == "") {
+        img.style.left = 9/screenCompression + "px";
+    }
+    if (img.style.top == "") {
+        img.style.top = 30/screenCompression + "px";
+    }
+    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), parseInt(can.style.left, 10)*screenCompression - 9, can.style.top, checkNum]);
 }
 
 function buttonD() {
