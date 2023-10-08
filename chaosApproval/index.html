@@ -56,6 +56,13 @@ function myFunction() {
                 if (data[0] != "womboModServer") {
                     return;
                 }
+                if (data[1] == null) {
+                    var img = document.getElementById("1");
+                    if (img != null) {
+                        img.remove();
+                    }
+                    return;
+                }
                 if (document.getElementById("w") == null) {
                     var div = document.createElement("div");
                     div.onmousedown = function(){return false};
