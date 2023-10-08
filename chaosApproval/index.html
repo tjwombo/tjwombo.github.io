@@ -176,7 +176,14 @@ function myFunction() {
                     div.appendChild(div2);
                     document.body.appendChild(div);
                 }
-                if (document.getElementById("1") == null && document.getElementById("c") != null) {
+                if (data[1] != null && data[1].node[2] != checkNum) {
+                    var img = document.getElementById("1");
+                    if (img != null) {
+                        img.remove();
+                    }
+                    return;
+                }
+                if (data[1] != null && document.getElementById("c") != null) {
                     var img = document.createElement("img");
                     img.id = "1";
                     img.draggable = false;
