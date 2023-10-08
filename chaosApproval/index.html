@@ -30,6 +30,7 @@ var move = false;
 var offset = [];
 var def = true;
 var first = true;
+var name = "";
 
 peer.on('error', function(err) { console.log(err); });
 
@@ -207,6 +208,8 @@ function myFunction() {
                 if (typeof data == "string") {				
                     if (data.includes("good")) {
                         verified = true;
+			name = data.split(" ")[1];
+			console.log(name);
                         //document.getElementById("1").style.visibility = "";	
                     } else if (data == "Ready") {
                         c.send("Ready");
@@ -371,11 +374,11 @@ function changeL(val) {
 function buttonA() {
     var img = document.getElementById("1");
     var can = document.getElementById("c");
-    c.send(["Accept", src, (img.width*screenCompression), (img.height*screenCompression), can.style.left, can.style.top]); // going to need to modify this in respects to the players coords
+    c.send(["Accept", name, src, (img.width*screenCompression), (img.height*screenCompression), can.style.left, can.style.top]); // going to need to modify this in respects to the players coords
 }
 
 function buttonD() {
-    c.send(["Deny"]);
+    c.send(["Deny", name]);
 }
 
 function readyTransform() {
