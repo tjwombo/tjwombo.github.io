@@ -200,8 +200,10 @@ function myFunction() {
                 try {
                     if (data[1].node[1] == "img") {
                         isStatic = true;
+                    } else {
+                        isStatic = false;
                     }
-                } catch (err) {}
+                } catch (err) { isStatic = false; }
                 img.onload = function() {
                     console.log(img.width);
                     if (first) {
