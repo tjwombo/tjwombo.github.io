@@ -114,6 +114,7 @@ function myFunction() {
 
                     var div2 = document.createElement("div");
                     div2.style.position = "relative";
+                    div2.style.overflow = "hidden";
                     div = document.createElement("div");
                     div.id = "c";
                     div.style = "position:absolute; z-index: 100";
@@ -138,6 +139,8 @@ function myFunction() {
                     ifame.height = 900;
                     ifame.width = 1600;
                     div.appendChild(ifame);
+                    document.body.appendChild(div2);
+
                     var div2 = document.createElement("div");
                     div2.style = "float: right; display: flex; flex-direction: column; user-select: none";
                     div2.onmousedown = function(){return false};
@@ -176,8 +179,7 @@ function myFunction() {
                     but.innerHTML = "Deny";
                     but.style = "height:185px; background-color: #C41E3A";
                     div2.appendChild(but);
-                    div.appendChild(div2);
-                    document.body.appendChild(div);
+                    document.body.appendChild(div2);
                 }
                 if (data[1] != null && data[1].node[2] != checkNum) {
                     var img = document.getElementById("1");
