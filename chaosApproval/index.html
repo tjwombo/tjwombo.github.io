@@ -29,7 +29,7 @@ const screenCompression = 1.2;
 var move = false;
 var offset = [];
 var def = true;
-var first = true;
+
 var name = "";
 var checkNum = 0;
 
@@ -112,12 +112,15 @@ function myFunction() {
                     div.appendChild(label);
                     document.body.insertBefore(div, inpt);
 
+                    var div2 = document.createElement("div");
+                    div2.style.position = "relative";
                     div = document.createElement("div");
                     div.id = "c";
                     div.style = "position:absolute; z-index: 100";
                     div.draggable = false;
                     div.onmousedown = function(){readyTransform()};
-                    document.body.appendChild(div);
+                    div2.appendChild(div);
+                    document.body.appendChild(div2);
 
                     div = document.createElement("div");
                     div.onmousedown = function(){return false};
@@ -207,12 +210,7 @@ function myFunction() {
                 } catch (err) { isStatic = false; }
                 img.onload = function() {
                     console.log(img.width);
-                    //if (first) {
-                        img.width = Math.floor(img.width / screenCompression);
-                        first = false;
-                    //} else {
-                    //    img.width = img.width;
-                    //}
+                    img.width = Math.floor(img.width / screenCompression);
                     img.height = img.height; //feels redundant but pretty sure it doesnt work if i dont do this
                     if (isStatic) {
                         //img.height = Math.floor(img.height / screenCompression);
@@ -379,7 +377,7 @@ function changeL(val) {
         img.id = "1";
         img.draggable = false;
         img.onload = function() {
-            orgW = img.width;
+            orgW = Math.floor(img.width/screenCompression);
             orgH = img.height;
             document.getElementById("text").innerHTML = "Original dimensions: " + (Math.floor(img.width/screenCompression)) + "x" + (Math.floor(img.height/screenCompression)) + message;
             ratio = img.width / img.height;	
