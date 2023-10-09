@@ -207,12 +207,12 @@ function myFunction() {
                 } catch (err) { isStatic = false; }
                 img.onload = function() {
                     console.log(img.width);
-                    if (first) {
+                    //if (first) {
                         img.width = Math.floor(img.width / screenCompression);
                         first = false;
-                    } else {
-                        img.width = img.width;
-                    }
+                    //} else {
+                    //    img.width = img.width;
+                    //}
                     img.height = img.height; //feels redundant but pretty sure it doesnt work if i dont do this
                     if (isStatic) {
                         //img.height = Math.floor(img.height / screenCompression);
