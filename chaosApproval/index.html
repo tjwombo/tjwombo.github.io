@@ -112,9 +112,9 @@ function myFunction() {
                     div.appendChild(label);
                     document.body.insertBefore(div, inpt);
 
+                    var div3 = document.createElement("div");
                     var div2 = document.createElement("div");
-                    div2.style.position = "relative";
-                    div2.style.overflow = "hidden";
+                    div2.style = "position:relative; overflow:hidden; max-width: 1600px";
                     div = document.createElement("div");
                     div.id = "c";
                     div.style = "position:absolute; z-index: 100";
@@ -124,7 +124,7 @@ function myFunction() {
 
                     div = document.createElement("div");
                     div.onmousedown = function(){return false};
-                    div.style = "user-select:none; display: flex";
+                    div.style = "user-select:none";
                     var ig = document.createElement("img");
                     ig.src= "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1024px-HD_transparent_picture.png";
                     ig.style = "position:absolute";
@@ -139,47 +139,48 @@ function myFunction() {
                     ifame.width = 1600;
                     div.appendChild(ifame);
                     div2.appendChild(div);
-                    document.body.appendChild(div2);
+                    div3.appendChild(div2);
 
-                    var div2 = document.createElement("div");
-                    div2.style = "float: right; display: flex; flex-direction: column; user-select: none";
-                    div2.onmousedown = function(){return false};
+                    div = document.createElement("div");
+                    div.style = "left: 1604px; top: 0; width:290px; positionl absolute; display: flex; flex-direction: column; user-select: none";
+                    div.onmousedown = function(){return false};
                     var but = document.createElement("button");
                     but.id = "rp";
                     but.type = "button";
                     but.onclick = function(){buttonRP()};
                     but.innerHTML = "Reset Position";
-                    but.style = "width:270px; height:180px"
-                    div2.appendChild(but);
+                    but.style = "height:180px"
+                    div.appendChild(but);
                     but = document.createElement("button");
                     but.id = "rl";
                     but.type = "button";
                     but.onclick = function(){buttonRL()};
                     but.innerHTML = "Reset Link";
                     but.style = "height:185px";
-                    div2.appendChild(but);
+                    div.appendChild(but);
                     but = document.createElement("button");
                     but.id = "pr";
                     but.type = "button";
                     but.onclick = function(){buttonPR()};
                     but.innerHTML = "Random Position";
                     but.style = "height:185px";
-                    div2.appendChild(but);
+                    div.appendChild(but);
                     but = document.createElement("button");
                     but.id = "a";
                     but.type = "button";
                     but.onclick = function(){buttonA()};
                     but.innerHTML = "Accept";
                     but.style = "height:185px; background-color: #4CAF50";
-                    div2.appendChild(but);
+                    div.appendChild(but);
                     but = document.createElement("button");
                     but.id = "d";
                     but.type = "button";
                     but.onclick = function(){buttonD()};
                     but.innerHTML = "Deny";
                     but.style = "height:185px; background-color: #C41E3A";
-                    div2.appendChild(but);
-                    document.body.appendChild(div2);
+                    div.appendChild(but);
+                    div3.appendChild(div);
+                    document.body.appendChild(div3);
                 }
                 if (data[1] != null && data[1].node[2] != checkNum) {
                     var img = document.getElementById("1");
