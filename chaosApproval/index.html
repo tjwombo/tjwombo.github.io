@@ -399,7 +399,7 @@ function changeL(val) {
 function buttonA() {
     var img = document.getElementById("1");
     var can = document.getElementById("c");
-    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), (parseInt(can.style.left, 10)-9)*screenCompression, (parseInt(can.style.top, 10)-30)*screenCompression, checkNum]);
+    c.send(["Accept", name, src, isStatic, (img.width*screenCompression), (img.height*screenCompression), parseInt(can.style.left, 10)*screenCompression, parseInt(can.style.top, 10)*screenCompression, checkNum]);
 }
 
 function buttonD() {
@@ -426,8 +426,8 @@ function moveEl() {
 
 function buttonRP() {
     var el = document.getElementById("c");
-    el.style.left = "9px";
-    el.style.top = "30px";
+    el.style.left = "0px";
+    el.style.top = "0px";
 }
 
 function buttonRL() {
@@ -438,8 +438,8 @@ function buttonRL() {
 function buttonPR() {
     var el = document.getElementById("c");
     var realEl = document.getElementById("1");
-    el.style.left = (Math.floor(Math.random() * (1633 - realEl.width)) + 9) + "px";
-    el.style.top = (Math.floor(Math.random() * (919 - realEl.height)) + 30) + "px";
+    el.style.left = Math.floor(Math.random() * (1601 - realEl.width)) + "px";
+    el.style.top = Math.floor(Math.random() * (901 - realEl.height)) + "px";
 }
 </script>
 </body>
