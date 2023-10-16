@@ -18,6 +18,7 @@
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+        pointer-events: none;
         opacity: 0.0;
     }
   </style>
@@ -56,28 +57,28 @@
 
 
 
-  <audio id="bonnieSounds" src="./src/fnaf2_bonnie.mp3" type="audio/mpeg">
-  <audio id="chikaSounds" src="./src/fnaf2_chika.mp3" type="audio/mpeg">
-  <audio id="foxySounds" src="./src/fnaf2_foxy.mp3" type="audio/mpeg">
-  <audio id="freddySounds" src="./src/fnaf2_freddy.mp3" type="audio/mpeg">
-  <audio id="mangledSounds" src="./src/fnaf2_mangled.mp3" type="audio/mpeg">
-  <audio id="puppetSounds" src="./src/fnaf2_puppet.mp3" type="audio/mpeg">
-  <audio id="tchikaSounds" src="./src/fnaf2_toy_chika.mp3" type="audio/mpeg">
-  <audio id="tfreddySounds" src="./src/fnaf2_toy_freddy.mp3" type="audio/mpeg">
-  <audio id="tbonnieSounds" src="./src/fnaf2_toy_bonnie.mp3" type="audio/mpeg">
-  <audio id="gfreddySounds" src="./src/fnaf2_golden_freddy.mp3" type="audio/mpeg">
+  <audio id="bonnieSounds" src="./src/fnaf2_bonnie.mp3" type="audio/mpeg"> </audio>
+  <audio id="chikaSounds" src="./src/fnaf2_chika.mp3" type="audio/mpeg"> </audio>
+  <audio id="foxySounds" src="./src/fnaf2_foxy.mp3" type="audio/mpeg"> </audio>
+  <audio id="freddySounds" src="./src/fnaf2_freddy.mp3" type="audio/mpeg"> </audio>
+  <audio id="mangledSounds" src="./src/fnaf2_mangled.mp3" type="audio/mpeg"> </audio>
+  <audio id="puppetSounds" src="./src/fnaf2_puppet.mp3" type="audio/mpeg"> </audio>
+  <audio id="tchikaSounds" src="./src/fnaf2_toy_chika.mp3" type="audio/mpeg"> </audio>
+  <audio id="tfreddySounds" src="./src/fnaf2_toy_freddy.mp3" type="audio/mpeg"> </audio>
+  <audio id="tbonnieSounds" src="./src/fnaf2_toy_bonnie.mp3" type="audio/mpeg"> </audio>
+  <audio id="gfreddySounds" src="./src/fnaf2_golden_freddy.mp3" type="audio/mpeg"> </audio>
 
 
-  <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg" />
-  <audio id="ballerinaSounds" src="./src/fnafs_ballerina.mp3" type="audio/mpeg" />
-  <audio id="bonniesSounds" src="./src/fnafs_bonnie.mp3" type="audio/mpeg" />
-  <audio id="clownSounds" src="./src/fnafs_clown.mp3" type="audio/mpeg" />
-  <audio id="clown2Sounds" src="./src/fnafs_clown2.mp3" type="audio/mpeg" />
-  <audio id="exoSounds" src="./src/fnafs_exo.mp3" type="audio/mpeg" />
-  <audio id="exosSounds" src="./src/fnafs_exo_shadow.mp3" type="audio/mpeg" />
-  <audio id="foxysSounds" src="./src/fnafs_foxy.mp3" type="audio/mpeg" />
-  <audio id="freddysSounds" src="./src/fnafs_freddy.mp3" type="audio/mpeg" />
-  <audio id="marianetteSounds" src="./src/fnafs_marianette.mp3" type="audio/mpeg" />
+  <audio id="babySounds" src="./src/fnafs_baby.mp3" type="audio/mpeg"> </audio>
+  <audio id="ballerinaSounds" src="./src/fnafs_ballerina.mp3" type="audio/mpeg"> </audio>
+  <audio id="bonniesSounds" src="./src/fnafs_bonnie.mp3" type="audio/mpeg"> </audio>
+  <audio id="clownSounds" src="./src/fnafs_clown.mp3" type="audio/mpeg"> </audio>
+  <audio id="clown2Sounds" src="./src/fnafs_clown2.mp3" type="audio/mpeg"> </audio>
+  <audio id="exoSounds" src="./src/fnafs_exo.mp3" type="audio/mpeg"> </audio>
+  <audio id="exosSounds" src="./src/fnafs_exo_shadow.mp3" type="audio/mpeg"> </audio>
+  <audio id="foxysSounds" src="./src/fnafs_foxy.mp3" type="audio/mpeg"> </audio>
+  <audio id="freddysSounds" src="./src/fnafs_freddy.mp3" type="audio/mpeg"> </audio>
+  <audio id="marianetteSounds" src="./src/fnafs_marianette.mp3" type="audio/mpeg"> </audio>
 
   
 
@@ -94,8 +95,8 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            document.cookie = "key=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             key = reader.result;
+            document.cookie = "token=" + key + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             document.getElementById("data").remove();
             document.getElementById("dataL").remove();
 
@@ -123,8 +124,8 @@
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            document.cookie = "client=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             client = reader.result;
+            document.cookie = "client=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
             document.getElementById("clientID").remove();
             document.getElementById("clientL").remove();
 
@@ -145,7 +146,6 @@
             reader.readAsText(file);
         }
     }
-
 
     // Determines the max number for the random generation
     var numOfJumpscares = 19;
