@@ -25,6 +25,12 @@
 
 <body>
 
+  <label for="data" id="dataL"> data:</label>
+  <input type="file" id="data" name="data" onchange="previewFile()">
+
+  <label for="data" id="clientL"> clientId:</label>
+  <input type="file" id="clientID" name="clientID" onchange="previewFile2()">
+
   <img id="bonnie" src="./src/fnaf2_bonnie.gif" class="image" />
   <img id="chika" src="./src/fnaf2_chika.gif" class="image" />
   <img id="foxy" src="./src/fnaf2_foxy.gif" class="image" />
@@ -78,12 +84,71 @@
   <script>
 
 
-    // Determines the max number for the random generation
-    var numOfJumpscares = 19;
-
     // Variables that we are adjusting through cookies
     var key = "";
     var client = "";
+
+    async function previewFile() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[type=file]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "key=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            key = reader.result;
+            document.getElementById("data").remove();
+            document.getElementById("dataL").remove();
+
+            if (document.cookie != null) {
+                var allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("key")) {
+                       console.log("key written");
+                       break;
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+    async function previewFile2() {
+        const content = document.querySelector('.content');
+        const [file] = document.querySelector('input[name=clientID]').files;
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            document.cookie = "client=" + reader.result + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+            client = reader.result;
+            document.getElementById("clientID").remove();
+            document.getElementById("clientL").remove();
+
+            if (document.cookie != null) {
+                var allCookies = document.cookie.split('; ');
+   
+                for(i = 0; i < allCookies.length; i++) {
+   
+                    if (allCookies[i].includes("client")) {
+                       console.log("key written");
+                       break;
+                    }
+                }
+            }
+        }, false);
+
+        if (file) {
+            reader.readAsText(file);
+        }
+    }
+
+
+    // Determines the max number for the random generation
+    var numOfJumpscares = 19;
 
     // Variables to pause and play audio
     var bonnie = document.getElementById("bonnieSounds");
@@ -110,12 +175,23 @@
 
 
     // Read the cookie and put the value into the variables and update the page
+    var allCookies = document.cookie.split('; ');
     for (i = 0; i < document.cookie.split('; ').length; i++) {
-        if (document.cookie.split('; ')[i].includes("key")) {
-            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
-        } else if (document.cookie.split('; ')[i].includes("client")) {
-            client = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+        if (allCookies[i].includes("token")) {
+            key = allCookies[i].substring(allCookies[i].indexOf("=")+1);
+        } else if (allCookies[i].includes("refresh")) {
+            refresh = allCookies[i].substring(allCookies[i].indexOf("=")+1);
+	} else if (allCookies[i].includes("client")) {
+            client = allCookies[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
         }
+    }
+    if (key != "") {
+       document.getElementById("data").remove();
+       document.getElementById("dataL").remove();
+    }
+    if (client != "") {
+       document.getElementById("clientID").remove();
+       document.getElementById("clientL").remove();
     }
 
     // Connect to the channel to read channel point redemptions
