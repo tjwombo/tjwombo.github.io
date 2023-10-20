@@ -1,16 +1,20 @@
-<!DOCTYPE html>
 <html>
-<body>
-<head>
-<script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
-<script src="https://embed.twitch.tv/embed/v1.js"></script>
-</head>
-<iframe
-    src="https://player.twitch.tv/?<channel, video, or collection>&parent=streamernews.example.com"
-    height="<height>"
-    width="<width>"
-    allowfullscreen>
-</iframe>
+  <body>
+    <!-- Add a placeholder for the Twitch embed -->
+    <div id="twitch-embed"></div>
 
-</body>
+    <!-- Load the Twitch embed JavaScript file -->
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+
+    <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element -->
+    <script type="text/javascript">
+      new Twitch.Embed("twitch-embed", {
+        width: 1920,
+        height: 1080,
+        channel: "gamesdonequick",
+        // Only needed if this page is going to be embedded on other websites
+        parent: ["tjwombo.github.io"]
+      });
+    </script>
+  </body>
 </html>
