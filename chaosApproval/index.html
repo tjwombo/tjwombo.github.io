@@ -126,13 +126,6 @@ function myFunction() {
                     div = document.createElement("div");
                     div.onmousedown = function(){return false};
                     div.style = "user-select:none";
-                    var ig = document.createElement("img");
-                    ig.src= "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/HD_transparent_picture.png/1024px-HD_transparent_picture.png";
-                    ig.style = "position:absolute";
-                    ig.width = 1604;
-                    ig.height = 904;
-                    ig.draggable = false;
-                    div.appendChild(ig);
                     var ifame = document.createElement("iframe");
                     ifame.id = "i";
                     ifame.src = "https://player.twitch.tv/?channel=tjwombo&parent=tjwombo.github.io";
