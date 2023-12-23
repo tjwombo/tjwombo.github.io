@@ -21,7 +21,6 @@
         setUp();
     }
 
-    var random = 0;
     var userMap = new Map();
 
     function switchDecay(shroom) {
@@ -54,22 +53,17 @@
                 this.timer = setTimeout(removeShroom, 120000, this.user); // 2 minutes
             }
         }
-
-        removeShroom() {
-            console.log("remove");
-        }
     }
 
     function setUp() {
         // Connect to the channel to read channel point redemptions
         try {
-            ComfyJS.Init( "tjwombo", key);
+            ComfyJS.Init( "straybard", key);
 
             document.getElementById("butt").remove();
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
-                // Play a random fnaf jumpscare
-                if (reward == "Jumpscare") {
+                if (reward == "shroom") {
                     var shroom;
                     if (userMap.has(user)) {
                         shroom = userMap.get(user);
