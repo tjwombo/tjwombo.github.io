@@ -40,19 +40,52 @@
     }
 
     var random = 0;
+    var userMap = new Map();
+
+    class ShroomState {
+        constructor(u) {
+            this.state = 0;
+            this.user = u;
+        }
+
+        setTimer() {
+            if (this.state == 0) {
+                this.timer = setTimeout(this.switchDecay, 0); // 10 minutes
+            } else if (this.state == 1) {
+                this.timer = setTimeout(this.removeShroom, 0); // 2 minutes
+            }
+        }
+
+        switchDecay() {
+            console.log("decay");
+            this.state = 1;
+        }
+
+        removeShroom() {
+            console.log("remove");
+        }
+    }
 
     function setUp() {
         // Connect to the channel to read channel point redemptions
         try {
             ComfyJS.Init( "tjwombo", key);
 
-            error.innerHTML = "connected";
-
             document.getElementById("butt").remove();
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 // Play a random fnaf jumpscare
                 if (reward == "Jumpscare") {
+
+                    var shroom;
+                    if (userMap.has(user)) {
+                        shroom = userMap.get(user);
+                    } else {
+                        shroom = new ShroomState(user);
+                        // also create the img element
+                        shroom.setTimer();
+                        return;
+                    }
 
                     // Get a random time between 0 delay and 45 seconds
                     var wait = Math.floor(Math.random()*45000);
