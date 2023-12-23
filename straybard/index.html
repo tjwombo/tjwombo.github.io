@@ -21,32 +21,21 @@
         opacity: 0.0;
     }
 
-    .shownButton {
-        width: 1920px;
-        height: 1080px;
-        display: inline-block;
-    }
-
   </style>
 </head>
 
 <body>
 
-  <div class="shownButton">
-    <button id="butt" class="shownButton" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
-  </div>
+<input type="text" id="key">
+<button id="butt" class="shownButton" onclick="removeButton()" >Click to submit</button>
 
-  
-
-  <script>
+<script>
 
     function removeButton() {
         console.log("it worked");
-        document.getElementById("butt").style.display = "none"
-        var vidElement = document.getElementById("videos").getElementsByClassName("image");
-        for (let i = 0; i < vidElement.length; i++) {
-            vidElement[i].style.display = "inline-block";
-        }
+        document.cookie = "key=" + document.getElementById("text").value + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
+        document.getElementById("text").remove()
+        document.getElementById("butt").remove()
     }
 
     // Variables that we are adjusting through cookies
@@ -57,8 +46,12 @@
     for (i = 0; i < document.cookie.split('; ').length; i++) {
         if (document.cookie.split('; ')[i].includes("key")) {
             key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
-            removeButton()
+            document.getElementById("text").remove()
+            document.getElementById("butt").remove()
         }
+    }
+    if (key == "") {
+        
     }
 
     // Connect to the channel to read channel point redemptions
