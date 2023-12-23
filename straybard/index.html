@@ -28,6 +28,7 @@
         console.log("decay");
         shroom.state = 1;
         document.getElementById(shroom.user).src = "./src/decay.PNG"
+        shroom.setTimer();
     }
 
     function removeShroom(user) {
@@ -44,6 +45,9 @@
         }
 
         setTimer() {
+            if (this.timer != null) {
+                clearTimeout(this.timer);
+            }
             if (this.state == 0) {
                 this.timer = setTimeout(switchDecay, 600000, this); // 10 minutes
             } else if (this.state == 1) {
@@ -78,11 +82,10 @@
                         document.body.appendChild(img);
                         shroom.setTimer();
                         userMap.set(user, shroom);
-                        return;
                     }
                     if (shroom.state == 0) {
                        shroom.scale = shroom.scale + 1;
-                       document.getElementById(user).style.transform = "scale(" + 100+shroom.scale + ")";
+                       document.getElementById(user).style.transform = "scale(" + (100+shroom.scale) + ")";
                     } else if (shroom.state == 1) {
                         shroom.state = 0;
                         document.getElementById(user).src = "./src/init.PNG";
