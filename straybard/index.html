@@ -22,7 +22,7 @@
     }
 
     var userMap = new Map();
-    const cap = .5
+    const cap = .1
 
     function switchDecay(shroom) {
         console.log("decay");
@@ -82,7 +82,7 @@
                        if (shroom.scale == cap) {
                            document.getElementById(user).src = "./src/super.PNG";
                        } else {
-                           shroom.scale = shroom.scale + .1;
+                           shroom.scale = shroom.scale + .01;
                            document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
                        }
                     } else if (shroom.state == 1) {
