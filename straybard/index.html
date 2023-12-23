@@ -27,37 +27,16 @@
 <body>
 
 <h1 id="error"> </h1>
-<input type="text" id="key">
-<button id="butt" class="shownButton" onclick="removeButton()" >Click to submit</button>
+<button id="butt" onclick="removeButton()" >Click to start</button>
 
 <script>
 
-    function removeButton() {
-        console.log("it worked");
-        document.cookie = "key=" + document.getElementById("key").value + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        error.innerHTML = document.cookie;
-        setUp();
-    }
-
-    // Variables that we are adjusting through cookies
     var key = "";
 
-
-    // Read the cookie and put the value into the variables and update the page
-    if (document.cookie != null) {
-        for (i = 0; i < document.cookie.split('; ').length; i++) {
-            if (document.cookie.split('; ')[i].includes("key")) {
-                key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
-                error.innerHTML = key;
-                break;
-            }
-        }
-        // In case there is only one cookie
-        error.innerHTML = "test " + document.cookie;
-        if (document.cookie.startsWith("key") && key == "") {
-            key = document.cookie.substring(4);
-            error.innerHTML = key;
-        }
+    function removeButton() {
+        key = document.location.has.split("&")[0].split("=")[1];
+        error.innerHTML = key;
+        setUp();
     }
 
     var random = 0;
