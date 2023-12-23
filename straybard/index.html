@@ -35,7 +35,6 @@
 
     function removeButton() {
         key = document.location.hash.split("&")[0].split("=")[1];
-        error.innerHTML = key;
         setUp();
     }
 
@@ -76,44 +75,19 @@
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 // Play a random fnaf jumpscare
                 if (reward == "Jumpscare") {
-
                     var shroom;
                     if (userMap.has(user)) {
                         shroom = userMap.get(user);
                     } else {
                         shroom = new ShroomState(user);
-                        // also create the img element
+                        var img = document.createElement("image");
+                        img.src = "./src/init.png"
+                        img.id = user;
+                        document.body.appendChild(img);
                         shroom.setTimer();
+                        userMap.set(user, shroom);
                         return;
                     }
-
-                    // Get a random time between 0 delay and 45 seconds
-                    var wait = Math.floor(Math.random()*45000);
-
-                    // Wait for that amount of time
-                    setTimeout(function(){
-                
-                        // Get a random jumpscare
-                        //var random = Math.floor(Math.random()* numOfJumpscares);
-
-
-                        // Testing through each one
-                        random++;
-                        if (random == 19) {
-                            random = 0;
-                        }
-
-                        // Play a different video for a different time based off of the number we got
-                        switch(random) {
-                            default:
-                                setTimeout(function(){
-                                    console.log("a");
-                                }, 1420);
-                                break;
-                        }
-
-                    }, wait);
-            
                 }
             }
         } catch (err) {
