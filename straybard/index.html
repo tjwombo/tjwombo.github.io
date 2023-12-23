@@ -45,21 +45,24 @@
 
 
     // Read the cookie and put the value into the variables and update the page
-    for (i = 0; i < document.cookie.split('; ').length; i++) {
-        if (document.cookie.split('; ')[i].includes("key")) {
-            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
-            document.getElementById("text").remove();
+    if (document.cookie != null) {
+        for (i = 0; i < document.cookie.split('; ').length; i++) {
+            if (document.cookie.split('; ')[i].includes("key")) {
+                key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+                document.getElementById("key").remove();
+                document.getElementById("butt").remove();
+                error.innerHTML = key;
+                break;
+            }
+        }
+        // In case there is only one cookie
+        error.innerHTML = "test " + document.cookie;
+        if (document.cookie.startsWith("key")) {
+            key = document.cookie.substring(4);
+            document.getElementById("key").remove();
             document.getElementById("butt").remove();
             error.innerHTML = key;
         }
-    }
-    // In case there is only one cookie
-    error.innerHTML = "test " + document.cookie;
-    if (document.cookie.startsWith("key")) {
-        key = document.cookie.substring(4);
-        document.getElementById("key").remove();
-        document.getElementById("butt").remove();
-        error.innerHTML = key;
     }
 
     // Connect to the channel to read channel point redemptions
