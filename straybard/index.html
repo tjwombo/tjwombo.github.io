@@ -57,7 +57,7 @@
         }
         // In case there is only one cookie
         error.innerHTML = "test " + document.cookie;
-        if (document.cookie.startsWith("key")) {
+        if (document.cookie.startsWith("key") && key == "") {
             key = document.cookie.substring(4);
             document.getElementById("key").remove();
             document.getElementById("butt").remove();
