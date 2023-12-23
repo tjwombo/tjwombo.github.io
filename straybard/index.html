@@ -49,7 +49,10 @@
 
         setTimer() {
             if (this.state == 0) {
-                this.timer = setTimeout(this.switchDecay, 0); // 10 minutes
+                this.timer = setTimeout(function(){
+                                 console.log("decay");
+                                 this.state = 1;
+                             }, 0);
             } else if (this.state == 1) {
                 this.timer = setTimeout(this.removeShroom, 0); // 2 minutes
             }
@@ -82,7 +85,7 @@
                     } else {
                         shroom = new ShroomState(user);
                         var img = document.createElement("img");
-                        img.src = "./src/init.png"
+                        img.src = "./src/init.PNG"
                         img.id = user;
                         document.body.appendChild(img);
                         shroom.setTimer();
