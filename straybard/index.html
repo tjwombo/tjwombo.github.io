@@ -34,7 +34,7 @@
     var key = "";
 
     function removeButton() {
-        key = document.location.has.split("&")[0].split("=")[1];
+        key = document.location.hash.split("&")[0].split("=")[1];
         error.innerHTML = key;
         setUp();
     }
@@ -48,7 +48,6 @@
 
             error.innerHTML = "connected";
 
-            document.getElementById("key").remove();
             document.getElementById("butt").remove();
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
