@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>If you're not OBS, Go Away</title>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
+  <style>
+  
+    .image {
+        width: 1920px;
+        height: 1080px;
+        display: none;
+        background-color: #ccc;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        opacity: 0.0;
+    }
+
+    .shownButton {
+        width: 1920px;
+        height: 1080px;
+        display: inline-block;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="shownButton">
+    <button id="butt" class="shownButton" onclick="removeButton()" >Click Me to Enable Sound for Jumpscare</button>
+  </div>
+
+  
+
+  <script>
+
+    function removeButton() {
+        console.log("it worked");
+        document.getElementById("butt").style.display = "none"
+        var vidElement = document.getElementById("videos").getElementsByClassName("image");
+        for (let i = 0; i < vidElement.length; i++) {
+            vidElement[i].style.display = "inline-block";
+        }
+    }
+
+    // Variables that we are adjusting through cookies
+    var key = "";
+
+
+    // Read the cookie and put the value into the variables and update the page
+    for (i = 0; i < document.cookie.split('; ').length; i++) {
+        if (document.cookie.split('; ')[i].includes("key")) {
+            key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
+            removeButton()
+        }
+    }
+
+    // Connect to the channel to read channel point redemptions
+    ComfyJS.Init( "tjwombo", key);
+
+    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
+        // Play a random fnaf jumpscare
+        if (reward == "Jumpscare") {
+
+            // Get a random time between 0 delay and 45 seconds
+            var wait = Math.floor(Math.random()*45000);
+
+            // Wait for that amount of time
+            setTimeout(function(){
+                
+                // Get a random jumpscare
+                //var random = Math.floor(Math.random()* numOfJumpscares);
+
+
+                // Testing through each one
+                random++;
+                if (random == 19) {
+                    random = 0;
+                }
+
+                // Play a different video for a different time based off of the number we got
+                switch(random):
+                    default:
+                        document.querySelector("#golden_freddy").style.opacity = 1;
+                        goldenFreddy.play();
+                        setTimeout(function(){
+                           document.querySelector("#golden_freddy").style.opacity = 0;
+                           goldenFreddy.pause();
+                        }, 1420);
+                        break;
+                }
+
+            }, wait);
+            
+        }
+    }
+
+  </script>
+</body>
+</html>
+
