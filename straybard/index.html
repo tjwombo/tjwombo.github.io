@@ -53,6 +53,13 @@
             error.innerHTML = key;
         }
     }
+    // In case there is only one cookie
+    if (document.cookie.startsWith("key")) {
+        key = document.cookie.substring(4);
+        document.getElementById("key").remove();
+        document.getElementById("butt").remove();
+        error.innerHTML = key;
+    }
 
     // Connect to the channel to read channel point redemptions
     ComfyJS.Init( "tjwombo", key);
