@@ -5,23 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>If you're not OBS, Go Away</title>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js@latest/dist/comfy.min.js"></script>
-  <style>
-  
-    .image {
-        width: 1920px;
-        height: 1080px;
-        display: none;
-        background-color: #ccc;
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        opacity: 0.0;
-    }
-
-  </style>
 </head>
 
 <body>
@@ -44,19 +27,27 @@
     function switchDecay(shroom) {
         console.log("decay");
         shroom.state = 1;
+        document.getElementById(shroom.user).src = "./src/decay.PNG"
+    }
+
+    function removeShroom(user) {
+        console.log("remove");
+        document.getElementById(user).remove();
+        userMap.delete(user);
     }
 
     class ShroomState {
         constructor(u) {
-            this.state = 0;
+            this.state = -1;
             this.user = u;
+            this.scale = 0;
         }
 
         setTimer() {
             if (this.state == 0) {
-                this.timer = setTimeout(switchDecay, 0, this);
+                this.timer = setTimeout(switchDecay, 600000, this); // 10 minutes
             } else if (this.state == 1) {
-                this.timer = setTimeout(this.removeShroom, 0); // 2 minutes
+                this.timer = setTimeout(removeShroom, 120000, this.user); // 2 minutes
             }
         }
 
@@ -89,6 +80,17 @@
                         userMap.set(user, shroom);
                         return;
                     }
+                    if (shroom.state == 0) {
+                       shroom.scale = shroom.scale + 1;
+                       document.getElementById(user).width = (10+shroom.scale) + "%";
+                       document.getElementById(user).height = (10+shroom.scale) + "%";
+                    } else if (shroom.state == 1) {
+                        shroom.state = 0;
+                        document.getElementById(user).src = "./src/init.PNG";
+                    } else if (shroom.state == -1) {
+                        shroom.state = 0;
+                    }
+                    shroom.setTimer();
                 }
             }
         } catch (err) {
