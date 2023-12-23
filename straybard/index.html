@@ -35,9 +35,8 @@
     function removeButton() {
         console.log("it worked");
         document.cookie = "key=" + document.getElementById("key").value + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
-        document.getElementById("key").remove();
-        document.getElementById("butt").remove();
         error.innerHTML = document.cookie;
+        setUp();
     }
 
     // Variables that we are adjusting through cookies
@@ -49,8 +48,6 @@
         for (i = 0; i < document.cookie.split('; ').length; i++) {
             if (document.cookie.split('; ')[i].includes("key")) {
                 key = document.cookie.split('; ')[i].substring(document.cookie.split('; ')[i].indexOf("=")+1);
-                document.getElementById("key").remove();
-                document.getElementById("butt").remove();
                 error.innerHTML = key;
                 break;
             }
@@ -59,52 +56,60 @@
         error.innerHTML = "test " + document.cookie;
         if (document.cookie.startsWith("key") && key == "") {
             key = document.cookie.substring(4);
-            document.getElementById("key").remove();
-            document.getElementById("butt").remove();
             error.innerHTML = key;
         }
     }
 
-    // Connect to the channel to read channel point redemptions
-    ComfyJS.Init( "tjwombo", key);
- 
     var random = 0;
 
-    ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
-        // Play a random fnaf jumpscare
-        if (reward == "Jumpscare") {
+    function setUp() {
+        // Connect to the channel to read channel point redemptions
+        try {
+            ComfyJS.Init( "tjwombo", key);
 
-            // Get a random time between 0 delay and 45 seconds
-            var wait = Math.floor(Math.random()*45000);
+            error.innerHTML = "connected";
 
-            // Wait for that amount of time
-            setTimeout(function(){
+            document.getElementById("key").remove();
+            document.getElementById("butt").remove();
+
+            ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
+                // Play a random fnaf jumpscare
+                if (reward == "Jumpscare") {
+
+                    // Get a random time between 0 delay and 45 seconds
+                    var wait = Math.floor(Math.random()*45000);
+
+                    // Wait for that amount of time
+                    setTimeout(function(){
                 
-                // Get a random jumpscare
-                //var random = Math.floor(Math.random()* numOfJumpscares);
+                        // Get a random jumpscare
+                        //var random = Math.floor(Math.random()* numOfJumpscares);
 
 
-                // Testing through each one
-                random++;
-                if (random == 19) {
-                    random = 0;
-                }
+                        // Testing through each one
+                        random++;
+                        if (random == 19) {
+                            random = 0;
+                        }
 
-                // Play a different video for a different time based off of the number we got
-                switch(random) {
-                    default:
-                        setTimeout(function(){
-				console.log("a");
-                        }, 1420);
-                        break;
-                }
+                        // Play a different video for a different time based off of the number we got
+                        switch(random) {
+                            default:
+                                setTimeout(function(){
+                                    console.log("a");
+                                }, 1420);
+                                break;
+                        }
 
-            }, wait);
+                    }, wait);
             
+                }
+            }
+        } catch (err) {
+            error.innerHTML = "failed connection: " + err;
         }
     }
-
-  </script>
+</script>
 </body>
 </html>
 
