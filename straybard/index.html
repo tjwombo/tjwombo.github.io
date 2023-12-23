@@ -37,7 +37,7 @@
         document.cookie = "key=" + document.getElementById("key").value + "; expires=Thu, 01 Jan 2080 00:00:00 UTC";
         document.getElementById("key").remove();
         document.getElementById("butt").remove();
-        error.innerHTML = "test";
+        error.innerHTML = document.cookie;
     }
 
     // Variables that we are adjusting through cookies
