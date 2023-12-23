@@ -41,6 +41,11 @@
     var random = 0;
     var userMap = new Map();
 
+    function switchDecay(shroom) {
+        console.log("decay");
+        shroom.state = 1;
+    }
+
     class ShroomState {
         constructor(u) {
             this.state = 0;
@@ -49,18 +54,10 @@
 
         setTimer() {
             if (this.state == 0) {
-                this.timer = setTimeout(function(){
-                                 console.log("decay");
-                                 this.state = 1;
-                             }, 0);
+                this.timer = setTimeout(switchDecay, 0, this);
             } else if (this.state == 1) {
                 this.timer = setTimeout(this.removeShroom, 0); // 2 minutes
             }
-        }
-
-        switchDecay() {
-            console.log("decay");
-            this.state = 1;
         }
 
         removeShroom() {
