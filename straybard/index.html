@@ -82,8 +82,7 @@
                     }
                     if (shroom.state == 0) {
                        shroom.scale = shroom.scale + 1;
-                       document.getElementById(user).width = (10+shroom.scale) + "%";
-                       document.getElementById(user).height = (10+shroom.scale) + "%";
+                       document.getElementById(user).style.transform = "scale(" + 100+shroom.scale + ")";
                     } else if (shroom.state == 1) {
                         shroom.state = 0;
                         document.getElementById(user).src = "./src/init.PNG";
