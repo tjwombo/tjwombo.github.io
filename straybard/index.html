@@ -65,19 +65,20 @@
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 if (reward == "shroom") {
-                    var shroom;
-                    if (userMap.has(user)) {
-                        shroom = userMap.get(user);
-                        shroom.setTimer();
-                    } else {
-                        shroom = new ShroomState(user);
+                    if (!userMap.has(user)) {
+                        var shroom = new ShroomState(user);
                         var img = document.createElement("img");
                         img.src = "./src/init.PNG"
                         img.id = user;
                         document.body.appendChild(img);
-                        shroom.setTimer();
                         userMap.set(user, shroom);
+                        shroom.setTimer();
                     }
+                } else if (reward == "grow") {
+                    if (!userMap.has(user)) {
+                        return;
+                    }
+                    var shroom = userMap.get(user);
                     if (shroom.state == 0) {
                        if (shroom.scale == cap) {
                            document.getElementById(user).src = "./src/super.PNG";
