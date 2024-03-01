@@ -124,8 +124,12 @@
                         shroom.state = 0;
                     }
                     shroom.setTimer();
+                    userMap.set(user, shroom);
                 }
             }
+
+            document.getElementById("error").remove();
+
         } catch (err) {
             error.innerHTML = "failed connection: " + err;
         }
