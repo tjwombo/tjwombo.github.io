@@ -46,9 +46,9 @@
                 var golden = imgs[i];
                 var initial = imgs[i+1];
                 var decay = imgs[i+2];
-                decayFile.append(decay);
-                initialFile.append(initial);
-                goldenFile.append(golden);
+                decayFile.push(decay);
+                initialFile.push(initial);
+                goldenFile.push(golden);
             }
             document.getElementById("test").src = decayFile[0];
         } catch(err) { console.log(err); }
