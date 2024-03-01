@@ -31,7 +31,7 @@
 
     function tryLoadImgs() {
         try {
-            const [decay, init, super] = document.getElementById("location").files;
+            const [decay, initial, golden] = document.getElementById("location").files;
             document.getElementById("test").src = URL.createObjectURL(decay);
         } catch(err) { console.log(err); }
     }
