@@ -21,9 +21,9 @@
 
     var key = "";
     var channel = "straybard";
-    var decayFile;
-    var initialFile;
-    var goldenFile
+    var decayFile = [];
+    var initialFile = [];
+    var goldenFile = [];
 
     function removeButton() {
         key = document.location.hash.split("&")[0].split("=")[1];
@@ -41,11 +41,16 @@
 
     function tryLoadImgs() {
         try {
-            [golden, initial, decay] = document.getElementById("location").files;
-            decayFile = URL.createObjectURL(decay);
-            initialFile = URL.createObjectURL(initial);
-            goldenFile = URL.createObjectURL(golden);
-            document.getElementById("test").src = decayFile;
+            var imgs = document.getElementById("location").files;
+            for (let i = 0; i < imgs.length - 2; i+=3) {
+                var golden = imgs[i];
+                var initial = imgs[i+1];
+                var decay = imgs[i+2];
+                decayFile.append(decay);
+                initialFile.append(initial);
+                goldenFile.append(golden);
+            }
+            document.getElementById("test").src = decayFile[0];
         } catch(err) { console.log(err); }
     }
 
@@ -54,8 +59,8 @@
 
     function switchDecay(shroom) {
         console.log("decay");
-        shroom.state = 1;
-        document.getElementById(shroom.user).src = decayFile;
+        shroom.state = 0;
+        document.getElementById(shroom.user).src = decayFile[shroom.set];
         shroom.setTimer();
     }
 
@@ -69,7 +74,8 @@
         constructor(u) {
             this.state = 0;
             this.user = u;
-            this.scale = 0;
+            this.scale = 0.0;
+            this.set = Math.floor(Math.random() * decayFile.length);
         }
 
         setTimer() {
@@ -99,7 +105,7 @@
                     if (!userMap.has(user)) {
                         var shroom = new ShroomState(user);
                         var img = document.createElement("img");
-                        img.src = initialFile;
+                        img.src = initialFile[shroom.set];
                         img.id = user;
                         document.body.appendChild(img);
                         userMap.set(user, shroom);
@@ -112,7 +118,7 @@
                     var shroom = userMap.get(user);
                     if (shroom.state == 0) {
                        if (shroom.scale >= cap) {
-                           document.getElementById(user).src = goldenFile;
+                           document.getElementById(user).src = goldenFile[shroom.set];
                            shroom.scale = cap;
                            document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
                        } else {
@@ -121,7 +127,7 @@
                        }
                     } else if (shroom.state == 1) {
                         shroom.state = 0;
-                        document.getElementById(user).src = initialFile;
+                        document.getElementById(user).src = initialFile[shroom.set];
                     } else if (shroom.state == -1) {
                         shroom.state = 0;
                     }
