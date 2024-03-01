@@ -43,9 +43,9 @@
         try {
             var imgs = document.getElementById("location").files;
             for (let i = 0; i < imgs.length - 2; i+=3) {
-                var golden = imgs[i];
-                var initial = imgs[i+1];
-                var decay = imgs[i+2];
+                var golden = URL.createObjectURL(imgs[i]);
+                var initial = URL.createObjectURL(imgs[i+1]);
+                var decay = URL.createObjectURL(imgs[i+2]);
                 decayFile.push(decay);
                 initialFile.push(initial);
                 goldenFile.push(golden);
