@@ -21,8 +21,8 @@
 
     var key = "";
     var decayFile;
-    var initFile;
-    var superFile
+    var initialFile;
+    var goldenFile
 
     function removeButton() {
         key = document.location.hash.split("&")[0].split("=")[1];
@@ -31,8 +31,11 @@
 
     function tryLoadImgs() {
         try {
-            const [decay, initial, golden] = document.getElementById("location").files;
-            document.getElementById("test").src = URL.createObjectURL(decay);
+            [decay, initial, golden] = document.getElementById("location").files;
+            decayFile = URL.createObjectURL(decay);
+            initialFile = URL.createObjectURL(initial);
+            goldenFile = URL.createObjectURL(golden);
+            document.getElementById("test").src = decayFile;
         } catch(err) { console.log(err); }
     }
 
@@ -42,7 +45,7 @@
     function switchDecay(shroom) {
         console.log("decay");
         shroom.state = 1;
-        document.getElementById(shroom.user).src = "./src/decay.PNG"
+        document.getElementById(shroom.user).src = decayFile;
         shroom.setTimer();
     }
 
@@ -77,13 +80,15 @@
             ComfyJS.Init( "straybard", key);
 
             document.getElementById("butt").remove();
+            document.getElementById("location").remove();
+            document.getElementById("test").remove();
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 if (reward == "shroom") {
                     if (!userMap.has(user)) {
                         var shroom = new ShroomState(user);
                         var img = document.createElement("img");
-                        img.src = "./src/init.PNG"
+                        img.src = initialFile;
                         img.id = user;
                         document.body.appendChild(img);
                         userMap.set(user, shroom);
@@ -96,14 +101,14 @@
                     var shroom = userMap.get(user);
                     if (shroom.state == 0) {
                        if (shroom.scale == cap) {
-                           document.getElementById(user).src = "./src/super.PNG";
+                           document.getElementById(user).src = goldenFile;
                        } else {
                            shroom.scale = shroom.scale + .01;
                            document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
                        }
                     } else if (shroom.state == 1) {
                         shroom.state = 0;
-                        document.getElementById(user).src = "./src/init.PNG";
+                        document.getElementById(user).src = initialFile;
                     } else if (shroom.state == -1) {
                         shroom.state = 0;
                     }
