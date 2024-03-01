@@ -111,8 +111,10 @@
                     }
                     var shroom = userMap.get(user);
                     if (shroom.state == 0) {
-                       if (shroom.scale == cap) {
+                       if (shroom.scale >= cap) {
                            document.getElementById(user).src = goldenFile;
+                           shroom.scale = cap;
+                           document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
                        } else {
                            shroom.scale = shroom.scale + .01;
                            document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
