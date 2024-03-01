@@ -11,7 +11,7 @@
 
 <h1 id="error"> </h1>
 
-<label for="location"> Choose the folder that has all the images </label>
+<label for="location" id="label"> Choose the folder that has all the images </label>
 <input type="file" id="location"  webkitdirectory="" directory="" name="location" onchange="tryLoadImgs()">
 <img id="test" src="#" alt="Decay will show up here if files are good" />
 
@@ -20,18 +20,27 @@
 <script>
 
     var key = "";
+    var channel = "straybard";
     var decayFile;
     var initialFile;
     var goldenFile
 
     function removeButton() {
         key = document.location.hash.split("&")[0].split("=")[1];
+        var hash = document.location.hash.split("&")[2].split("=")[1].split("%2C");
+        for (var i = 0; i < hash.length; i++) {
+            if (hash[i].length > 1) {
+                if (hash[i][0] == "channel") {
+                    channel = hash[i][1];
+                }
+            }
+        }
         setUp();
     }
 
     function tryLoadImgs() {
         try {
-            [decay, initial, golden] = document.getElementById("location").files;
+            [golden, initial, decay] = document.getElementById("location").files;
             decayFile = URL.createObjectURL(decay);
             initialFile = URL.createObjectURL(initial);
             goldenFile = URL.createObjectURL(golden);
@@ -77,11 +86,12 @@
     function setUp() {
         // Connect to the channel to read channel point redemptions
         try {
-            ComfyJS.Init( "straybard", key);
+            ComfyJS.Init( channel, key);
 
             document.getElementById("butt").remove();
             document.getElementById("location").remove();
             document.getElementById("test").remove();
+            document.getElementById("label").remove();
 
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 if (reward == "shroom") {
