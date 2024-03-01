@@ -71,11 +71,11 @@
     }
 
     class ShroomState {
-        constructor(u) {
+        constructor(u, r) {
             this.state = 0;
             this.user = u;
             this.scale = 0.0;
-            this.set = Math.floor(Math.random() * decayFile.length);
+            this.set = r;
         }
 
         setTimer() {
@@ -103,7 +103,7 @@
             ComfyJS.onReward = ( user, reward, cost, message, extra ) => {
                 if (reward == "shroom") {
                     if (!userMap.has(user)) {
-                        var shroom = new ShroomState(user);
+                        var shroom = new ShroomState(user, Math.floor(Math.random() * decayFile.length));
                         var img = document.createElement("img");
                         img.src = initialFile[shroom.set];
                         img.id = user;
