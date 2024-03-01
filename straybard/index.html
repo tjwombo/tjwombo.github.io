@@ -10,15 +10,30 @@
 <body>
 
 <h1 id="error"> </h1>
-<button id="butt" onclick="removeButton()" >Click to start</button>
+
+<label for="location"> Choose the folder that has all the images </label>
+<input type="file" id="location"  webkitdirectory="" directory="" name="location" onchange="tryLoadImgs()">
+<img id="test" src="#" alt="Decay will show up here if files are good" />
+
+<button id="butt" onclick="removeButton()" >Click to start after you see the decay image loaded</button>
 
 <script>
 
     var key = "";
+    var decayFile;
+    var initFile;
+    var superFile
 
     function removeButton() {
         key = document.location.hash.split("&")[0].split("=")[1];
         setUp();
+    }
+
+    function tryLoadImgs() {
+        try {
+            const [decay, init, super] = document.getElementById("location").files;
+            document.getElementById("test").src = URL.createObjectURL(decay);
+        } catch(err) { console.log(err); }
     }
 
     var userMap = new Map();
