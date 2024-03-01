@@ -29,9 +29,10 @@
         key = document.location.hash.split("&")[0].split("=")[1];
         var hash = document.location.hash.split("&")[2].split("=")[1].split("%2C");
         for (var i = 0; i < hash.length; i++) {
-            if (hash[i].length > 1) {
-                if (hash[i][0] == "channel") {
-                    channel = hash[i][1];
+            var pair = hash[i].split("%3D");
+            if (pair.length > 1) {
+                if (pair[0] == "channel") {
+                    channel = pair[1];
                 }
             }
         }
