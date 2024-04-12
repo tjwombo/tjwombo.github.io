@@ -124,12 +124,11 @@
                        } else {
                            shroom.scale = shroom.scale + .01;
                            document.getElementById(user).style.transform = "scale(" + (1+shroom.scale) + ")";
+                           document.getElementById(user).src = initialFile[shroom.set];
                        }
                         shroom.state = 0;
-                        document.getElementById(user).src = initialFile[shroom.set];
+                        shroom.setTimer();
                     }
-                    shroom.setTimer();
-                    //userMap.set(user, shroom);
                 }
             }
 
