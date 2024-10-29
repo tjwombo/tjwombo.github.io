@@ -5,28 +5,7 @@
 	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body onload="loadPage('home')">
-	<div class="gamesTable">
-		<table id="games">
-			<tr class="columnNames">
-				<th>Game Name</th>
-				<th>Script Type</th>
-				<th>Storyteller</th>
-				<th>Players</th>
-				<th>Progress</th>
-			</tr>
-			<tr id="0"></tr>
-			<tr id="1"></tr>
-			<tr id="2"></tr>
-			<tr id="3"></tr>
-			<tr id="4"></tr>
-			<tr id="5"></tr>
-			<tr id="6"></tr>
-			<tr id="7"></tr>
-			<tr id="8"></tr>
-			<tr id="9"></tr>
-		</table>
-		<div id="loading" class="center loader"></div>
-	</div>
+
 </body>
 <script>
 	function loadPage(page) {
@@ -42,7 +21,7 @@
 	// How many tables have gotten the information ready
 	var tableCount = 0;
 
-	var peer = new Peer();
+	var peer;
 
 	// Create/Update a room entry
 	function addRoomInfo(id, gameName = "Create Room", scriptType = "None", storyteller = "None", players = 0, progress = "Between Games") {
@@ -209,7 +188,11 @@
 	}
 
 	function setUpHome() {
+		if (peer != null) {
+			peer.close();
+		}
 		// Create peer and find all the room statuses
+		peer = new Peer();
 		peer.on('error', function(err) {
 			// If the room hasn't been created create a default table entry
 			if (err.type == "peer-unavailable") {
