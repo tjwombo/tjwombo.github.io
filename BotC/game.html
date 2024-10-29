@@ -1,0 +1,67 @@
+<html>
+<head>
+	<title>Home page for Tjwombo's Blood on the Clocktower</title>
+	<link rel="stylesheet" href="mystyle.css">
+	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+	<div class="gamesTable">
+		<table>
+			<tr class="columnNames">
+				<th>Game Name</th>
+				<th>Script Type</th>
+				<th>Storyteller</th>
+				<th>Players</th>
+				<th>Progress</th>
+			</tr>
+			<tr>
+				<th>Game Name</th>
+				<th>Script Type</th>
+				<th>Storyteller</th>
+				<th>Players</th>
+				<th>Progress</th>
+			</tr>
+			<tr>
+				<th>Game Name</th>
+				<th>Script Type</th>
+				<th>Storyteller</th>
+				<th>Players</th>
+				<th>Progress</th>
+			</tr>
+		</table>
+	</div>
+<script>
+	async function getData() {
+	  const url = "./game";
+	  try {
+	    const response = await fetch(url);
+	    if (!response.ok) {
+		      throw new Error(`Response status: ${response.status}`);
+	    }
+
+	    const json = await response.json();
+	    console.log(json);
+		  } catch (error) {
+		    console.error(error.message);
+		  }
+	}
+	//getData();
+	var peer = new Peer("tjwomboTest3");
+	peer.on('error', function(err) { console.log(err); });
+	peer.on('open', function(id) {
+		var conn = peer.connect('tjwomboTest2');
+		conn.on('open', function() {
+			console.log("open");
+			// Receive messages
+			conn.on('data', function(data) {
+				console.log('Received', data);
+			});
+
+			// Send messages
+			conn.send('Hello!');
+		});
+	});
+	
+</script>
+</body>
+</html>

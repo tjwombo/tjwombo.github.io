@@ -1,0 +1,228 @@
+<html>
+<head>
+	<title>Home page for Tjwombo's Blood on the Clocktower</title>
+	<link rel="stylesheet" href="mystyle.css">
+	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body onload="loadPage('home')">
+	<div class="gamesTable">
+		<table id="games">
+			<tr class="columnNames">
+				<th>Game Name</th>
+				<th>Script Type</th>
+				<th>Storyteller</th>
+				<th>Players</th>
+				<th>Progress</th>
+			</tr>
+			<tr id="0"></tr>
+			<tr id="1"></tr>
+			<tr id="2"></tr>
+			<tr id="3"></tr>
+			<tr id="4"></tr>
+			<tr id="5"></tr>
+			<tr id="6"></tr>
+			<tr id="7"></tr>
+			<tr id="8"></tr>
+			<tr id="9"></tr>
+		</table>
+		<div id="loading" class="center loader"></div>
+	</div>
+</body>
+<script>
+	function loadPage(page) {
+		console.log(page);
+		if (page == "home") {
+			fetch('./home.txt')
+				.then(response=> response.text())
+				.then(text=> document.body.innerHTML = text);
+			tableCount = 0;
+			setUpHome();
+		}
+	}
+	// How many tables have gotten the information ready
+	var tableCount = 0;
+
+	var peer = new Peer();
+
+	// Create/Update a room entry
+	function addRoomInfo(id, gameName = "Create Room", scriptType = "None", storyteller = "None", players = 0, progress = "Between Games") {
+		var row = document.getElementById(id);
+		if (row == null) {
+			return;
+		}
+		row.innerHTML = "";
+
+		var gameTh = document.createElement("th");
+		var game = document.createElement("button");
+		game.innerHTML = gameName;
+		game.addEventListener("click", function() {
+			goToRoom(id);
+		});
+		gameTh.appendChild(game)
+		row.appendChild(gameTh);
+	
+		var script = document.createElement("th");
+		script.innerHTML = scriptType;
+		row.appendChild(script);
+
+		var teller = document.createElement("th");
+		teller.innerHTML = storyteller;
+		row.appendChild(teller);
+
+		var player = document.createElement("th");
+		player.innerHTML = players + "/12";
+		row.appendChild(player);
+
+		var progressTh = document.createElement("th");
+		progressTh.innerHTML = progress;
+		row.appendChild(progressTh);
+
+		// Remove the loading bar when all the rooms have been processed
+		tableCount++;
+		if (tableCount == 10) {
+			document.getElementById("loading").remove();
+		}
+	}
+
+	// Create the proper peers to allow communications with others in this room, and so other home pages can communicate to the room
+	function goToRoom(id) {
+		var temp = new Peer("tjwomboTest");
+		setUpRoomPeer(id);
+		// Redirect to the game page after saving the peers
+		//sessionStorage.test = temp;
+		//window.location.href = './game.html';
+	}
+
+	// Set up the peer for the room and handle the events
+	function setUpRoomPeer(id) {
+		var room = new Peer("tjwomboBotCRoom" + id);
+		room.on('error', function(err) {
+			console.log("room err:" + err);
+		});
+
+		room.on('connection', function(conn) {
+			console.log("room got a connection");
+
+			conn.on('open', function() {
+				console.log("room open connection");
+
+				conn.on('data', function(data) {
+					console.log("room got: " + data);
+
+					// If not all the room info was received, resend the needed info
+					if (data.startsWith("resend info: ")) {
+						var needed = data.slice(13).split(" ");
+						for (var need in needed) {
+							if (needed[need] == "game") {
+								conn.send("game: testGameName");
+							} else if (needed[need] == "script") {
+								conn.send("script: testScriptType");
+							} else if (needed[need] == "teller") {
+								conn.send("teller: testStoryteller");
+							} else if (needed[need] == "players") {
+								conn.send("players: 1");
+							} else if (needed[need] == "progress") {
+								conn.send("progress: testProgress");
+							}
+						}
+					}
+				});
+				// Send the room info
+				conn.send("game: testGameName");
+				conn.send("script: testScriptType");
+				conn.send("teller: testStoryteller");
+				conn.send("players: 1");
+				conn.send("progress: testProgress");
+			});
+		});
+	}
+
+	// Get the information for the lobbies in the tables
+	function getOpenRoomInfo() {
+		if (tableCount > 9) {
+			return;
+		}
+
+		var con = peer.connect('tjwomboBotCRoom' + tableCount);
+
+		con.on('open', function() {
+			// Goes to peer.error if it doesn't exist
+			console.log("Room does exist");
+
+			var roomId = tableCount;
+			var roomGame = "";
+			var roomScript = "";
+			var roomTeller = "";
+			var roomPlayers = "";
+			var roomProgress = "";
+
+			// Create an interval to request information we are still missing
+			pingInterval = setInterval(function(){ 
+				var need = "resend info: ";
+				if (roomGame == "") {
+					need += "game ";
+				}
+				if (roomScript == "") {
+					need += "script ";
+				}
+				if (roomTeller == "") {
+					need += "teller ";
+				}
+				if (roomPlayers == "") {
+					need += "players ";
+				}
+				if (roomProgress == "") {
+					need += "progress";
+				}
+				con.send(need);
+			}, 1000);
+
+			// Receive messages
+			con.on('data', function(data) {
+				console.log('Received: ' + data);
+
+				if (data.startsWith("game: ")) {
+					roomGame = data.slice(6);
+				} else if (data.startsWith("script: ")) {
+					roomScript = data.slice(8);
+				} else if (data.startsWith("teller: ")) {
+					roomTeller = data.slice(8);
+				} else if (data.startsWith("players: ")) {
+					roomPlayers = data.slice(9);
+				} else if (data.startsWith("progress: ")) {
+					roomProgress = data.slice(10);
+				}
+
+				// If all the room information isn't null/default update room and move on
+				if (roomGame != "" && roomScript != "" && roomTeller != "" && roomPlayers != "" && roomProgress != "") {
+					addRoomInfo(roomId, roomGame, roomScript, roomTeller, roomPlayers, roomProgress);
+					getOpenRoomInfo();
+					clearInterval(pingInterval);
+					con.close();
+				}
+			});
+
+		});
+		con.on('error', function(err) {
+			console.log("Communication with room is broken: " + err);
+		});
+	}
+
+	function setUpHome() {
+		// Create peer and find all the room statuses
+		peer.on('error', function(err) {
+			// If the room hasn't been created create a default table entry
+			if (err.type == "peer-unavailable") {
+				addRoomInfo(tableCount);
+				getOpenRoomInfo();
+			}		
+		});
+
+		// Start getting the room table data
+		peer.on('open', function(id) {
+			getOpenRoomInfo();
+		});
+	}
+</script>
+
+</html>
