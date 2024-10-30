@@ -5,63 +5,72 @@
 	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body>
-	<div class="gamesTable">
-		<table>
-			<tr class="columnNames">
-				<th>Game Name</th>
-				<th>Script Type</th>
-				<th>Storyteller</th>
-				<th>Players</th>
-				<th>Progress</th>
-			</tr>
-			<tr>
-				<th>Game Name</th>
-				<th>Script Type</th>
-				<th>Storyteller</th>
-				<th>Players</th>
-				<th>Progress</th>
-			</tr>
-			<tr>
-				<th>Game Name</th>
-				<th>Script Type</th>
-				<th>Storyteller</th>
-				<th>Players</th>
-				<th>Progress</th>
-			</tr>
-		</table>
+	<div class="right">
+		<div class="settings">
+			<input type="checkbox" id="settingsCog" class="settingsCog" onclick="settingsToggle()"></input>
+			<label class="settingsCog" for="settingsCog">⚙️</label>
+		</div>
+		<div id="settingsContent" class="settings settingsContent">
+			<p>aaaaaaaaaaaaaaaaa</p>
+			<p>aaaa</p>
+		</div>
 	</div>
-<script>
-	async function getData() {
-	  const url = "./game";
-	  try {
-	    const response = await fetch(url);
-	    if (!response.ok) {
-		      throw new Error(`Response status: ${response.status}`);
-	    }
-
-	    const json = await response.json();
-	    console.log(json);
-		  } catch (error) {
-		    console.error(error.message);
-		  }
-	}
-	//getData();
-	var peer = new Peer("tjwomboTest3");
-	peer.on('error', function(err) { console.log(err); });
-	peer.on('open', function(id) {
-		var conn = peer.connect('tjwomboTest2');
-		conn.on('open', function() {
-			console.log("open");
-			// Receive messages
-			conn.on('data', function(data) {
-				console.log('Received', data);
-			});
-
-			// Send messages
-			conn.send('Hello!');
-		});
-	});
-	
-</script>
+	<div id="mainContainer" class="absoluteCenter"></div>
+	<div class="absoluteCenter">
+		<button>Join as Storyteller</button>
+		<button>Join as a player</button>
+	<div>
+	<div>
+	</div>
 </body>
+<script>
+	var players = 0;
+	function playersChange(change) {
+		if (players == 0 && change == -1) {
+			return;
+		} else if (players == 15 && change == 1) {
+			return;
+		}
+
+		var container = document.getElementById("mainContainer");
+		if (change == -1) {
+			container.removeChild(container.lastChild);
+		} else {
+
+		}
+		players += change
+		console.log(players);
+		updateCirclePositions()
+	}
+	var container = document.getElementById("mainContainer");
+	for (let i = 0; i < 15; i++) {
+		var circle = document.createElement('div');
+		circle.className = "circle";
+		container.appendChild(circle);
+	}
+	updateCirclePositions()
+	function updateCirclePositions() {
+		var circles = document.getElementById("mainContainer").children
+		for (let i = 0; i < circles.length; i++) {
+			var angle = (360 / circles.length) * (i+1) - 90;
+			console.log(angle);
+			var radian = angle * Math.PI / 180;
+			console.log(Math.cos(radian));
+			console.log(Math.sin(radian));
+			circles[i].style.setProperty("--circlePosX", (Math.cos(radian)) * 20 - 2.5 + "vw");
+			circles[i].style.setProperty("--circlePosY", (Math.sin(radian)) * 20 - 2.5 + "vw");
+		}
+	}
+
+	function settingsToggle() {
+		var setting = document.getElementById("settingsContent");
+		console.log(setting.style.height);
+		return
+		if (setting.style.height == "200%") {
+			setting.style.height = "";
+		} else {
+			setting.style.height = "200%";
+		}
+	}
+</script>
 </html>
