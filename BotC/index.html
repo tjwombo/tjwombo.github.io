@@ -110,7 +110,7 @@
 	// Create the proper peers to allow communications with others in this room, and so other home pages can communicate to the room
 	function goToRoom(id) {
 		setUpRoomPeer(id);
-		goToPage('game');
+		loadPage('game');
 	}
 
 	// Set up the peer for the room and handle the events
