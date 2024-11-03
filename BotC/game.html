@@ -39,25 +39,6 @@
 	</div>
 </body>
 <script>
-	var players = 0;
-	var playerState = "none"
-	function playersChange(change) {
-		if (players == 0 && change == -1) {
-			return;
-		} else if (players == 15 && change == 1) {
-			return;
-		}
-
-		var container = document.getElementById("mainContainer");
-		if (change == -1) {
-			container.removeChild(container.lastChild);
-		} else {
-
-		}
-		players += change
-		console.log(players);
-		updateCirclePositions()
-	}
 	var container = document.getElementById("mainContainer");
 	for (let i = 0; i < 15; i++) {
 		var circle = document.createElement('div');

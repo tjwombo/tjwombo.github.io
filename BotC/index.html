@@ -55,7 +55,8 @@
 					if (page == "home") {
 						tableCount = 0;
 						setUpHome();
-						document.getElementById("playerInput").value = peer.id;
+						document.getElementById("playerInput").value = playerName;
+						playerName = peer.id;
 					} else if (page == "game") {
 						var players = 0;
 						var playerState = "none";
@@ -248,7 +249,6 @@
 		// Start getting the room table data
 		peer.on('open', function(id) {
 			getOpenRoomInfo();
-			document.getElementById("playerInput").value = peer.id;
 		});
 	}
 
@@ -263,23 +263,6 @@
 			circle.onclick = onPlayerClick;
 			container.appendChild(circle);
 		}
-	}
-
-	function playersChange(change) {
-		if (players == 0 && change == -1) {
-			return;
-		} else if (players == 15 && change == 1) {
-			return;
-		}
-
-		var container = document.getElementById("mainContainer");
-		if (change == -1) {
-			container.removeChild(container.lastChild);
-		} else {
-
-		}
-		players += change
-		console.log(players);
 		updateCirclePositions()
 	}
 
