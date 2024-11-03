@@ -30,7 +30,7 @@
 		<tr id="8"></tr>
 		<tr id="9"></tr>
 	</table>
-	<div id="loading" class="center loader"></div>
+	<div id="loading" class="center-x loader"></div>
 </div>
 <div class="textCenter">
 	<h3>This is an unofficial implementation of Blood on the Clocktower. Made primarily to test my web dev skills.</h3>
@@ -40,19 +40,32 @@
 <script>
 	function loadPage(page) {
 		console.log(page);
+		
 		if (page == "home") {
-			fetch('./home.txt')
+
+		} else if (page == "game") {
+			playerName = document.getElementById("playerInput").value;
+		}
+
+		fetch('./' + page + '.txt')
 				.then(response=> response.text())
 				.then(text=> document.body.innerHTML = text);
+		
+		if (page == "home") {
 			tableCount = 0;
 			setUpHome();
 			document.getElementById("playerInput").value = peer.id;
+		} else if (page == "game") {
+			var players = 0;
+			var playerState = "none";
+			setUpGame();
 		}
 	}
 	// How many tables have gotten the information ready
 	var tableCount = 0;
 
 	var peer;
+	var peerName;
 
 	// Create/Update a room entry
 	function addRoomInfo(id, gameName = "Create Room", scriptType = "None", storyteller = "None", players = 0, progress = "Between Games") {
@@ -96,11 +109,7 @@
 
 	// Create the proper peers to allow communications with others in this room, and so other home pages can communicate to the room
 	function goToRoom(id) {
-		var temp = new Peer("tjwomboTest");
 		setUpRoomPeer(id);
-		// Redirect to the game page after saving the peers
-		//sessionStorage.test = temp;
-		//window.location.href = './game.html';
 	}
 
 	// Set up the peer for the room and handle the events
@@ -238,6 +247,97 @@
 			getOpenRoomInfo();
 			document.getElementById("playerInput").value = peer.id;
 		});
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	function setUpGame() {
+		var container = document.getElementById("mainContainer");
+		for (let i = 0; i < 15; i++) {
+			var circle = document.createElement('div');
+			circle.className = "circle";
+			circle.id = "circle" + i;
+			circle.onclick = onPlayerClick;
+			container.appendChild(circle);
+		}
+	}
+
+	function playersChange(change) {
+		if (players == 0 && change == -1) {
+			return;
+		} else if (players == 15 && change == 1) {
+			return;
+		}
+
+		var container = document.getElementById("mainContainer");
+		if (change == -1) {
+			container.removeChild(container.lastChild);
+		} else {
+
+		}
+		players += change
+		console.log(players);
+		updateCirclePositions()
+	}
+
+	function updateCirclePositions() {
+		var circles = document.getElementById("mainContainer").children
+		for (let i = 0; i < circles.length; i++) {
+			var angle = (360 / circles.length) * (i+1) - 90;
+			console.log(angle);
+			var radian = angle * Math.PI / 180;
+			console.log(Math.cos(radian));
+			console.log(Math.sin(radian));
+			circles[i].style.setProperty("--circlePosX", (Math.cos(radian)) * 20 - 2.5 + "vw");
+			circles[i].style.setProperty("--circlePosY", (Math.sin(radian)) * 20 - 2.5 + "vw");
+		}
+	}
+
+	$("input:checkbox.messageBanner").on('click', function() {
+		// The tab that was clicked
+		var $box = $(this);
+
+		// If because of the click, its now checked (i.e. wasn't checked initially)
+		if ($box.is(":checked")) {
+			// Get the group of the checkbox
+			var group = "input:checkbox[name='" + $box.attr("name") + "']";
+
+			// Remove the check from all boxes in the group
+			$(group).prop("checked", false);
+
+			// Add the check to this box
+			$box.prop("checked", true);
+
+			// Check which box it is to display that content
+			console.log($box.attr("id"));
+		}
+		// Otherwise uncheck it
+		else {
+			$box.prop("checked", false);
+		}
+	});
+
+	function joinStoryteller() {
+		console.log("storyteller");
+		playerState = "storyteller";
+	}
+
+	function joinPlayer() {
+		console.log("player");
+		playerState = "playerJoining";
+	}
+
+	function onPlayerClick() {
+		if (playerState == "playerJoining") {
+			playerState = "player";
+			if (this.hasChildNodes()) {
+
+			} else {
+				var playerName = document.createElement('p');
+				playerName.innerHTML = peerName;
+				this.appendChild(playerName);
+			}
+		}
 	}
 </script>
 

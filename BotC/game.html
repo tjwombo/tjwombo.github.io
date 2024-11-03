@@ -18,10 +18,10 @@
 	</div>
 	<div id="mainContainer" class="absoluteCenter"></div>
 	<div class="absoluteCenter">
-		<button>Join as Storyteller</button>
-		<button>Join as a player</button>
+		<button onclick="joinStoryteller()">Join as Storyteller</button>
+		<button onclick="joinPlayer()">Join as a player</button>
 	</div>
-	<div class="left slideBackground">
+	<div class="left center-y slideBackground">
 		<div class="messages">
 			<input type="checkbox" id="voiceBanner" name="messages" class="messageBanner"></input>
 			<label class="messageBanner" for="voiceBanner">VOICE</label>
@@ -40,6 +40,7 @@
 </body>
 <script>
 	var players = 0;
+	var playerState = "none"
 	function playersChange(change) {
 		if (players == 0 && change == -1) {
 			return;
@@ -61,6 +62,8 @@
 	for (let i = 0; i < 15; i++) {
 		var circle = document.createElement('div');
 		circle.className = "circle";
+		circle.id = "circle" + i;
+		circle.onclick = onPlayerClick;
 		container.appendChild(circle);
 	}
 	updateCirclePositions()
@@ -99,5 +102,26 @@
 			$box.prop("checked", false);
 		}
 	});
+	function joinStoryteller() {
+		console.log("storyteller");
+		playerState = "storyteller";
+	}
+	function joinPlayer() {
+		console.log("player");
+		playerState = "playerJoining";
+	}
+	function onPlayerClick() {
+		console.log("test");
+		if (playerState == "playerJoining") {
+			playerState = "player";
+			if (this.hasChildNodes()) {
+
+			} else {
+				var playerName = document.createElement('p');
+				playerName.innerHTML = "testName";
+				this.appendChild(playerName);
+			}
+		}
+	}
 </script>
 </html>

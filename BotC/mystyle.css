@@ -27,9 +27,13 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 	padding-left: 10%;
 }
 
-.center {
+.center-x {
 	position: relative;
 	left: 40%;
+}
+
+.center-y {
+	top: 25%;
 }
 
 .textCenter {
