@@ -49,17 +49,19 @@
 
 		fetch('./' + page + '.txt')
 				.then(response=> response.text())
-				.then(text=> document.body.innerHTML = text);
+				.then(function(text) {
+					document.body.innerHTML = text;
 		
-		if (page == "home") {
-			tableCount = 0;
-			setUpHome();
-			document.getElementById("playerInput").value = peer.id;
-		} else if (page == "game") {
-			var players = 0;
-			var playerState = "none";
-			setUpGame();
-		}
+					if (page == "home") {
+						tableCount = 0;
+						setUpHome();
+						document.getElementById("playerInput").value = peer.id;
+					} else if (page == "game") {
+						var players = 0;
+						var playerState = "none";
+						setUpGame();
+					}
+				});
 	}
 	// How many tables have gotten the information ready
 	var tableCount = 0;
