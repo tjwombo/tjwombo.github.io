@@ -54,13 +54,11 @@ input[type=checkbox] {
 }
 
 .right:has(input[type=checkbox]) {
-	transition: 10.5s rotate
 	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
 	transform: rotate(-90deg);
 }
 
 .right:has(input[type=checkbox]:checked) {
-	transition: 10.5s rotate
 	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
 	transform: rotate(0deg);
 }
@@ -75,14 +73,57 @@ input[type=checkbox] {
 	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
 }
 
+.left:has(input[type=checkbox]) {
+	transition: 10.5s rotate
+	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
+	transform: translate(-95%);
+}
+
+.left:has(input[type=checkbox]:checked) {
+	transition: 10.5s rotate
+	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
+	transform: translate(-10%);
+}
+
+.left {
+	position: absolute;
+	transition: transform 0.5s;
+	transition-timing-function: cubic-bezier(0.68 -0.55 0.27 1.55);	
+	padding-left: 2%;
+}
+
+.messages {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	letter-spacing: -0.2em;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	float: right;
+}
+
+.messageBanner {
+	cursor: pointer;
+}
+
+.messageContent {
+	float: left;
+}
+
 .settings {
 	text-align: right;
 }
 
-.settingsCog {
-	font-size: 30px;
+.slideBackground {
 	background-color: rgba(0, 0, 0, 0.7);
 	color: white;
+}
+
+.settingsCog {
+	font-size: 30px;
 	cursor: pointer;
 	padding-top: 5.3px;
 	padding-left: 1px;
@@ -97,8 +138,6 @@ input[type=checkbox] {
 
 .settingsContent {
 	font-size: 30px;
-	background-color: rgba(0, 0, 0, 0.7);
-	color: white;
 	text-align: right;
 	overflow: hidden;
 	margin-top: 3px;

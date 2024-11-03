@@ -3,14 +3,15 @@
 	<title>Home page for Tjwombo's Blood on the Clocktower</title>
 	<link rel="stylesheet" href="mystyle.css">
 	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="right">
 		<div class="settings">
-			<input type="checkbox" id="settingsCog" class="settingsCog" onclick="settingsToggle()"></input>
-			<label class="settingsCog" for="settingsCog">⚙️</label>
+			<input type="checkbox" id="settingsCog" class="settingsCog"></input>
+			<label class="settingsCog slideBackground" for="settingsCog">⚙️</label>
 		</div>
-		<div id="settingsContent" class="settings settingsContent">
+		<div id="settingsContent" class="settingsContent slideBackground">
 			<p>aaaaaaaaaaaaaaaaa</p>
 			<p>aaaa</p>
 		</div>
@@ -19,8 +20,22 @@
 	<div class="absoluteCenter">
 		<button>Join as Storyteller</button>
 		<button>Join as a player</button>
-	<div>
-	<div>
+	</div>
+	<div class="left slideBackground">
+		<div class="messages">
+			<input type="checkbox" id="voiceBanner" name="messages" class="messageBanner"></input>
+			<label class="messageBanner" for="voiceBanner">VOICE</label>
+			<input type="checkbox" id="textBanner" name="messages" class="messageBanner"></input>
+			<label class="messageBanner" for="textBanner">TEXT</label>
+			<input type="checkbox" id="fabledBanner" name="messages" class="messageBanner"></input>
+			<label class="messageBanner" for="fabledBanner">FABLED</label>
+			<input type="checkbox" id="bluffsBanner" name="messages" class="messageBanner"></input>
+			<label class="messageBanner" for="bluffsBanner">BLUFFS</label>
+		</div>
+		<div id="messageContent" class="messageContent">
+			<p>aaaaaaaaaaaaaaaaa</p>
+			<p>aaaa</p>
+		</div>
 	</div>
 </body>
 <script>
@@ -61,16 +76,28 @@
 			circles[i].style.setProperty("--circlePosY", (Math.sin(radian)) * 20 - 2.5 + "vw");
 		}
 	}
+	$("input:checkbox.messageBanner").on('click', function() {
+		// The tab that was clicked
+		var $box = $(this);
 
-	function settingsToggle() {
-		var setting = document.getElementById("settingsContent");
-		console.log(setting.style.height);
-		return
-		if (setting.style.height == "200%") {
-			setting.style.height = "";
-		} else {
-			setting.style.height = "200%";
+		// If because of the click, its now checked (i.e. wasn't checked initially)
+		if ($box.is(":checked")) {
+			// Get the group of the checkbox
+			var group = "input:checkbox[name='" + $box.attr("name") + "']";
+
+			// Remove the check from all boxes in the group
+			$(group).prop("checked", false);
+
+			// Add the check to this box
+			$box.prop("checked", true);
+
+			// Check which box it is to display that content
+			console.log($box.attr("id"));
 		}
-	}
+		// Otherwise uncheck it
+		else {
+			$box.prop("checked", false);
+		}
+	});
 </script>
 </html>
