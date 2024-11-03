@@ -68,7 +68,7 @@
 	var tableCount = 0;
 
 	var peer;
-	var peerName;
+	var playerName;
 
 	// Create/Update a room entry
 	function addRoomInfo(id, gameName = "Create Room", scriptType = "None", storyteller = "None", players = 0, progress = "Between Games") {
@@ -320,7 +320,7 @@
 
 			} else {
 				var playerName = document.createElement('p');
-				playerName.innerHTML = peerName;
+				playerName.innerHTML = playerName;
 				this.appendChild(playerName);
 			}
 		}
