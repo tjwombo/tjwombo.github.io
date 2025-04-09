@@ -22,7 +22,7 @@
 		<tr id="8"></tr>
 		<tr id="9"></tr>
 	</table>
-	<div id="loading" class="center-x loader"></div>
+	<div id="loading" class="center loader"></div>
 </div>
 <div class="textCenter">
 	<h3>This is an unofficial implementation of Blood on the Clocktower. Made primarily to test my web dev skills.</h3>

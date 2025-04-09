@@ -58,17 +58,20 @@
 						document.getElementById("playerInput").value = playerName;
 						playerName = peer.id;
 					} else if (page == "game") {
-						var players = 0;
-						var playerState = "none";
+						playerState = "none";
 						setUpGame();
 					}
 				});
 	}
-	// How many tables have gotten the information ready
-	var tableCount = 0;
 
 	var peer;
-	var playerName;
+	var gameId;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Home Page Functions
+
+	// How many tables have gotten the information ready
+	var tableCount = 0;
 
 	// Create/Update a room entry
 	function addRoomInfo(id, gameName = "Create Room", scriptType = "None", storyteller = "None", players = 0, progress = "Between Games") {
@@ -113,6 +116,7 @@
 	// Create the proper peers to allow communications with others in this room, and so other home pages can communicate to the room
 	function goToRoom(id) {
 		setUpRoomPeer(id);
+		gameId = id;
 		loadPage('game');
 	}
 
@@ -254,6 +258,9 @@
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	var playerName;
+	var playerState;
+
 	function setUpGame() {
 		var container = document.getElementById("mainContainer");
 		for (let i = 0; i < 15; i++) {
@@ -324,7 +331,19 @@
 				this.appendChild(playerNameElement);
 			}
 		}
-	}
+	}function writeXML() 
+    {
+        var xmlDoc = new XMLHttpRequest();
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        var FILENAME="./xml";
+        var file = fso.CreateTextFile(FILENAME, true);
+        file.WriteLine('<?xml version="1.0" encoding="utf-8"?>\n');
+        file.WriteLine('<PersonInfo>\n');
+        file.WriteLine('></Person>\n');
+
+        file.WriteLine('</PersonInfo>\n');
+        file.Close();
+    } 
 </script>
 
 </html>

@@ -1,0 +1,72 @@
+<html>
+<head>
+	<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+
+<body>
+<label for"name">name</label>
+<input id="name" type="text"></input>
+<button onclick=createPeer()>create peer</button>
+<label for"peername">peer name</label>
+<input id="peername" type="text"></input>
+<button onclick=joinCall()>join call</button>
+<button onclick=disconnect()>disconnect</button>
+<button onclick=reconnect()>reconnect</button>
+<br>
+<div>
+ <video id="me" width="300" height="300" autoplay="autoplay" class="center-block"></video>
+</div>
+<div>
+ <video id="you" width="300" height="300" autoplay="autoplay" class="center-block"></video>
+</div>
+
+<script>
+var peer;
+var conn;
+var media;
+
+async function getMedia() {
+media = await navigator.mediaDevices.getUserMedia({
+  audio: true,
+  video: true,
+});
+}
+getMedia();
+
+function createPeer() {
+
+	peer = new Peer(document.getElementById("name").value);
+	peer.on('call', function(call) {
+	// Answer the call, providing our mediaStream
+	console.log("accepted");
+	call.answer(media);
+	console.log(call);
+	call.on('stream', function(stream) {
+		console.log("got stream")
+		document.getElementById("you").srcObject = stream
+	});
+	});
+}
+
+function joinCall() {
+	call = peer.call(document.getElementById("peername").value, media);
+	call.on('stream', function(stream) {
+	// `stream` is the MediaStream of the remote peer.
+	// Here you'd add it to an HTML video/canvas element.
+	console.log("streaming");
+	document.getElementById("me").srcObject = stream
+  });
+}
+
+function disconnect() {
+	peer.disconnect();
+}
+
+function reconnect() {
+	peer.reconnect();
+}
+</script>
+
+</body>
+
+</html>
