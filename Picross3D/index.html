@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="mystyle.css">
 </head>
 
-<body>
+<body onresize="WindowResize()">
     <div class="board" id="board">
         <div class="container" id="container">
         
@@ -11,37 +11,36 @@
     </div> 
 
 <script>
-    const size = 5;
-    const xSize = 7;
-    const ySize = 7;
-    const zSize = 7;
+    const size = 7;
+    const xSize = 6;
+    const ySize = 5;
+    const zSize = 4;
 
-    //var board = document.getElementById("board");
-    //board.style.left = 50 - (Math.ceil(xSize*size/2)) + "vmin";
-    //board.style.top = 50 - (Math.ceil(ySize*size)) + "vmin";
+    var board = document.getElementById("board");
+    WindowResize();
 
     var container = document.getElementById("container");
-    container.style.transformOrigin = xSize*10 + "% " + ySize*10 +"% 35vmin";
+    container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
 
    
-    for (i = -1*(Math.floor(xSize/2)); i <= Math.floor(xSize/2); i++) {
-        for (j = -1*(Math.floor(ySize/2)); j <= Math.floor(ySize/2); j++) {
-            for (k = -1*(Math.floor(zSize/2)); k <= Math.floor(zSize/2); k++) {
+    for (i = 0; i < xSize; i++) {
+        for (j = 0; j <ySize; j++) {
+            for (k = 0; k < zSize; k++) {
                 var box = document.createElement("div");
                 box.className = "box ";
                 box.style.width = `${size}vmin`;
-                box.style.left = `${size*(i+xSize)}vmin`
-                box.style.top = `${size*(j+ySize)}vmin`;
-                box.style.transform = "translateZ(" + size*(k+zSize) + "vmin)";
+                box.style.left = `${size*(i)}vmin`
+                box.style.top = `${size*(j)}vmin`;
+                box.style.transform = "translateZ(" + size*(k) + "vmin)";
                 box.id = i + " " + j + " " + k;
 
-                if ((i != -1*(Math.floor(xSize/2)) && i != 1*(Math.floor(xSize/2))) && (j != -1*(Math.floor(ySize/2)) && j != 1*(Math.floor(ySize/2))) && (k != -1*(Math.floor(zSize/2)) && k != 1*(Math.floor(zSize/2)))) {
+                if ((i != 0 && i != xSize-1) && (j != 0 && j != ySize-1) && (k != 0 && k != zSize-1)) {
                     box.style.visibility = "hidden";
                 }
                 
 
                 var topFace = document.createElement("div");
-                topFace.style.width = `${size}vmin`;
+                topFace.style.width = `${size-0.1}vmin`;
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
                 topFace.style.backgroundColor = "pink";
                 topFace.className = "face";
@@ -49,7 +48,7 @@
                 box.appendChild(topFace);
 
                 var bottom = document.createElement("div");
-                bottom.style.width = `${size}vmin`;
+                bottom.style.width = `${size-0.1}vmin`;
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
                 bottom.style.backgroundColor = "purple";
                 bottom.className = "face";
@@ -57,7 +56,7 @@
                 box.appendChild(bottom);
 
                 var back = document.createElement("div");
-                back.style.width = `${size}vmin`;
+                back.style.width = `${size-0.1}vmin`;
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
                 back.style.backgroundColor = "yellow";
                 back.className = "face";
@@ -65,7 +64,7 @@
                 box.appendChild(back);
 
                 var front = document.createElement("div");
-                front.style.width = `${size}vmin`;
+                front.style.width = `${size-0.1}vmin`;
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
                 front.style.backgroundColor = "red";
                 front.className = "face";
@@ -73,7 +72,7 @@
                 box.appendChild(front);
 
                 var left = document.createElement("div");
-                left.style.width = `${size}vmin`;
+                left.style.width = `${size-0.1}vmin`;
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
                 left.style.backgroundColor = "green";
                 left.className = "face";
@@ -81,7 +80,7 @@
                 box.appendChild(left);
 
                 var right = document.createElement("div");
-                right.style.width = `${size}vmin`;
+                right.style.width = `${size-0.1}vmin`;
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
                 right.style.backgroundColor = "blue";
                 right.className = "face";
@@ -93,6 +92,19 @@
             
         }
 
+    }
+
+    function WindowResize() {
+        let w = document.documentElement.clientWidth;
+        let h = document.documentElement.clientHeight;
+        var board = document.getElementById("board");
+        if (w > h) {
+            board.style.left = ((((w*100/h)/size) - xSize) / 2) * size + "vh";
+            board.style.top = (((100.0/size) - ySize) / 2) * size + "vh";
+        } else {
+            board.style.left = (((100.0/size) - xSize) / 2) * size + "vw";
+            board.style.top = ((((h*100/w)/size) - ySize) / 2) * size + "vw";
+        }
     }
 
     function Destroy() {
