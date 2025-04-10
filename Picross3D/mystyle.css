@@ -14,7 +14,6 @@
     --size: 50px;
     width: var(--size);
     height: var(--size);
-  
     position: absolute;
     transform-style: preserve-3d;
     /*animation: rotate 4s linear infinite;*/
@@ -53,7 +52,19 @@
 }
 
 .box.front1 {
-    perspective: 0px -100px;
+    transform: translateZ(var(--size));
+}
+
+.box.front2 {
+    transform: translateZ(calc(2*var(--size)));
+}
+
+.box.back1 {
+    transform: translateZ(calc(-1*var(--size)));
+}
+
+.box.back2 {
+    transform: translateZ(calc(-2*var(--size)));
 }
   
 .face {
@@ -64,6 +75,7 @@
   
     transform-style: preserve-3d;
     backface-visibility: hidden;
+    border: 5px solid black;
 }
   
 .face.front {
@@ -110,6 +122,6 @@
       transform: rotate(0);
     }
     to {
-      transform: rotateY(90deg);
+      transform: rotateY(0deg);
     }
 }
