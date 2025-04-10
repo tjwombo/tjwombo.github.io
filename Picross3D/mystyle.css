@@ -1,13 +1,11 @@
-.perspective {
-    /*perspective: 800px;
-    perspective-origin: 50% -200px;*/
-    perspective: 0px 100px;
-    perspective-origin: 0% -200px;
+.container {
     position: absolute;
     left: 50%;
     top: 50%;
     transform-style: preserve-3d;
-    animation: rotate 4s linear infinite;
+    animation: rotate 12s linear infinite;
+    transform: rotateY(60deg);
+
 }
 
 .box {  
@@ -16,7 +14,6 @@
     height: var(--size);
     position: absolute;
     transform-style: preserve-3d;
-    /*animation: rotate 4s linear infinite;*/
 }
 
 .box.left1 {
@@ -75,53 +72,40 @@
   
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    border: 5px solid black;
+    border: 3px solid black;
 }
-  
+
 .face.front {
     background-color: red;
+    transform: translateZ(calc(0.51*var(--size)));
 }
-
-.face.bottom {
-    background-color: yellow;
-    top: 100%;
-    transform-origin: top;
-    transform: rotateX(-90deg);
-}
-
-.face.top {
-    background-color: green;
-    bottom: 100%;
-    transform-origin: bottom;
-    transform: rotateX(90deg);
-}
-
 .face.back {
-    background-color: blue;
-    bottom: 100%;
-    transform-origin: center calc(var(--size)) calc(-0.5*var(--size));
-    transform: rotateX(180deg);
+    background-color: yellow;
+    transform: rotateY(180deg) translateZ(calc(0.51*var(--size)));
 }
-
-.face.right {
-    background-color: pink;
-    left: 100%;
-    transform-origin: left;
-    transform: rotateY(90deg);
-}
-
 .face.left {
-    background-color: purple;
-    right: 100%;
-    transform-origin: right;
-    transform: rotateY(-90deg);
+    background-color: green;
+    transform: rotateY(-90deg) translateZ(calc(0.51*var(--size)));
 }
+.face.right {
+    background-color: blue;
+    transform: rotateY(90deg) translateZ(calc(0.51*var(--size)));
+}
+.face.top {
+    background-color: pink;
+    transform: rotateX(90deg) translateZ(calc(0.51*var(--size)));
+}
+.face.bottom {
+    background-color: purple;
+    transform: rotateX(-90deg) translateZ(calc(0.51*var(--size)));
+}
+  
   
 @keyframes rotate {
     from {
-      transform: rotate(0);
+      transform: rotate(0) rotateX(60deg);
     }
     to {
-      transform: rotateY(0deg);
+      transform: rotateY(360deg) rotateX(60deg);
     }
 }
