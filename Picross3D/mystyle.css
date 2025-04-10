@@ -1,77 +1,43 @@
-.container {
+body {
+    background-color: gray;
+    overflow: hidden;
+}
+
+.board {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    height: 50vmin;
+    aspect-ratio: 1 / 1;
+    background-color: gray;
+}
+.container {
+    
+    width: 100%;
+    height: 100%;
     transform-style: preserve-3d;
-    animation: rotate 12s linear infinite;
+    /* animation: rotate 12s linear infinite; */
 }
 
 .box {  
-    --size: 50px;
+    /* --size: 10%;
     width: var(--size);
-    height: var(--size);
+    height: var(--size); */
+    aspect-ratio: 1/1;
     position: absolute;
     transform-style: preserve-3d;
 }
-
-.box.left1 {
-    right: 0;
-}
-
-.box.left2 {
-    right: var(--size);
-}
-
-.box.right1 {
-    left: var(--size);
-}
-
-.box.right2 {
-    left: calc(2*var(--size));
-}
-
-.box.up1 {
-    bottom: 0;
-}
-
-.box.down1 {
-    top: var(--size);
-}
-
-.box.up2 {
-    bottom: var(--size);
-}
-
-.box.down2 {
-    top: calc(2*var(--size));
-}
-
-.box.front1 {
-    transform: translateZ(var(--size));
-}
-
-.box.front2 {
-    transform: translateZ(calc(2*var(--size)));
-}
-
-.box.back1 {
-    transform: translateZ(calc(-1*var(--size)));
-}
-
-.box.back2 {
-    transform: translateZ(calc(-2*var(--size)));
-}
   
 .face {
-    --size: 50px;
     position: absolute;
+    /* --size: 50px;
+    
     width: var(--size);
-    height: var(--size);
+    height: var(--size); */
+    aspect-ratio: 1/1;
     backface-visibility: hidden;
-    border: 1px solid black;
+    border: 0.1vmin solid black;
 }
 
-.face.front {
+/* .face.front {
     background-color: red;
     transform: translateZ(calc(0.51*var(--size)));
 }
@@ -94,7 +60,7 @@
 .face.bottom {
     background-color: purple;
     transform: rotateX(-90deg) translateZ(calc(0.51*var(--size)));
-}
+} */
   
   
 @keyframes rotate {

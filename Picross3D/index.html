@@ -4,65 +4,88 @@
 </head>
 
 <body>
-    <div class="container" id="container">
+    <div class="board" id="board">
+        <div class="container" id="container">
         
-    </div>
+        </div>
+    </div> 
 
 <script>
+    const size = 5;
+    const xSize = 7;
+    const ySize = 7;
+    const zSize = 7;
+
+    //var board = document.getElementById("board");
+    //board.style.left = 50 - (Math.ceil(xSize*size/2)) + "vmin";
+    //board.style.top = 50 - (Math.ceil(ySize*size)) + "vmin";
+
     var container = document.getElementById("container");
-    console.log(container);
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            for (k = 0; k < 5; k++) {
+    container.style.transformOrigin = xSize*10 + "% " + ySize*10 +"% 35vmin";
+
+   
+    for (i = -1*(Math.floor(xSize/2)); i <= Math.floor(xSize/2); i++) {
+        for (j = -1*(Math.floor(ySize/2)); j <= Math.floor(ySize/2); j++) {
+            for (k = -1*(Math.floor(zSize/2)); k <= Math.floor(zSize/2); k++) {
                 var box = document.createElement("div");
                 box.className = "box ";
-                if (i == 1) {
-                    box.className += "left2 "
-                } else if (i == 2) {
-                    box.className += "left1 "
-                } else if (i == 3) {
-                    box.className += "right1 "
-                } else if (i == 4) {
-                    box.className += "right2 "
-                }
+                box.style.width = `${size}vmin`;
+                box.style.left = `${size*(i+xSize)}vmin`
+                box.style.top = `${size*(j+ySize)}vmin`;
+                box.style.transform = "translateZ(" + size*(k+zSize) + "vmin)";
+                box.id = i + " " + j + " " + k;
 
-                if (j == 1) {
-                    box.className += "up2 "
-                } else if (j == 2) {
-                    box.className += "up1 "
-                } else if (j == 3) {
-                    box.className += "down1 "
-                } else if (j == 4) {
-                    box.className += "down2 "
+                if ((i != -1*(Math.floor(xSize/2)) && i != 1*(Math.floor(xSize/2))) && (j != -1*(Math.floor(ySize/2)) && j != 1*(Math.floor(ySize/2))) && (k != -1*(Math.floor(zSize/2)) && k != 1*(Math.floor(zSize/2)))) {
+                    box.style.visibility = "hidden";
                 }
-
-                if (k == 1) {
-                    box.className += "front2 "
-                } else if (k == 2) {
-                    box.className += "front1 "
-                } else if (k == 3) {
-                    box.className += "back1 "
-                } else if (k == 4) {
-                    box.className += "back2 "
-                }
+                
 
                 var topFace = document.createElement("div");
-                topFace.className = "face top";
+                topFace.style.width = `${size}vmin`;
+                topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
+                topFace.style.backgroundColor = "pink";
+                topFace.className = "face";
+                topFace.onclick = Destroy;
                 box.appendChild(topFace);
+
                 var bottom = document.createElement("div");
-                bottom.className = "face bottom";
+                bottom.style.width = `${size}vmin`;
+                bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
+                bottom.style.backgroundColor = "purple";
+                bottom.className = "face";
+                bottom.onclick = Destroy;
                 box.appendChild(bottom);
+
                 var back = document.createElement("div");
-                back.className = "face back";
+                back.style.width = `${size}vmin`;
+                back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
+                back.style.backgroundColor = "yellow";
+                back.className = "face";
+                back.onclick = Destroy;
                 box.appendChild(back);
+
                 var front = document.createElement("div");
-                front.className = "face front";
+                front.style.width = `${size}vmin`;
+                front.style.transform = "translateZ(" +0.5*size + "vmin)";
+                front.style.backgroundColor = "red";
+                front.className = "face";
+                front.onclick = Destroy;
                 box.appendChild(front);
+
                 var left = document.createElement("div");
-                left.className = "face left";
+                left.style.width = `${size}vmin`;
+                left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
+                left.style.backgroundColor = "green";
+                left.className = "face";
+                left.onclick = Destroy;
                 box.appendChild(left);
+
                 var right = document.createElement("div");
-                right.className = "face right";
+                right.style.width = `${size}vmin`;
+                right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
+                right.style.backgroundColor = "blue";
+                right.className = "face";
+                right.onclick = Destroy;
                 box.appendChild(right);
 
                 container.appendChild(box);
@@ -70,6 +93,30 @@
             
         }
 
+    }
+
+    function Destroy() {
+        var parent = this.parentElement;
+        var [x, y, z] = parent.id.split(" ");
+        x = Number(x);
+        y = Number(y);
+        z = Number(z);
+        
+        for (i of [1, -1]) {
+            var xElement = document.getElementById((x+i) + " " + y + " " + z);
+            if (xElement != null) {
+                xElement.style.visibility = "visible";
+            }
+            var yElement = document.getElementById(x + " " + (y+i) + " " + z);
+            if (yElement != null) {
+                yElement.style.visibility = "visible";
+            }
+            var zElement = document.getElementById(x + " " + y + " " + (z+i));
+            if (zElement != null) {
+                zElement.style.visibility = "visible";
+            }
+        }
+        parent.remove();
     }
 </script>
 </body>
