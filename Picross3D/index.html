@@ -4,12 +4,21 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 </head>
 
-<body onresize="WindowResize()" onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)" onmouseup="StopRotation()" ontouchend="StopRotation()" onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
+<body onresize="WindowResize()" oncontextmenu="return false;"
+        onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
+        onmouseup="StopRotation()" onmouseleave="StopRotation()" ontouchend="StopRotation()"
+        onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
         
         </div>
-    </div> 
+    </div>
+    <div id="buttons" onmousedown="StopDrag(event)" >
+        <input type="checkbox" name="interactions" id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)" />
+        <label for="Paint">Paint</label>
+        <input type="checkbox" name="interactions" id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)" />
+        <label for="Destroy">Destroy</label>
+    </div>
 
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
@@ -58,6 +67,8 @@
                 topFace.style.backgroundColor = "pink";
                 topFace.className = "face";
                 topFace.onclick = Destroy;
+                topFace.addEventListener("touchstart", Destroy)
+                topFace.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(topFace);
 
                 // Create the bottom face
@@ -67,6 +78,8 @@
                 bottom.style.backgroundColor = "purple";
                 bottom.className = "face";
                 bottom.onclick = Destroy;
+                bottom.addEventListener("touchstart", Destroy)
+                bottom.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(bottom);
 
                 // Create the back face
@@ -76,6 +89,8 @@
                 back.style.backgroundColor = "yellow";
                 back.className = "face";
                 back.onclick = Destroy;
+                back.addEventListener("touchstart", Destroy)
+                back.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(back);
 
                 // Create the front face
@@ -85,6 +100,8 @@
                 front.style.backgroundColor = "red";
                 front.className = "face";
                 front.onclick = Destroy;
+                front.addEventListener("touchstart", Destroy)
+                front.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(front);
 
                 // Create the left face
@@ -94,6 +111,8 @@
                 left.style.backgroundColor = "green";
                 left.className = "face";
                 left.onclick = Destroy;
+                left.addEventListener("touchstart", Destroy)
+                left.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(left);
 
                 // Create the right face
@@ -103,6 +122,8 @@
                 right.style.backgroundColor = "blue";
                 right.className = "face";
                 right.onclick = Destroy;
+                right.addEventListener("touchstart", Destroy)
+                right.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(right);
             }
             
@@ -126,6 +147,38 @@
         }
     }
 
+    // Stop Rotation from being setup when mouse goes down on a click event object
+    function StopDrag(e, conditionally = false) {
+        // If we want to allow drag while we don't have a cube interaction
+        if ((conditionally && GetCubeInteraction() == null) || (e.buttons & (1 << 1) && !(e.buttons & (1 << 0)))) {
+            return true;
+        }
+        e.stopPropagation();
+    }
+
+    // Limit a group of checkboxes to only have one box clicked at a time
+    function LimitOne(checkbox) {
+        var checkboxes = document.getElementsByName(checkbox.name);
+        checkboxes.forEach((item) => {
+            if (item != checkbox) {
+                item.checked = false;
+            } else {
+                item.checked = !item.checked;
+            }
+        });
+    }
+
+    function GetCubeInteraction() {
+        var checkboxes = document.getElementsByName("interactions");
+        var interaction = null;
+        checkboxes.forEach((item) => {
+            if (item.checked) {
+                interaction = item;
+            }
+        });
+        return interaction;
+    }
+
     // Enable rotation of the cube and update the interaction coords
     function SetupRotation(e) {
         e.preventDefault();
@@ -134,7 +187,24 @@
         mouseX=e.clientX || e.touches[0].clientX;
         mouseY=e.clientY || e.touches[0].clientY;
 
-        mouseDown = true;
+        // Start rotating if right click is pressed and left is not
+        if (e.buttons & (1 << 1) && !(e.buttons & (1 << 0))) {
+            mouseDown = true;
+        }
+        // Conditionally rotate if its a touch (neither of the cube interactions are active)
+        else if (e.type == "touchstart" && GetCubeInteraction() == null) {
+            mouseDown = true;
+        }
+        // Conditionally rotate if its a left click (neither of the cube interactions are active)
+        else if (e.buttons == 1 && GetCubeInteraction() == null) {
+            mouseDown = true;
+        }
+        // Stop rotating if both left and right click is pressed
+        else if (e.buttons & (1 << 1) && (e.buttons & (1 << 0))) {
+            if (GetCubeInteraction() != null) {
+                mouseDown = false;
+            }
+        }
     }
 
     // Disable rotation of the cube
@@ -193,31 +263,33 @@
 
     // Destroy the box that was clicked
     function Destroy() {
-        // Get the box indeces
-        var parent = this.parentElement;
-        var [x, y, z] = parent.id.split(" ");
-        x = Number(x);
-        y = Number(y);
-        z = Number(z);
-        
-        // For the 3x3 grid centered on the box, make it visible
-        for (i of [1, -1]) {
-            var xElement = document.getElementById((x+i) + " " + y + " " + z);
-            if (xElement != null) {
-                xElement.style.visibility = "visible";
+        if (GetCubeInteraction() != null && GetCubeInteraction().id == "Destroy") {
+            // Get the box indeces
+            var parent = this.parentElement;
+            var [x, y, z] = parent.id.split(" ");
+            x = Number(x);
+            y = Number(y);
+            z = Number(z);
+            
+            // For the 3x3 grid centered on the box, make it visible
+            for (i of [1, -1]) {
+                var xElement = document.getElementById((x+i) + " " + y + " " + z);
+                if (xElement != null) {
+                    xElement.style.visibility = "visible";
+                }
+                var yElement = document.getElementById(x + " " + (y+i) + " " + z);
+                if (yElement != null) {
+                    yElement.style.visibility = "visible";
+                }
+                var zElement = document.getElementById(x + " " + y + " " + (z+i));
+                if (zElement != null) {
+                    zElement.style.visibility = "visible";
+                }
             }
-            var yElement = document.getElementById(x + " " + (y+i) + " " + z);
-            if (yElement != null) {
-                yElement.style.visibility = "visible";
-            }
-            var zElement = document.getElementById(x + " " + y + " " + (z+i));
-            if (zElement != null) {
-                zElement.style.visibility = "visible";
-            }
-        }
 
-        // Remove the box
-        parent.remove();
+            // Remove the box
+            parent.remove();
+        }
     }
 </script>
 </body>
