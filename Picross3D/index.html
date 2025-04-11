@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="mystyle.css">
 </head>
 
-<body onresize="WindowResize()">
+<body onresize="WindowResize()" onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)" onmouseup="StopRotation()" ontouchend="StopRotation()" onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
         
@@ -16,11 +16,32 @@
     const ySize = 5;
     const zSize = 4;
 
+    var mouseX;
+    var mouseY;
+    var mouseDown = false;
+
+    //container.addEventListener('mousedown', (e) => { SetupRotation(e)});
+    //container.addEventListener('mouseup', function() { StopRotation()});
+
     var board = document.getElementById("board");
     WindowResize();
 
     var container = document.getElementById("container");
     container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
+    container.style.transform = `rotateX(0rad) rotateY(0rad) rotateZ(0rad)`;
+    container.addEventListener('mousemove', (e) => { RotateCube(e)});
+    container.addEventListener('touchmove', (e) => { RotateCube(e)});
+
+
+//     $(".floor").mousedown(function () {
+//     $(this).mousemove(function () {
+//         console.log("OK Moved!");
+//     });
+// }).mouseup(function () {
+//     $(this).unbind('mousemove');
+// }).mouseout(function () {
+//     $(this).unbind('mousemove');
+// });
 
    
     for (i = 0; i < xSize; i++) {
@@ -104,6 +125,74 @@
         } else {
             board.style.left = (((100.0/size) - xSize) / 2) * size + "vw";
             board.style.top = ((((h*100/w)/size) - ySize) / 2) * size + "vw";
+        }
+    }
+
+    function SetupRotation(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        mouseX=e.clientX || e.touches[0].clientX;
+        mouseY=e.clientY || e.touches[0].clientY;
+
+        mouseDown = true;
+    }
+
+    function StopRotation() {
+        mouseDown = false;
+    }
+
+    function RotateCube(e) {
+        const elem = e.target;
+
+            const boundingRect = elem.getBoundingClientRect();
+            const center_x = boundingRect.left + boundingRect.width / 2;
+            const center_y = boundingRect.top + boundingRect.height / 2;
+            const mouse_x = e.pageX;
+            const mouse_y = e.pageY;
+            const radians = Math.atan2(mouse_x - center_x, mouse_y - center_y);
+            const degree = radians * (180 / Math.PI) * -1 + 90;
+            //container.style.transform = `rotateX(${degree}deg) rotateY(${degree}deg) rotateZ(0deg)`;
+
+        
+        if (mouseDown) {
+            console.log(e);
+            var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+            var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
+            var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+            var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
+            var updatedX = (((e.clientX || e.touches[0].clientX)-mouseX)/180)%(2*Math.PI);
+            var updatedY = (((e.clientY || e.touches[0].clientY)-mouseY)/180)%(2*Math.PI);
+            var updatedZ = 0;
+
+            var r11 = Math.cos(updatedY) * Math.cos(updatedZ);
+            var r12 = (Math.sin(updatedX) * Math.sin(updatedY) * Math.cos(updatedZ)) - (Math.cos(updatedX) * Math.sin(updatedZ));
+            var r13 = (Math.cos(updatedX) * Math.sin(updatedY) * Math.cos(updatedZ)) + (Math.sin(updatedX) * Math.sin(updatedY));
+            var r21 = Math.cos(updatedY) * Math.sin(updatedZ);
+            var r31 = -Math.sin(updatedY);
+            var r32 = Math.sin(updatedX) * Math.cos(updatedY);
+            var r33 = Math.cos(updatedX) * Math.cos(updatedZ);
+
+            if (Math.abs(r31) != 1) {
+                updatedX = r31;
+                updatedY = Math.atan2(r32 / Math.cos(r31), r33 / Math.cos(r31));
+                updatedZ = Math.atan2(r21 / Math.cos(r31), r11 / Math.cos(r31));
+            } else {
+                updatedZ = 0;
+                if (r31 == -1) {
+                    updatedX = Math.PI / 2.0;
+                    updatedY = Math.atan2(r12, r13);
+                } else {
+                    updatedX = -Math.PI / 2.0;
+                    updatedY = Math.atan2(r12, -r13);
+                }
+            }
+
+            container.style.transform = `rotateX(${xRad + updatedX}rad) rotateY(${yRad + updatedY}rad) rotateZ(${zRad + updatedZ}rad)`;
+            console.log(container.style.transform);
+
+            mouseX=e.clientX || e.touches[0].clientX;
+            mouseY=e.clientY || e.touches[0].clientY;
         }
     }
 
