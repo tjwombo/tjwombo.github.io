@@ -66,8 +66,8 @@
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
                 topFace.style.backgroundColor = "pink";
                 topFace.className = "face";
-                topFace.onclick = Destroy;
-                topFace.addEventListener("touchstart", Destroy)
+                topFace.onclick = Interaction;
+                topFace.addEventListener("touchstart", Interaction)
                 topFace.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(topFace);
 
@@ -77,8 +77,8 @@
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
                 bottom.style.backgroundColor = "purple";
                 bottom.className = "face";
-                bottom.onclick = Destroy;
-                bottom.addEventListener("touchstart", Destroy)
+                bottom.onclick = Interaction;
+                bottom.addEventListener("touchstart", Interaction)
                 bottom.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(bottom);
 
@@ -88,8 +88,8 @@
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
                 back.style.backgroundColor = "yellow";
                 back.className = "face";
-                back.onclick = Destroy;
-                back.addEventListener("touchstart", Destroy)
+                back.onclick = Interaction;
+                back.addEventListener("touchstart", Interaction)
                 back.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(back);
 
@@ -99,8 +99,8 @@
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
                 front.style.backgroundColor = "red";
                 front.className = "face";
-                front.onclick = Destroy;
-                front.addEventListener("touchstart", Destroy)
+                front.onclick = Interaction;
+                front.addEventListener("touchstart", Interaction)
                 front.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(front);
 
@@ -110,8 +110,8 @@
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
                 left.style.backgroundColor = "green";
                 left.className = "face";
-                left.onclick = Destroy;
-                left.addEventListener("touchstart", Destroy)
+                left.onclick = Interaction;
+                left.addEventListener("touchstart", Interaction)
                 left.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(left);
 
@@ -121,8 +121,8 @@
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
                 right.style.backgroundColor = "blue";
                 right.className = "face";
-                right.onclick = Destroy;
-                right.addEventListener("touchstart", Destroy)
+                right.onclick = Interaction;
+                right.addEventListener("touchstart", Interaction)
                 right.addEventListener("mousedown", (e) => {StopDrag(e, true)});
                 box.appendChild(right);
             }
@@ -259,35 +259,52 @@
         }
     }
 
+    function Interaction() {
+        if (GetCubeInteraction() == null) {
+            return;
+        } else if (GetCubeInteraction().id == "Paint") {
+            if (this.parentElement.value == "Paint") {
+                this.parentElement.value = "";
+            } else {
+                this.parentElement.value = "Paint";
+            }
+        } else if (GetCubeInteraction().id == "Destroy") {
+            Destroy.call(this);
+        }
+    }
+
     // Destroy the box that was clicked
     function Destroy() {
-        if (GetCubeInteraction() != null && GetCubeInteraction().id == "Destroy") {
-            // Get the box indeces
-            var parent = this.parentElement;
-            var [x, y, z] = parent.id.split(" ");
-            x = Number(x);
-            y = Number(y);
-            z = Number(z);
-            
-            // For the 3x3 grid centered on the box, make it visible
-            for (i of [1, -1]) {
-                var xElement = document.getElementById((x+i) + " " + y + " " + z);
-                if (xElement != null) {
-                    xElement.style.visibility = "visible";
-                }
-                var yElement = document.getElementById(x + " " + (y+i) + " " + z);
-                if (yElement != null) {
-                    yElement.style.visibility = "visible";
-                }
-                var zElement = document.getElementById(x + " " + y + " " + (z+i));
-                if (zElement != null) {
-                    zElement.style.visibility = "visible";
-                }
-            }
+        // Get the box indeces
+        var parent = this.parentElement;
+        var [x, y, z] = parent.id.split(" ");
+        x = Number(x);
+        y = Number(y);
+        z = Number(z);
 
-            // Remove the box
-            parent.remove();
+        // Don't break the box if it was painted
+        if (parent.value == "Paint") {
+            return;
         }
+        
+        // For the 3x3 grid centered on the box, make it visible
+        for (i of [1, -1]) {
+            var xElement = document.getElementById((x+i) + " " + y + " " + z);
+            if (xElement != null) {
+                xElement.style.visibility = "visible";
+            }
+            var yElement = document.getElementById(x + " " + (y+i) + " " + z);
+            if (yElement != null) {
+                yElement.style.visibility = "visible";
+            }
+            var zElement = document.getElementById(x + " " + y + " " + (z+i));
+            if (zElement != null) {
+                zElement.style.visibility = "visible";
+            }
+        }
+
+        // Remove the box
+        parent.remove();
     }
 </script>
 </body>
