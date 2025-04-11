@@ -13,13 +13,9 @@ body {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    /* animation: rotate 12s linear infinite; */
 }
 
 .box {  
-    /* --size: 10%;
-    width: var(--size);
-    height: var(--size); */
     aspect-ratio: 1/1;
     position: absolute;
     transform-style: preserve-3d;
@@ -27,47 +23,8 @@ body {
   
 .face {
     position: absolute;
-    /* --size: 50px;
-    
-    width: var(--size);
-    height: var(--size); */
     aspect-ratio: 1/1;
     backface-visibility: hidden;
     border: 0.1vmin solid black;
     background-color: inherit;
-}
-
-/* .face.front {
-    background-color: red;
-    transform: translateZ(calc(0.51*var(--size)));
-}
-.face.back {
-    background-color: yellow;
-    transform: rotateY(180deg) translateZ(calc(0.51*var(--size)));
-}
-.face.left {
-    background-color: green;
-    transform: rotateY(-90deg) translateZ(calc(0.51*var(--size)));
-}
-.face.right {
-    background-color: blue;
-    transform: rotateY(90deg) translateZ(calc(0.51*var(--size)));
-}
-.face.top {
-    background-color: pink;
-    transform: rotateX(90deg) translateZ(calc(0.51*var(--size)));
-}
-.face.bottom {
-    background-color: purple;
-    transform: rotateX(-90deg) translateZ(calc(0.51*var(--size)));
-} */
-  
-  
-@keyframes rotate {
-    from {
-      transform: rotate(0) rotateZ(60deg);
-    }
-    to {
-      transform: rotateX(360deg) rotateZ(60deg);
-    }
 }
