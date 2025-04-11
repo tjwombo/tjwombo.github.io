@@ -52,6 +52,7 @@
                 box.style.left = `${size*(i)}vmin`
                 box.style.top = `${size*(j)}vmin`;
                 box.style.transform = "translateZ(" + size*(k) + "vmin)";
+                box.style.backgroundColor = "gray";
                 box.id = i + " " + j + " " + k;
                 container.appendChild(box);
 
@@ -64,7 +65,6 @@
                 var topFace = document.createElement("div");
                 topFace.style.width = `${size-0.1}vmin`;
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
-                topFace.style.backgroundColor = "pink";
                 topFace.className = "face";
                 topFace.onclick = Interaction;
                 topFace.addEventListener("touchstart", Interaction)
@@ -75,7 +75,6 @@
                 var bottom = document.createElement("div");
                 bottom.style.width = `${size-0.1}vmin`;
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
-                bottom.style.backgroundColor = "purple";
                 bottom.className = "face";
                 bottom.onclick = Interaction;
                 bottom.addEventListener("touchstart", Interaction)
@@ -86,7 +85,6 @@
                 var back = document.createElement("div");
                 back.style.width = `${size-0.1}vmin`;
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
-                back.style.backgroundColor = "yellow";
                 back.className = "face";
                 back.onclick = Interaction;
                 back.addEventListener("touchstart", Interaction)
@@ -97,7 +95,6 @@
                 var front = document.createElement("div");
                 front.style.width = `${size-0.1}vmin`;
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
-                front.style.backgroundColor = "red";
                 front.className = "face";
                 front.onclick = Interaction;
                 front.addEventListener("touchstart", Interaction)
@@ -108,7 +105,6 @@
                 var left = document.createElement("div");
                 left.style.width = `${size-0.1}vmin`;
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
-                left.style.backgroundColor = "green";
                 left.className = "face";
                 left.onclick = Interaction;
                 left.addEventListener("touchstart", Interaction)
@@ -119,7 +115,6 @@
                 var right = document.createElement("div");
                 right.style.width = `${size-0.1}vmin`;
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
-                right.style.backgroundColor = "blue";
                 right.className = "face";
                 right.onclick = Interaction;
                 right.addEventListener("touchstart", Interaction)
@@ -263,10 +258,13 @@
         if (GetCubeInteraction() == null) {
             return;
         } else if (GetCubeInteraction().id == "Paint") {
-            if (this.parentElement.value == "Paint") {
-                this.parentElement.value = "";
+            var parent = this.parentElement
+            if (parent.value == "Paint") {
+                parent.value = "";
+                parent.style.backgroundColor = "gray";
             } else {
-                this.parentElement.value = "Paint";
+                parent.value = "Paint";
+                parent.style.backgroundColor = "green";
             }
         } else if (GetCubeInteraction().id == "Destroy") {
             Destroy.call(this);

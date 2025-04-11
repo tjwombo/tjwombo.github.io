@@ -1,5 +1,5 @@
 body {
-    background-color: gray;
+    background-color: rgb(65, 61, 61);
     overflow: hidden;
 }
 
@@ -7,7 +7,6 @@ body {
     position: absolute;
     height: 50vmin;
     aspect-ratio: 1 / 1;
-    background-color: gray;
 }
 .container {
     
@@ -35,6 +34,7 @@ body {
     aspect-ratio: 1/1;
     backface-visibility: hidden;
     border: 0.1vmin solid black;
+    background-color: inherit;
 }
 
 /* .face.front {
