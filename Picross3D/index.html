@@ -259,11 +259,11 @@
             return;
         } else if (GetCubeInteraction().id == "Paint") {
             var parent = this.parentElement
-            if (parent.value == "Paint") {
-                parent.value = "";
+            if (parent.dataset.modifier == "Paint") {
+                parent.dataset.modifier = "Destroy";
                 parent.style.backgroundColor = "gray";
-            } else {
-                parent.value = "Paint";
+            } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
+                parent.dataset.modifier = "Paint";
                 parent.style.backgroundColor = "green";
             }
         } else if (GetCubeInteraction().id == "Destroy") {
@@ -281,28 +281,55 @@
         z = Number(z);
 
         // Don't break the box if it was painted
-        if (parent.value == "Paint") {
+        if (parent.dataset.modifier == 'Paint') {
             return;
         }
+
+        var changedVisibility = []
         
         // For the 3x3 grid centered on the box, make it visible
         for (i of [1, -1]) {
             var xElement = document.getElementById((x+i) + " " + y + " " + z);
             if (xElement != null) {
+                if (xElement.style.visibility == "hidden") {
+                    changedVisibility.push(xElement)
+                }
                 xElement.style.visibility = "visible";
             }
             var yElement = document.getElementById(x + " " + (y+i) + " " + z);
             if (yElement != null) {
+                if (yElement.style.visibility == "hidden") {
+                    changedVisibility.push(yElement)
+                }
                 yElement.style.visibility = "visible";
             }
             var zElement = document.getElementById(x + " " + y + " " + (z+i));
             if (zElement != null) {
+                if (zElement.style.visibility == "hidden") {
+                    changedVisibility.push(zElement)
+                }
                 zElement.style.visibility = "visible";
             }
         }
 
-        // Remove the box
-        parent.remove();
+        if (parent.dataset.required == "Required") {
+            // Play animation of it breaking
+            parent.style.visibility = "hidden";
+            parent.style.visibility = "visible";
+
+
+            // Rehide the blocks that were shown for the animation
+            for (element of changedVisibility) {
+                element.style.visibility = "hidden";
+            }
+
+            parent.dataset.modifier = "Permanent";
+            parent.style.backgroundColor = "green";
+            // Aplly broken effect
+        } else {
+            // Remove the box
+            parent.remove();
+        }
     }
 </script>
 </body>
