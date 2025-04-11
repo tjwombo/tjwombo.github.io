@@ -11,42 +11,31 @@
     </div> 
 
 <script>
+    // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 7;
     const xSize = 6;
     const ySize = 5;
     const zSize = 4;
 
+    // Last used position of interaction point and if we should think about rotating
     var mouseX;
     var mouseY;
     var mouseDown = false;
 
-    //container.addEventListener('mousedown', (e) => { SetupRotation(e)});
-    //container.addEventListener('mouseup', function() { StopRotation()});
-
-    var board = document.getElementById("board");
+    // Position the cube to the center of the screen
     WindowResize();
 
+    // Set the transformation origin the center of the cube and 0 rotation
     var container = document.getElementById("container");
     container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
     container.style.transform = `rotateX(0rad) rotateY(0rad) rotateZ(0rad)`;
-    container.addEventListener('mousemove', (e) => { RotateCube(e)});
-    container.addEventListener('touchmove', (e) => { RotateCube(e)});
-
-
-//     $(".floor").mousedown(function () {
-//     $(this).mousemove(function () {
-//         console.log("OK Moved!");
-//     });
-// }).mouseup(function () {
-//     $(this).unbind('mousemove');
-// }).mouseout(function () {
-//     $(this).unbind('mousemove');
-// });
 
    
+    // Create the cubes
     for (i = 0; i < xSize; i++) {
         for (j = 0; j <ySize; j++) {
             for (k = 0; k < zSize; k++) {
+                // Create and position the box
                 var box = document.createElement("div");
                 box.className = "box ";
                 box.style.width = `${size}vmin`;
@@ -54,12 +43,14 @@
                 box.style.top = `${size*(j)}vmin`;
                 box.style.transform = "translateZ(" + size*(k) + "vmin)";
                 box.id = i + " " + j + " " + k;
+                container.appendChild(box);
 
+                // Hide boxes that can't be see to save performance
                 if ((i != 0 && i != xSize-1) && (j != 0 && j != ySize-1) && (k != 0 && k != zSize-1)) {
                     box.style.visibility = "hidden";
                 }
-                
 
+                // Create the top face
                 var topFace = document.createElement("div");
                 topFace.style.width = `${size-0.1}vmin`;
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
@@ -68,6 +59,7 @@
                 topFace.onclick = Destroy;
                 box.appendChild(topFace);
 
+                // Create the bottom face
                 var bottom = document.createElement("div");
                 bottom.style.width = `${size-0.1}vmin`;
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
@@ -76,6 +68,7 @@
                 bottom.onclick = Destroy;
                 box.appendChild(bottom);
 
+                // Create the back face
                 var back = document.createElement("div");
                 back.style.width = `${size-0.1}vmin`;
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
@@ -84,6 +77,7 @@
                 back.onclick = Destroy;
                 box.appendChild(back);
 
+                // Create the front face
                 var front = document.createElement("div");
                 front.style.width = `${size-0.1}vmin`;
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
@@ -92,6 +86,7 @@
                 front.onclick = Destroy;
                 box.appendChild(front);
 
+                // Create the left face
                 var left = document.createElement("div");
                 left.style.width = `${size-0.1}vmin`;
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
@@ -100,6 +95,7 @@
                 left.onclick = Destroy;
                 box.appendChild(left);
 
+                // Create the right face
                 var right = document.createElement("div");
                 right.style.width = `${size-0.1}vmin`;
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
@@ -107,18 +103,19 @@
                 right.className = "face";
                 right.onclick = Destroy;
                 box.appendChild(right);
-
-                container.appendChild(box);
             }
             
         }
 
     }
 
+    // Reposition the cube when the window gets resized
     function WindowResize() {
         let w = document.documentElement.clientWidth;
         let h = document.documentElement.clientHeight;
         var board = document.getElementById("board");
+
+        // Convert the larger to the smaller % to match the vmin of size
         if (w > h) {
             board.style.left = ((((w*100/h)/size) - xSize) / 2) * size + "vh";
             board.style.top = (((100.0/size) - ySize) / 2) * size + "vh";
@@ -128,6 +125,7 @@
         }
     }
 
+    // Enable rotation of the cube and update the interaction coords
     function SetupRotation(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -138,71 +136,70 @@
         mouseDown = true;
     }
 
+    // Disable rotation of the cube
     function StopRotation() {
         mouseDown = false;
     }
 
+    // Rotate the cube if enabled
     function RotateCube(e) {
-        const elem = e.target;
 
-            const boundingRect = elem.getBoundingClientRect();
-            const center_x = boundingRect.left + boundingRect.width / 2;
-            const center_y = boundingRect.top + boundingRect.height / 2;
-            const mouse_x = e.pageX;
-            const mouse_y = e.pageY;
-            const radians = Math.atan2(mouse_x - center_x, mouse_y - center_y);
-            const degree = radians * (180 / Math.PI) * -1 + 90;
-            //container.style.transform = `rotateX(${degree}deg) rotateY(${degree}deg) rotateZ(0deg)`;
-
-        
         if (mouseDown) {
-            console.log(e);
+            // Get the previous rotation values
             var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
             var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
             var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
             var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
-            var updatedX = (((e.clientX || e.touches[0].clientX)-mouseX)/180)%(2*Math.PI);
-            var updatedY = (((e.clientY || e.touches[0].clientY)-mouseY)/180)%(2*Math.PI);
-            var updatedZ = 0;
 
-            var r11 = Math.cos(updatedY) * Math.cos(updatedZ);
-            var r12 = (Math.sin(updatedX) * Math.sin(updatedY) * Math.cos(updatedZ)) - (Math.cos(updatedX) * Math.sin(updatedZ));
-            var r13 = (Math.cos(updatedX) * Math.sin(updatedY) * Math.cos(updatedZ)) + (Math.sin(updatedX) * Math.sin(updatedY));
-            var r21 = Math.cos(updatedY) * Math.sin(updatedZ);
-            var r31 = -Math.sin(updatedY);
-            var r32 = Math.sin(updatedX) * Math.cos(updatedY);
-            var r33 = Math.cos(updatedX) * Math.cos(updatedZ);
+            // Get the values to apply to the rotation
+            var newX = (((e.clientX || e.touches[0].clientX)-mouseX)/180)%(2*Math.PI);
+            var newY = (((e.clientY || e.touches[0].clientY)-mouseY)/180)%(2*Math.PI);
+            var newZ = 0;
 
+            // Calculate the 3x3 rotation matrix (minus the unused r22 and r23)
+            var r11 = Math.cos(newY) * Math.cos(newZ);
+            var r12 = (Math.sin(newX) * Math.sin(newY) * Math.cos(newZ)) - (Math.cos(newX) * Math.sin(newZ));
+            var r13 = (Math.cos(newX) * Math.sin(newY) * Math.cos(newZ)) + (Math.sin(newX) * Math.sin(newY));
+            var r21 = Math.cos(newY) * Math.sin(newZ);
+            var r31 = -Math.sin(newY);
+            var r32 = Math.sin(newX) * Math.cos(newY);
+            var r33 = Math.cos(newX) * Math.cos(newZ);
+
+            // Calculate the (x,y) rotation into (x,y,z) terms
             if (Math.abs(r31) != 1) {
-                updatedX = r31;
-                updatedY = Math.atan2(r32 / Math.cos(r31), r33 / Math.cos(r31));
-                updatedZ = Math.atan2(r21 / Math.cos(r31), r11 / Math.cos(r31));
+                newX = r31;
+                newY = Math.atan2(r32 / Math.cos(r31), r33 / Math.cos(r31));
+                newZ = Math.atan2(r21 / Math.cos(r31), r11 / Math.cos(r31));
             } else {
-                updatedZ = 0;
+                newZ = 0;
                 if (r31 == -1) {
-                    updatedX = Math.PI / 2.0;
-                    updatedY = Math.atan2(r12, r13);
+                    newX = Math.PI / 2.0;
+                    newY = Math.atan2(r12, r13);
                 } else {
-                    updatedX = -Math.PI / 2.0;
-                    updatedY = Math.atan2(r12, -r13);
+                    newX = -Math.PI / 2.0;
+                    newY = Math.atan2(r12, -r13);
                 }
             }
 
-            container.style.transform = `rotateX(${xRad + updatedX}rad) rotateY(${yRad + updatedY}rad) rotateZ(${zRad + updatedZ}rad)`;
-            console.log(container.style.transform);
+            // Apply the rotation
+            container.style.transform = `rotateX(${xRad + newX}rad) rotateY(${yRad + newY}rad) rotateZ(${zRad + newZ}rad)`;
 
+            // Update the last interaction coord
             mouseX=e.clientX || e.touches[0].clientX;
             mouseY=e.clientY || e.touches[0].clientY;
         }
     }
 
+    // Destroy the box that was clicked
     function Destroy() {
+        // Get the box indeces
         var parent = this.parentElement;
         var [x, y, z] = parent.id.split(" ");
         x = Number(x);
         y = Number(y);
         z = Number(z);
         
+        // For the 3x3 grid centered on the box, make it visible
         for (i of [1, -1]) {
             var xElement = document.getElementById((x+i) + " " + y + " " + z);
             if (xElement != null) {
@@ -217,6 +214,8 @@
                 zElement.style.visibility = "visible";
             }
         }
+
+        // Remove the box
         parent.remove();
     }
 </script>
