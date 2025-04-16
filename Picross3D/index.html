@@ -34,6 +34,7 @@
 
     // Different mouse click variable to see if an interaction is held and should propogate and the axis to propogate
     var held = false;
+    var heldDelay = false;
     var axis = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
 
@@ -259,6 +260,7 @@
         // If this is the first interaction of the click, set up the axis
         if (held == false) {
             held = true;
+            heldDelay = true;
             axis = this.parentElement.id;
         }
     }
@@ -267,32 +269,51 @@
     function ContinueInteraction() {
         // Check if an interaction happened on mousedown
         if (held) {
-            var parent = this.parentElement.id
+            // Create a delay before performing the first held interaction
+            if (heldDelay) {
+                // However, there is zero delay on paint
+                if (GetCubeInteraction().id == "Paint") {
+                    heldDelay = false;
+                    ContinueInteraction.call(this);
+                } else if (GetCubeInteraction().id == "Destroy") {
+                    // Create a delay before accepting input
+                    setTimeout(() => {
+                        heldDelay = false;
+                        // Create an additional delay before destroying the block that caused this
+                        // This allows another block to be chosen as the first break
+                        setTimeout(() => {
+                            ContinueInteraction.call(this);
+                        }, 100);
+                    }, 100);
+                }
+            } else {
+                var parent = this.parentElement.id
 
-            // If axis is a regex perform interaction if the box matches
-            if (typeof(axis) != "string") {
-                if (parent.search(axis) != -1) {
+                // If axis is a regex perform interaction if the box matches
+                if (typeof(axis) != "string") {
+                    if (parent.search(axis) != -1) {
+                        Interaction.call(this);
+                    }
+                }
+                // Otherwise its the first face so create the regex where the difference is and call the interaction
+                else {
+                    var [aX, aY, aZ] = axis.split(" ");
+                    var [pX, pY, pZ] = parent.split(" ");
+
+                    if (aX != pX && aY == pY && aZ == pZ) {
+                        axis = new RegExp(". " + aY + " " + aZ);
+                    } else if (aY != pY && aX == pX && aZ == pZ) {
+                        axis = new RegExp(aX + " . " + aZ);
+                    } else if (aZ != pZ && aX == pX && aY == pY) {
+                        axis = new RegExp(aX + " " + aY + " .");
+                    }
+                    // If there is at least two different, i.e. diagonal, dont do anything 
+                    else {
+                        return;
+                    }
+
                     Interaction.call(this);
                 }
-            }
-            // Otherwise its the first face so create the regex where the difference is and call the interaction
-            else {
-                var [aX, aY, aZ] = axis.split(" ");
-                var [pX, pY, pZ] = parent.split(" ");
-
-                if (aX != pX && aY == pY && aZ == pZ) {
-                    axis = new RegExp(". " + aY + " " + aZ);
-                } else if (aY != pY && aX == pX && aZ == pZ) {
-                    axis = new RegExp(aX + " . " + aZ);
-                } else if (aZ != pZ && aX == pX && aY == pY) {
-                    axis = new RegExp(aX + " " + aY + " .");
-                }
-                // If there is at least two different, i.e. diagonal, dont do anything 
-                else {
-                    return;
-                }
-
-                Interaction.call(this);
             }
         }
     }
@@ -367,24 +388,28 @@
             }
         }
 
-        if (parent.dataset.required == "Required") {
-            // Play animation of it breaking
-            parent.style.visibility = "hidden";
-            parent.style.visibility = "visible";
+        // Create a delay between the click and destruction for the held destruction
+        setTimeout(function() {
+            if (parent.dataset.required == "Required") {
+                // Play animation of it breaking
+                parent.style.visibility = "hidden";
+                parent.style.visibility = "visible";
 
 
-            // Rehide the blocks that were shown for the animation
-            for (element of changedVisibility) {
-                element.style.visibility = "hidden";
+                // Rehide the blocks that were shown for the animation
+                for (element of changedVisibility) {
+                    element.style.visibility = "hidden";
+                }
+
+                parent.dataset.modifier = "Permanent";
+                parent.style.backgroundColor = "green";
+                // Aplly broken effect
+            } else {
+                // Remove the box
+                // Play animation of it breaking
+                parent.remove();
             }
-
-            parent.dataset.modifier = "Permanent";
-            parent.style.backgroundColor = "green";
-            // Aplly broken effect
-        } else {
-            // Remove the box
-            parent.remove();
-        }
+        }, 100);
     }
 </script>
 </body>
