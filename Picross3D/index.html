@@ -67,69 +67,33 @@
                 }
 
                 // Create the top face
-                var topFace = document.createElement("div");
-                topFace.style.width = `${size-0.1}vmin`;
+                var topFace = CreateFace();
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
-                topFace.className = "face";
-                topFace.addEventListener("mousedown", Interaction);
-                topFace.addEventListener("touchstart", Interaction)
-                topFace.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                topFace.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(topFace);
 
                 // Create the bottom face
-                var bottom = document.createElement("div");
-                bottom.style.width = `${size-0.1}vmin`;
+                var bottom = CreateFace()
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
-                bottom.className = "face";
-                bottom.addEventListener("mousedown", Interaction);
-                bottom.addEventListener("touchstart", Interaction)
-                bottom.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                bottom.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(bottom);
 
                 // Create the back face
-                var back = document.createElement("div");
-                back.style.width = `${size-0.1}vmin`;
+                var back = CreateFace();
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
-                back.className = "face";
-                back.addEventListener("mousedown", Interaction);
-                back.addEventListener("touchstart", Interaction)
-                back.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                back.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(back);
 
                 // Create the front face
-                var front = document.createElement("div");
-                front.style.width = `${size-0.1}vmin`;
+                var front = CreateFace();
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
-                front.className = "face";
-                front.addEventListener("mousedown", Interaction);
-                front.addEventListener("touchstart", Interaction)
-                front.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                front.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(front);
 
                 // Create the left face
-                var left = document.createElement("div");
-                left.style.width = `${size-0.1}vmin`;
+                var left = CreateFace();
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
-                left.className = "face";
-                left.addEventListener("mousedown", Interaction);
-                left.addEventListener("touchstart", Interaction)
-                left.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                left.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(left);
 
                 // Create the right face
-                var right = document.createElement("div");
-                right.style.width = `${size-0.1}vmin`;
+                var right = CreateFace();
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
-                right.className = "face";
-                right.addEventListener("mousedown", Interaction);
-                right.addEventListener("touchstart", Interaction)
-                right.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-                right.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(right);
             }
             
@@ -153,6 +117,17 @@
         }
     }
 
+    function CreateFace() {
+        var face = document.createElement("div");
+        face.style.width = `${size-0.1}vmin`;
+        face.className = "face";
+        face.addEventListener("mousedown", Interaction);
+        face.addEventListener("touchstart", Interaction)
+        face.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+        face.addEventListener('mouseenter', ContinueInteraction);
+        return face;
+    }
+
     // Stop Rotation from being setup when mouse goes down on a click event object
     function StopDrag(e, conditionally = false) {
         // If we want to allow drag while we don't have a cube interaction
@@ -172,6 +147,7 @@
         });
     }
 
+    // Get the interaction that is checked
     function GetCubeInteraction() {
         var checkboxes = document.getElementsByName("interactions");
         var interaction = null;
@@ -271,33 +247,9 @@
         if (GetCubeInteraction() == null) {
             return;
         }
-        // Toggle the paint modifier unless it has the perminent modifier
+        // Paint the cube
         else if (GetCubeInteraction().id == "Paint") {
-            var parent = this.parentElement
-            // If we were held, perform the same paint interaction
-            if (held) {
-                if (parent.dataset.modifier != "Permanent") {
-                    if (paint) {
-                        parent.dataset.modifier = "Paint";
-                        parent.style.backgroundColor = "green";
-                    } else {
-                        parent.dataset.modifier = "Destroy";
-                        parent.style.backgroundColor = "gray";
-                    }
-                }
-            }
-            // Otherwise toggle it
-            else {
-                if (parent.dataset.modifier == "Paint") {
-                    parent.dataset.modifier = "Destroy";
-                    parent.style.backgroundColor = "gray";
-                    paint = false;
-                } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
-                    parent.dataset.modifier = "Paint";
-                    parent.style.backgroundColor = "green";
-                    paint = true;
-                }
-            }
+            Paint.call(this);
         }
         // Destroy the cube
         else if (GetCubeInteraction().id == "Destroy") {
@@ -311,24 +263,65 @@
         }
     }
 
+    // Continue a held interaction
     function ContinueInteraction() {
+        // Check if an interaction happened on mousedown
         if (held) {
             var parent = this.parentElement.id
+
+            // If axis is a regex perform interaction if the box matches
             if (typeof(axis) != "string") {
                 if (parent.search(axis) != -1) {
                     Interaction.call(this);
                 }
-            } else {
+            }
+            // Otherwise its the first face so create the regex where the difference is and call the interaction
+            else {
                 var [aX, aY, aZ] = axis.split(" ");
                 var [pX, pY, pZ] = parent.split(" ");
-                if (aX != pX) {
+
+                if (aX != pX && aY == pY && aZ == pZ) {
                     axis = new RegExp(". " + aY + " " + aZ);
-                } else if (aY != pY) {
+                } else if (aY != pY && aX == pX && aZ == pZ) {
                     axis = new RegExp(aX + " . " + aZ);
-                } else if (aZ != pZ) {
+                } else if (aZ != pZ && aX == pX && aY == pY) {
                     axis = new RegExp(aX + " " + aY + " .");
                 }
+                // If there is at least two different, i.e. diagonal, dont do anything 
+                else {
+                    return;
+                }
+
                 Interaction.call(this);
+            }
+        }
+    }
+
+    //Toggle the paint modifier unless it has the perminent modifier
+    function Paint() {
+        var parent = this.parentElement
+        // If we were held, perform the same paint interaction, unless its permanently painted
+        if (held) {
+            if (parent.dataset.modifier != "Permanent") {
+                if (paint) {
+                    parent.dataset.modifier = "Paint";
+                    parent.style.backgroundColor = "green";
+                } else {
+                    parent.dataset.modifier = "Destroy";
+                    parent.style.backgroundColor = "gray";
+                }
+            }
+        }
+        // Otherwise toggle it
+        else {
+            if (parent.dataset.modifier == "Paint") {
+                parent.dataset.modifier = "Destroy";
+                parent.style.backgroundColor = "gray";
+                paint = false;
+            } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
+                parent.dataset.modifier = "Paint";
+                parent.style.backgroundColor = "green";
+                paint = true;
             }
         }
     }
