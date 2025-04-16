@@ -6,7 +6,7 @@
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
-        onmouseup="StopRotation()" onmouseleave="StopRotation()" ontouchend="StopRotation()"
+        onmouseup="StopRotation(); held=false;" onmouseleave="StopRotation()" ontouchend="StopRotation()"
         onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
@@ -31,6 +31,11 @@
     var mouseX;
     var mouseY;
     var mouseDown = false;
+
+    // Different mouse click variable to see if an interaction is held and should propogate and the axis to propogate
+    var held = false;
+    var axis = "";
+    var painting = false; // For the paint interaction only have it go from off->on or vice versa
 
     // Position the cube to the center of the screen
     WindowResize();
@@ -66,9 +71,10 @@
                 topFace.style.width = `${size-0.1}vmin`;
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
                 topFace.className = "face";
-                topFace.onclick = Interaction;
+                topFace.addEventListener("mousedown", Interaction);
                 topFace.addEventListener("touchstart", Interaction)
                 topFace.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                topFace.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(topFace);
 
                 // Create the bottom face
@@ -76,9 +82,10 @@
                 bottom.style.width = `${size-0.1}vmin`;
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
                 bottom.className = "face";
-                bottom.onclick = Interaction;
+                bottom.addEventListener("mousedown", Interaction);
                 bottom.addEventListener("touchstart", Interaction)
                 bottom.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                bottom.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(bottom);
 
                 // Create the back face
@@ -86,9 +93,10 @@
                 back.style.width = `${size-0.1}vmin`;
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
                 back.className = "face";
-                back.onclick = Interaction;
+                back.addEventListener("mousedown", Interaction);
                 back.addEventListener("touchstart", Interaction)
                 back.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                back.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(back);
 
                 // Create the front face
@@ -96,9 +104,10 @@
                 front.style.width = `${size-0.1}vmin`;
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
                 front.className = "face";
-                front.onclick = Interaction;
+                front.addEventListener("mousedown", Interaction);
                 front.addEventListener("touchstart", Interaction)
                 front.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                front.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(front);
 
                 // Create the left face
@@ -106,9 +115,10 @@
                 left.style.width = `${size-0.1}vmin`;
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
                 left.className = "face";
-                left.onclick = Interaction;
+                left.addEventListener("mousedown", Interaction);
                 left.addEventListener("touchstart", Interaction)
                 left.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                left.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(left);
 
                 // Create the right face
@@ -116,9 +126,10 @@
                 right.style.width = `${size-0.1}vmin`;
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
                 right.className = "face";
-                right.onclick = Interaction;
+                right.addEventListener("mousedown", Interaction);
                 right.addEventListener("touchstart", Interaction)
                 right.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+                right.addEventListener('mouseenter', ContinueInteraction);
                 box.appendChild(right);
             }
             
@@ -254,20 +265,71 @@
         }
     }
 
+    // Perform a cube interaction and setup for continued interaction
     function Interaction() {
+        // If there is no interaction return
         if (GetCubeInteraction() == null) {
             return;
-        } else if (GetCubeInteraction().id == "Paint") {
+        }
+        // Toggle the paint modifier unless it has the perminent modifier
+        else if (GetCubeInteraction().id == "Paint") {
             var parent = this.parentElement
-            if (parent.dataset.modifier == "Paint") {
-                parent.dataset.modifier = "Destroy";
-                parent.style.backgroundColor = "gray";
-            } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
-                parent.dataset.modifier = "Paint";
-                parent.style.backgroundColor = "green";
+            // If we were held, perform the same paint interaction
+            if (held) {
+                if (parent.dataset.modifier != "Permanent") {
+                    if (paint) {
+                        parent.dataset.modifier = "Paint";
+                        parent.style.backgroundColor = "green";
+                    } else {
+                        parent.dataset.modifier = "Destroy";
+                        parent.style.backgroundColor = "gray";
+                    }
+                }
             }
-        } else if (GetCubeInteraction().id == "Destroy") {
+            // Otherwise toggle it
+            else {
+                if (parent.dataset.modifier == "Paint") {
+                    parent.dataset.modifier = "Destroy";
+                    parent.style.backgroundColor = "gray";
+                    paint = false;
+                } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
+                    parent.dataset.modifier = "Paint";
+                    parent.style.backgroundColor = "green";
+                    paint = true;
+                }
+            }
+        }
+        // Destroy the cube
+        else if (GetCubeInteraction().id == "Destroy") {
             Destroy.call(this);
+        }
+
+        // If this is the first interaction of the click, set up the axis
+        if (held == false) {
+            held = true;
+            axis = this.parentElement.id;
+        }
+    }
+
+    function ContinueInteraction() {
+        if (held) {
+            var parent = this.parentElement.id
+            if (typeof(axis) != "string") {
+                if (parent.search(axis) != -1) {
+                    Interaction.call(this);
+                }
+            } else {
+                var [aX, aY, aZ] = axis.split(" ");
+                var [pX, pY, pZ] = parent.split(" ");
+                if (aX != pX) {
+                    axis = new RegExp(". " + aY + " " + aZ);
+                } else if (aY != pY) {
+                    axis = new RegExp(aX + " . " + aZ);
+                } else if (aZ != pZ) {
+                    axis = new RegExp(aX + " " + aY + " .");
+                }
+                Interaction.call(this);
+            }
         }
     }
 
