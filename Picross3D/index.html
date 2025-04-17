@@ -6,7 +6,7 @@
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
-        onmouseup="StopRotation(); held=false;" onmouseleave="StopRotation()" ontouchend="StopRotation()"
+        onmouseup="StopRotation();" onmouseleave="StopRotation()" ontouchend="StopRotation()" ontouchcancel="StopRotation()"
         onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
@@ -118,15 +118,154 @@
         }
     }
 
+    // Create the Face of the cube and attach the event handlers
     function CreateFace() {
         var face = document.createElement("div");
         face.style.width = `${size-0.1}vmin`;
         face.className = "face";
+
         face.addEventListener("mousedown", Interaction);
         face.addEventListener("touchstart", Interaction)
         face.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-        face.addEventListener('mouseenter', ContinueInteraction);
+        face.addEventListener("mouseenter", ContinueInteraction);
+        face.addEventListener("touchmove", (e) => {MobileMoveCheck(e)});
+        face.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
+
         return face;
+    }
+
+    // For mobile find the box with the greatest actual z position as there is no mouse enter equivalent
+    function MobileMoveCheck(e) {
+        // Make sure there is an interaction
+        if (GetCubeInteraction() == null) {
+            return;
+        }
+
+        // Array with boxes that were touched and its z position
+        var touchedBoxes = []
+
+        var boxes = document.querySelectorAll("div.box");
+        boxes.forEach((box) => {
+            if (box.style.visibility != "hidden") {
+                // Turn the origin into floats
+                var [originX, originY, originZ] = container.style.transformOrigin.split(" ");
+                if (originX == undefined) {
+                    originX = 0;
+                } else {
+                    originX = parseFloat(originX.substring(0, originX.indexOf("vmin")));
+                }
+                if (originY == undefined) {
+                    originY = 0;
+                } else {
+                    originY = parseFloat(originY.substring(0, originY.indexOf("vmin")));
+                }
+                if (originZ == undefined) {
+                    originZ = 0;
+                } else {
+                    originZ = parseFloat(originZ.substring(0, originZ.indexOf("vmin")));
+                }
+                // Turn the rotation into floats
+                var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+                if (rotateX == undefined) {
+                    rotateX = 0;
+                } else {
+                    rotateX = parseFloat(rotateX.substring(rotateX.indexOf("rotateX")+8, rotateX.indexOf("rad")));
+                }
+                if (rotateY == undefined) {
+                    rotateY = 0;
+                } else {
+                    rotateY = parseFloat(rotateY.substring(rotateY.indexOf("rotateY")+8, rotateY.indexOf("rad")));
+                }
+                if (rotateZ == undefined) {
+                    rotateZ = 0;
+                } else {
+                    rotateZ = parseFloat(rotateZ.substring(rotateZ.indexOf("rotateZ")+8, rotateZ.indexOf("rad")));
+                }
+
+                // Check if the touch point is inside the bounding box for each face
+                for (var i = 0; i < box.children.length; i++) {
+                    var item = box.children[i];
+                    if ((
+                        (e.touches[0].clientX >= item.getBoundingClientRect().left && e.touches[0].clientX <= item.getBoundingClientRect().right) &&
+                        (e.touches[0].clientY >= item.getBoundingClientRect().top  && e.touches[0].clientY <= item.getBoundingClientRect().bottom)
+                    )) {
+                        // Add to the array and break, as we care about the box not the face
+                        touchedBoxes.push([CalculatePosition(rotateX, rotateY, rotateZ, originX, originY, originZ, box), box]);
+                        break;
+                    }
+                }
+            }
+        });
+
+        // If we have at least one box, find the box with the greatest z and call the interaction on it
+        if (touchedBoxes.length > 0) {
+            maxZ = touchedBoxes[0][0];
+            maxBox = touchedBoxes[0][1];
+            for (var i = 0; i < touchedBoxes.length; i++) {
+                if (touchedBoxes[i][0] > maxZ) {
+                    maxZ = touchedBoxes[i][0];
+                    maxBox = touchedBoxes[i][1];
+                }
+            }
+            ContinueInteraction.call(maxBox.childNodes[0]);
+        }
+    }
+
+    // Calculate the real position of the box with respect to origin and with rotation
+    function CalculatePosition(rotateX, rotateY, rotateZ, originX, originY, originZ, box) {
+        // Matrix multiplication values
+        // Unused portions commented out, as I only need z currently
+
+        //var cosa = Math.cos(rotateZ);
+        //var sina = Math.sin(rotateZ);
+
+        var cosb = Math.cos(rotateX);
+        var sinb = Math.sin(rotateX);
+
+        var cosc = Math.cos(rotateY);
+        var sinc = Math.sin(rotateY);
+
+        //var Axx = cosa*cosb;
+        //var Axy = cosa*sinb*sinc - sina*cosc;
+        //var Axz = cosa*sinb*cosc + sina*sinc;
+
+        //var Ayx = sina*cosb;
+        //var Ayy = sina*sinb*sinc + cosa*cosc;
+        //var Ayz = sina*sinb*cosc - cosa*sinc;
+
+        var Azx = -sinb;
+        var Azy = cosb*sinc;
+        var Azz = cosb*cosc;
+
+        // Get the float value of the box x, y, and z
+        var px = box.style.left;
+        var py = box.style.top;
+        var pz = box.style.transform;
+        if (px == undefined) {
+            px = 0;
+        } else {
+            px = parseFloat(px.substring(0, px.indexOf("vmin")));
+        }
+        if (py == undefined) {
+            py = 0;
+        } else {
+            py = parseFloat(py.substring(0, py.indexOf("vmin")));
+        }
+        if (pz == undefined) {
+            pz = 0;
+        } else {
+            pz = parseFloat(pz.substring(pz.indexOf("translateZ")+11, pz.indexOf("vmin")));
+        }
+
+        // Calculate the new positions with respect to origin
+        px -= originX;
+        py -= originY;
+        pz -= originZ;
+        //var newX = Axx*px + Axy*py + Axz*pz + originX;
+        //var newY = Ayx*px + Ayy*py + Ayz*pz + originY;
+        var newZ = Azx*px + Azy*py + Azz*pz + originZ;
+
+        return newZ;
     }
 
     // Stop Rotation from being setup when mouse goes down on a click event object
@@ -145,6 +284,10 @@
             if (item != checkbox) {
                 item.checked = false;
             }
+            // Mobile only
+            // else {
+            //     item.checked = !item.checked;
+            // }
         });
     }
 
@@ -191,6 +334,7 @@
     // Disable rotation of the cube
     function StopRotation() {
         mouseDown = false;
+        held = false;
     }
 
     // Rotate the cube if enabled
