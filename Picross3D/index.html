@@ -18,6 +18,15 @@
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
 
+    <div id="test" onmousedown="StopDrag(event)" >
+        <button onclick="y=0; z=0; ChangeDimensions(1, 0, 0)" ontouchstart="y=0; z=0; ChangeDimensions(1, 0, 0)">IncX</button>
+        <button onclick="y=0; z=0; ChangeDimensions(-1, 0, 0)" ontouchstart="y=0; z=0; ChangeDimensions(-1, 0, 0)">DecX</button>
+        <button onclick="x=0; z=0; ChangeDimensions(0, 1, 0)" ontouchstart="x=0; z=0; ChangeDimensions(0, 1, 0)">IncY</button>
+        <button onclick="x=0; z=0; ChangeDimensions(0, -1, 0)" ontouchstart="x=0; z=0; ChangeDimensions(0, -1, 0)">DecY</button>
+        <button onclick="x=0; y=0; ChangeDimensions(0, 0, 1)" ontouchstart="x=0; y=0; ChangeDimensions(0, 0, 1)">IncZ</button>
+        <button onclick="x=0; y=0; ChangeDimensions(0, 0, -1)" ontouchstart="x=0; y=0; ChangeDimensions(0, 0, -1)">DecZ</button>
+    </div>
+
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 7;
@@ -37,6 +46,10 @@
 
     var interaction = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
+
+    var hideX = 0;
+    var hideY = 0;
+    var hideZ = 0;
 
     // Position the cube to the center of the screen
     WindowResize();
@@ -58,43 +71,51 @@
                 box.style.left = `${size*(i)}vmin`
                 box.style.top = `${size*(j)}vmin`;
                 box.style.transform = "translateZ(" + size*(k) + "vmin)";
-                box.style.backgroundColor = "gray";
+                box.style.backgroundColor = "rgb(128, 128, 128)";
                 box.id = i + " " + j + " " + k;
+                box.dataset.region = "outer";
                 container.appendChild(box);
 
                 // Hide boxes that can't be see to save performance
                 if ((i != 0 && i != xSize-1) && (j != 0 && j != ySize-1) && (k != 0 && k != zSize-1)) {
                     box.style.visibility = "hidden";
+                    box.dataset.region = "inner";
                 }
 
                 // Create the top face
                 var topFace = CreateFace();
                 topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
+                topFace.id = "top";
                 box.appendChild(topFace);
 
                 // Create the bottom face
                 var bottom = CreateFace()
                 bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
+                bottom.id = "bottom";
                 box.appendChild(bottom);
 
                 // Create the back face
                 var back = CreateFace();
                 back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
+                back.id = "back";
                 box.appendChild(back);
 
                 // Create the front face
                 var front = CreateFace();
                 front.style.transform = "translateZ(" +0.5*size + "vmin)";
+                front.id = "front";
                 box.appendChild(front);
 
                 // Create the left face
                 var left = CreateFace();
                 left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
+                left.id = "left";
                 box.appendChild(left);
 
                 // Create the right face
                 var right = CreateFace();
                 right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
+                right.id = "right";
                 box.appendChild(right);
             }
             
@@ -116,6 +137,130 @@
             board.style.left = (((100.0/size) - xSize) / 2) * size + "vw";
             board.style.top = ((((h*100/w)/size) - ySize) / 2) * size + "vw";
         }
+    }
+
+    function ChangeDimensions(deltaX, deltaY, deltaZ) {
+        hideX += deltaX;
+        hideY += deltaY;
+        hideZ += deltaZ;
+        var forward = true;
+        var axis;
+        if (hideX < 0) {
+            forward = false;
+            axis = new RegExp((xSize + hideX) + " . .");
+        } else if (hideY < 0) {
+            forward = false;
+            axis = new RegExp(". " + (ySize + hideY) + " .");
+        } else if (hideZ < 0) {
+            forward = false;
+            axis = new RegExp(". . " + (zSize + hideZ));
+        } else if (hideX > 0) {
+            axis = new RegExp(hideX + " . .");
+        } else if (hideY > 0) {
+            axis = new RegExp(". " + hideY + " .");
+        } else if (hideZ > 0) {
+            axis = new RegExp(". . " + hideZ);
+        } else {
+            axis = new RegExp(". . .");
+        }
+
+        
+
+
+        var boxes = document.querySelectorAll("div.box");
+        console.log(axis);
+        boxes.forEach((box) => {
+            if (box.id.search(axis) != -1) {
+                if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                    box.style.backgroundColor = "rgb(0, 128, 0)";
+                } else {
+                    box.style.backgroundColor = "rgb(128, 128, 128)";
+                }
+                box.style.visibility = "visible";
+            } else if (forward) {
+                if (hideX > 0) {
+                    if (box.id.split(" ")[0] < hideX) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                } else if (hideY > 0) {
+                    if (box.id.split(" ")[1] < hideY) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                } else if (hideZ > 0) {
+                    if (box.id.split(" ")[2] < hideZ) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (hideX < 0) {
+                    if (box.id.split(" ")[0] > xSize + hideX) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                } else if (hideY < 0) {
+                    if (box.id.split(" ")[1] > ySize + hideY) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                } else if (hideZ < 0) {
+                    if (box.id.split(" ")[2] > zSize + hideZ) {
+                        box.style.visibility = "hidden";
+                    } else {
+                        if (box.dataset.region == "outer") {
+                            box.style.visibility = "visible";
+                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                                box.style.backgroundColor = "rgb(0, 64, 0)";
+                            } else {
+                                box.style.backgroundColor = "rgb(64, 64, 64)";
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     // Create the Face of the cube and attach the event handlers
@@ -467,10 +612,10 @@
             if (parent.dataset.modifier != "Permanent") {
                 if (paint) {
                     parent.dataset.modifier = "Paint";
-                    parent.style.backgroundColor = "green";
+                    parent.style.backgroundColor = "rgb(0, 128, 0)";
                 } else {
                     parent.dataset.modifier = "Destroy";
-                    parent.style.backgroundColor = "gray";
+                    parent.style.backgroundColor = "rgb(128, 128, 128)";
                 }
             }
         }
@@ -478,11 +623,11 @@
         else {
             if (parent.dataset.modifier == "Paint") {
                 parent.dataset.modifier = "Destroy";
-                parent.style.backgroundColor = "gray";
+                parent.style.backgroundColor = "rgb(128, 128, 128)";
                 paint = false;
             } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
                 parent.dataset.modifier = "Paint";
-                parent.style.backgroundColor = "green";
+                parent.style.backgroundColor = "rgb(0, 128, 0)";
                 paint = true;
             }
         }
@@ -512,6 +657,7 @@
                     changedVisibility.push(xElement)
                 }
                 xElement.style.visibility = "visible";
+                xElement.dataset.region = "outer";
             }
             var yElement = document.getElementById(x + " " + (y+i) + " " + z);
             if (yElement != null) {
@@ -519,6 +665,7 @@
                     changedVisibility.push(yElement)
                 }
                 yElement.style.visibility = "visible";
+                yElement.dataset.region = "outer";
             }
             var zElement = document.getElementById(x + " " + y + " " + (z+i));
             if (zElement != null) {
@@ -526,6 +673,7 @@
                     changedVisibility.push(zElement)
                 }
                 zElement.style.visibility = "visible";
+                zElement.dataset.region = "outer";
             }
         }
 
@@ -540,10 +688,11 @@
                 // Rehide the blocks that were shown for the animation
                 for (element of changedVisibility) {
                     element.style.visibility = "hidden";
+                    element.dataset.region = "inner";
                 }
 
                 parent.dataset.modifier = "Permanent";
-                parent.style.backgroundColor = "green";
+                parent.style.backgroundColor = "rgb(0, 128, 0)";;
                 // Aplly broken effect
             } else {
                 // Remove the box
