@@ -14,10 +14,8 @@
         </div>
     </div>
     <div id="buttons" onmousedown="StopDrag(event)" >
-        <input type="checkbox" name="interactions" id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)" />
-        <label for="Paint">Paint</label>
-        <input type="checkbox" name="interactions" id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)" />
-        <label for="Destroy">Destroy</label>
+        <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
+        <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
 
 <script>
@@ -36,6 +34,8 @@
     var held = false;
     var heldDelay = false;
     var axis = "";
+
+    var interaction = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
 
     // Position the cube to the center of the screen
@@ -137,7 +137,7 @@
     // For mobile find the box with the greatest actual z position as there is no mouse enter equivalent
     function MobileMoveCheck(e) {
         // Make sure there is an interaction
-        if (GetCubeInteraction() == null) {
+        if (interaction == "") {
             return;
         }
 
@@ -271,36 +271,33 @@
     // Stop Rotation from being setup when mouse goes down on a click event object
     function StopDrag(e, conditionally = false) {
         // If we want to allow drag while we don't have a cube interaction
-        if ((conditionally && GetCubeInteraction() == null) || (e.buttons & (1 << 1) && !(e.buttons & (1 << 0)))) {
+        if ((conditionally && interaction == "") || (e.buttons & (1 << 1) && !(e.buttons & (1 << 0)))) {
             return true;
         }
         e.stopPropagation();
     }
 
     // Limit a group of checkboxes to only have one box clicked at a time
-    function LimitOne(checkbox) {
-        var checkboxes = document.getElementsByName(checkbox.name);
-        checkboxes.forEach((item) => {
-            if (item != checkbox) {
-                item.checked = false;
+    function LimitOne(button) {
+        if (button.id == "Paint") {
+            if (interaction == "Paint") {
+                interaction = "";
+                button.classList.remove("clicked");
+            } else {
+                interaction = "Paint";
+                button.classList.add('clicked');
+                document.getElementById("Destroy").classList.remove("clicked");
             }
-            // Mobile only
-            // else {
-            //     item.checked = !item.checked;
-            // }
-        });
-    }
-
-    // Get the interaction that is checked
-    function GetCubeInteraction() {
-        var checkboxes = document.getElementsByName("interactions");
-        var interaction = null;
-        checkboxes.forEach((item) => {
-            if (item.checked) {
-                interaction = item;
+        } else if (button.id == "Destroy") {
+            if (interaction == "Destroy") {
+                interaction = "";
+                button.classList.remove("clicked");
+            } else {
+                interaction = "Destroy";
+                button.classList.add("clicked");
+                document.getElementById("Paint").classList.remove("clicked");
             }
-        });
-        return interaction;
+        }
     }
 
     // Enable rotation of the cube and update the interaction coords
@@ -316,16 +313,16 @@
             mouseDown = true;
         }
         // Conditionally rotate if its a touch (neither of the cube interactions are active)
-        else if (e.type == "touchstart" && GetCubeInteraction() == null) {
+        else if (e.type == "touchstart" && interaction == "") {
             mouseDown = true;
         }
         // Conditionally rotate if its a left click (neither of the cube interactions are active)
-        else if (e.buttons == 1 && GetCubeInteraction() == null) {
+        else if (e.buttons == 1 && interaction == "") {
             mouseDown = true;
         }
         // Stop rotating if both left and right click is pressed
         else if (e.buttons & (1 << 1) && (e.buttons & (1 << 0))) {
-            if (GetCubeInteraction() != null) {
+            if (interaction != "") {
                 mouseDown = false;
             }
         }
@@ -389,15 +386,15 @@
     // Perform a cube interaction and setup for continued interaction
     function Interaction() {
         // If there is no interaction return
-        if (GetCubeInteraction() == null) {
+        if (interaction == "") {
             return;
         }
         // Paint the cube
-        else if (GetCubeInteraction().id == "Paint") {
+        else if (interaction == "Paint") {
             Paint.call(this);
         }
         // Destroy the cube
-        else if (GetCubeInteraction().id == "Destroy") {
+        else if (interaction == "Destroy") {
             Destroy.call(this);
         }
 
@@ -416,10 +413,10 @@
             // Create a delay before performing the first held interaction
             if (heldDelay) {
                 // However, there is zero delay on paint
-                if (GetCubeInteraction().id == "Paint") {
+                if (interaction == "Paint") {
                     heldDelay = false;
                     ContinueInteraction.call(this);
-                } else if (GetCubeInteraction().id == "Destroy") {
+                } else if (interaction == "Destroy") {
                     // Create a delay before accepting input
                     setTimeout(() => {
                         heldDelay = false;

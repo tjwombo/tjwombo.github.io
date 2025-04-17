@@ -28,3 +28,7 @@ body {
     border: 0.1vmin solid black;
     background-color: inherit;
 }
+
+.clicked {
+    background-color: green;
+}
