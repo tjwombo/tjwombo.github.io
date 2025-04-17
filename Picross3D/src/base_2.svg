@@ -1,0 +1,7 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+	<title>New Project</title>
+	<style>
+		.s0 { fill: #000000 } 
+	</style>
+	<path id="10" class="s0" aria-label="2"  d="m48 52h-32v-16h8v8h24zm-8-23.9v-8h8v8zm0-16v8h-24v-8zm-15.9 24v-8h15.9v8z"/>
+</svg>

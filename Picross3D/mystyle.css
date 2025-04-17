@@ -1,6 +1,8 @@
 html {
     width: 100%;
     height: 100%;;
+}
+
 body {
     background-color: rgb(65, 61, 61);
     overflow: hidden;
@@ -32,6 +34,9 @@ body {
     backface-visibility: hidden;
     border: 0.1vmin solid black;
     background-color: inherit;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .clicked {

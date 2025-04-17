@@ -20,12 +20,12 @@
     </div>
 
     <div id="test" onmousedown="StopDrag(event)" >
-        <button onclick="y=0; z=0; ChangeDimensions(1, 0, 0)" ontouchstart="y=0; z=0; ChangeDimensions(1, 0, 0)">IncX</button>
-        <button onclick="y=0; z=0; ChangeDimensions(-1, 0, 0)" ontouchstart="y=0; z=0; ChangeDimensions(-1, 0, 0)">DecX</button>
-        <button onclick="x=0; z=0; ChangeDimensions(0, 1, 0)" ontouchstart="x=0; z=0; ChangeDimensions(0, 1, 0)">IncY</button>
-        <button onclick="x=0; z=0; ChangeDimensions(0, -1, 0)" ontouchstart="x=0; z=0; ChangeDimensions(0, -1, 0)">DecY</button>
-        <button onclick="x=0; y=0; ChangeDimensions(0, 0, 1)" ontouchstart="x=0; y=0; ChangeDimensions(0, 0, 1)">IncZ</button>
-        <button onclick="x=0; y=0; ChangeDimensions(0, 0, -1)" ontouchstart="x=0; y=0; ChangeDimensions(0, 0, -1)">DecZ</button>
+        <button onclick="hideY=0; hideZ=0; ChangeDimensions(1, 0, 0)" ontouchstart="hideY=0; hideZ=0; ChangeDimensions(1, 0, 0)">IncX</button>
+        <button onclick="hideY=0; hideZ=0; ChangeDimensions(-1, 0, 0)" ontouchstart="hideY=0; hideZ=0; ChangeDimensions(-1, 0, 0)">DecX</button>
+        <button onclick="hideX=0; hideZ=0; ChangeDimensions(0, 1, 0)" ontouchstart="hideX=0; hideZ=0; ChangeDimensions(0, 1, 0)">IncY</button>
+        <button onclick="hideX=0; hideZ=0; ChangeDimensions(0, -1, 0)" ontouchstart="hideX=0; hideZ=0; ChangeDimensions(0, -1, 0)">DecY</button>
+        <button onclick="hideX=0; hideY=0; ChangeDimensions(0, 0, 1)" ontouchstart="hideX=0; hideY=0; ChangeDimensions(0, 0, 1)">IncZ</button>
+        <button onclick="hideX=0; hideY=0; ChangeDimensions(0, 0, -1)" ontouchstart="hideX=0; hideY=0; ChangeDimensions(0, 0, -1)">DecZ</button>
     </div>
 
 <script>
@@ -145,126 +145,71 @@
         hideY += deltaY;
         hideZ += deltaZ;
 
-        // If we're going 'left' to 'right' or vice versa
-        var forward = true;
-        var axis;
-
-        // Get the RegEx axis and set forward
-        if (hideX < 0) {
-            forward = false;
-            axis = new RegExp((xSize + hideX) + " . .");
-        } else if (hideY < 0) {
-            forward = false;
-            axis = new RegExp(". " + (ySize + hideY) + " .");
-        } else if (hideZ < 0) {
-            forward = false;
-            axis = new RegExp(". . " + (zSize + hideZ));
-        } else if (hideX > 0) {
-            axis = new RegExp(hideX + " . .");
-        } else if (hideY > 0) {
-            axis = new RegExp(". " + hideY + " .");
-        } else if (hideZ > 0) {
-            axis = new RegExp(". . " + hideZ);
-        } else {
-            axis = new RegExp(". . .");
-        }
-
         var boxes = document.querySelectorAll("div.box");
         boxes.forEach((box) => {
-            // On match, show all boxes at normal colors
-            if (box.id.search(axis) != -1) {
-                if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                    box.style.backgroundColor = "rgb(0, 128, 0)";
-                } else {
-                    box.style.backgroundColor = "rgb(128, 128, 128)";
-                }
-                box.style.visibility = "visible";
-            } else if (forward) {
-                // If x is the one changing
-                if (hideX > 0) {
-                    if (box.id.split(" ")[0] < hideX) {
-                        box.style.visibility = "hidden";
-                    } else {
-                        // Otherwise show the outer layer in a darker color
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
-                    }
-                } else if (hideY > 0) {
-                    if (box.id.split(" ")[1] < hideY) {
-                        box.style.visibility = "hidden";
-                    } else {
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
-                    }
-                } else if (hideZ > 0) {
-                    if (box.id.split(" ")[2] < hideZ) {
-                        box.style.visibility = "hidden";
-                    } else {
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
-                    }
-                }
+            ChangeBoxBrightness(box);
+        });
+    }
+
+    // Change the brightness of the box based off of the current depth
+    function ChangeBoxBrightness(box) {
+        // Calculate the index in the id we care about, the direction, and the depth we are at, and the axis that is fully shown
+        var index = 0;
+        var sign = 1;
+        var currentDepth;
+        var axis = new RegExp(". . .");
+        if (hideX < 0) {
+            sign = -1;
+            currentDepth = xSize + hideX;
+            axis = new RegExp((xSize + hideX) + " . .");
+        } else if (hideY < 0) {
+            index = 1;
+            sign = -1;
+            currentDepth = ySize + hideY;
+            axis = new RegExp(". " + (ySize + hideY) + " .");
+        } else if (hideZ < 0) {
+            index = 2;
+            sign = -1;
+            currentDepth = zSize + hideZ;
+            axis = new RegExp(". . " + (zSize + hideZ));
+        } else if (hideX > 0) {
+            currentDepth = hideX;
+            axis = new RegExp(hideX + " . .");
+        }
+        else if (hideY > 0) {
+            index = 1;
+            currentDepth = hideY;
+            axis = new RegExp(". " + hideY + " .");
+        } else if (hideZ > 0) {
+            index = 2;
+            currentDepth = hideZ;
+            axis = new RegExp(". . " + hideZ);
+        }
+
+        // On match, show all boxes at normal colors
+        if (box.id.search(axis) != -1) {
+            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                box.style.backgroundColor = "rgb(0, 128, 0)";
             } else {
-                if (hideX < 0) {
-                    if (box.id.split(" ")[0] > xSize + hideX) {
-                        box.style.visibility = "hidden";
+                box.style.backgroundColor = "rgb(128, 128, 128)";
+            }
+            box.style.visibility = "visible";
+        } else {
+            // If we are 'behind' make it hidden
+            if (parseInt(box.id.split(" ")[index])*sign < currentDepth*sign) {
+                box.style.visibility = "hidden";
+            } else {
+                // Otherwise show the outer layer in a darker color
+                if (box.dataset.region == "outer") {
+                    box.style.visibility = "visible";
+                    if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                        box.style.backgroundColor = "rgb(0, 64, 0)";
                     } else {
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
-                    }
-                } else if (hideY < 0) {
-                    if (box.id.split(" ")[1] > ySize + hideY) {
-                        box.style.visibility = "hidden";
-                    } else {
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
-                    }
-                } else if (hideZ < 0) {
-                    if (box.id.split(" ")[2] > zSize + hideZ) {
-                        box.style.visibility = "hidden";
-                    } else {
-                        if (box.dataset.region == "outer") {
-                            box.style.visibility = "visible";
-                            if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                                box.style.backgroundColor = "rgb(0, 64, 0)";
-                            } else {
-                                box.style.backgroundColor = "rgb(64, 64, 64)";
-                            }
-                        }
+                        box.style.backgroundColor = "rgb(64, 64, 64)";
                     }
                 }
             }
-        });
+        }
     }
 
     // Create the Face of the cube and attach the event handlers
@@ -272,6 +217,8 @@
         var face = document.createElement("div");
         face.style.width = `${size-0.1}vmin`;
         face.className = "face";
+        //face.style.backgroundImage = 'url("./src/square_7.svg")';
+        face.style.backgroundSize =  `${size-1}vmin`;
 
         face.addEventListener("mousedown", Interaction);
         face.addEventListener("touchstart", Interaction)
@@ -652,6 +599,8 @@
         }
 
         var changedVisibility = []
+
+        // MIGHT WANT TO LOOK INTO MAKING IT JUST THE CARDINAL DIRECTIONS IF I NEED THE SPEED UP
         
         // For the 3x3 grid centered on the box, make it visible
         for (i of [1, -1]) {
@@ -660,24 +609,24 @@
                 if (xElement.style.visibility == "hidden") {
                     changedVisibility.push(xElement)
                 }
-                xElement.style.visibility = "visible";
                 xElement.dataset.region = "outer";
+                ChangeBoxBrightness(xElement);
             }
             var yElement = document.getElementById(x + " " + (y+i) + " " + z);
             if (yElement != null) {
                 if (yElement.style.visibility == "hidden") {
                     changedVisibility.push(yElement)
                 }
-                yElement.style.visibility = "visible";
                 yElement.dataset.region = "outer";
+                ChangeBoxBrightness(yElement);
             }
             var zElement = document.getElementById(x + " " + y + " " + (z+i));
             if (zElement != null) {
                 if (zElement.style.visibility == "hidden") {
                     changedVisibility.push(zElement)
                 }
-                zElement.style.visibility = "visible";
                 zElement.dataset.region = "outer";
+                ChangeBoxBrightness(zElement);
             }
         }
 
