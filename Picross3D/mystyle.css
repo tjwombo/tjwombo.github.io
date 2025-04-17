@@ -1,7 +1,12 @@
+html {
+    width: 100%;
+    height: 100%;;
 body {
     background-color: rgb(65, 61, 61);
     overflow: hidden;
-    user-select: none
+    user-select: none;
+    width: 100%;
+    height: 100%;
 }
 
 .board {

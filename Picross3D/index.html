@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="mystyle.css">
@@ -58,7 +59,6 @@
     var container = document.getElementById("container");
     container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
     container.style.transform = `rotateX(0rad) rotateY(0rad) rotateZ(0rad)`;
-
    
     // Create the cubes
     for (i = 0; i < xSize; i++) {
@@ -140,11 +140,16 @@
     }
 
     function ChangeDimensions(deltaX, deltaY, deltaZ) {
+        // Move in the direction
         hideX += deltaX;
         hideY += deltaY;
         hideZ += deltaZ;
+
+        // If we're going 'left' to 'right' or vice versa
         var forward = true;
         var axis;
+
+        // Get the RegEx axis and set forward
         if (hideX < 0) {
             forward = false;
             axis = new RegExp((xSize + hideX) + " . .");
@@ -164,12 +169,9 @@
             axis = new RegExp(". . .");
         }
 
-        
-
-
         var boxes = document.querySelectorAll("div.box");
-        console.log(axis);
         boxes.forEach((box) => {
+            // On match, show all boxes at normal colors
             if (box.id.search(axis) != -1) {
                 if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
                     box.style.backgroundColor = "rgb(0, 128, 0)";
@@ -178,10 +180,12 @@
                 }
                 box.style.visibility = "visible";
             } else if (forward) {
+                // If x is the one changing
                 if (hideX > 0) {
                     if (box.id.split(" ")[0] < hideX) {
                         box.style.visibility = "hidden";
                     } else {
+                        // Otherwise show the outer layer in a darker color
                         if (box.dataset.region == "outer") {
                             box.style.visibility = "visible";
                             if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
