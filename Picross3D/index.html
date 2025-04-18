@@ -122,8 +122,8 @@
     }
 
     // Create the slider objects
-    CreateSlider(xSize, zSize, true);
-    CreateSlider(-1, -1, false);
+    CreateSlider(xSize, -1.5, true);
+    CreateSlider(-1, zSize+0.5, false);
 
 
     // Reposition the cube when the window gets resized
@@ -241,7 +241,11 @@
         slider.style.width = `${size}vmin`;
         slider.style.left = `${size*(xIndex)}vmin`
         slider.style.top = `${size*(ySize/2)}vmin`;
-        slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)";
+        if (changesX) {
+            slider.style.transform = "translateZ(" + size*(zIndex) + "vmin) RotateZ(90deg) RotateY(45deg)";
+        } else {
+            slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)";
+        }
         slider.id = "slider";
         container.appendChild(slider);
 
