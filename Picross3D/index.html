@@ -11,7 +11,7 @@
         onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
-        
+
         </div>
     </div>
     <div id="buttons" onmousedown="StopDrag(event)" >
@@ -20,13 +20,12 @@
     </div>
 
     <div id="test" onmousedown="StopDrag(event)" >
-        <button onclick="hideY=0; hideZ=0; ChangeDimensions(1, 0, 0)" ontouchstart="hideY=0; hideZ=0; ChangeDimensions(1, 0, 0)">IncX</button>
-        <button onclick="hideY=0; hideZ=0; ChangeDimensions(-1, 0, 0)" ontouchstart="hideY=0; hideZ=0; ChangeDimensions(-1, 0, 0)">DecX</button>
-        <button onclick="hideX=0; hideZ=0; ChangeDimensions(0, 1, 0)" ontouchstart="hideX=0; hideZ=0; ChangeDimensions(0, 1, 0)">IncY</button>
-        <button onclick="hideX=0; hideZ=0; ChangeDimensions(0, -1, 0)" ontouchstart="hideX=0; hideZ=0; ChangeDimensions(0, -1, 0)">DecY</button>
-        <button onclick="hideX=0; hideY=0; ChangeDimensions(0, 0, 1)" ontouchstart="hideX=0; hideY=0; ChangeDimensions(0, 0, 1)">IncZ</button>
-        <button onclick="hideX=0; hideY=0; ChangeDimensions(0, 0, -1)" ontouchstart="hideX=0; hideY=0; ChangeDimensions(0, 0, -1)">DecZ</button>
+        <button onclick="hideZ=0; ChangeDimensions(1, 0)" ontouchstart="hideZ=0; ChangeDimensions(1, 0)">IncX</button>
+        <button onclick="hideZ=0; ChangeDimensions(-1, 0)" ontouchstart="hideZ=0; ChangeDimensions(-1, 0)">DecX</button>
+        <button onclick="hideX=0; ChangeDimensions(0, 1)" ontouchstart="hideX=0; ChangeDimensions(0, 1)">IncZ</button>
+        <button onclick="hideX=0; ChangeDimensions(0, -1)" ontouchstart="hideX=0; ChangeDimensions(0, -1)">DecZ</button>
     </div>
+    
 
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
@@ -49,7 +48,6 @@
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
 
     var hideX = 0;
-    var hideY = 0;
     var hideZ = 0;
 
     // Position the cube to the center of the screen
@@ -77,44 +75,44 @@
                 container.appendChild(box);
 
                 // Hide boxes that can't be see to save performance
-                if ((i != 0 && i != xSize-1) && (j != 0 && j != ySize-1) && (k != 0 && k != zSize-1)) {
+                if ((i != 0 && i != xSize - 1) && (j != 0 && j != ySize - 1) && (k != 0 && k != zSize - 1)) {
                     box.style.visibility = "hidden";
                     box.dataset.region = "inner";
                 }
 
                 // Create the top face
-                var topFace = CreateFace();
-                topFace.style.transform = "rotateX(90deg) translateZ(" +0.5*size + "vmin)";
+                var topFace = CreateBoxFace();
+                topFace.style.transform = "rotateX(90deg) translateZ(" + 0.5 * size + "vmin)";
                 topFace.id = "top";
                 box.appendChild(topFace);
 
                 // Create the bottom face
-                var bottom = CreateFace()
-                bottom.style.transform = "rotateX(-90deg) translateZ(" +0.5*size + "vmin)";
+                var bottom = CreateBoxFace()
+                bottom.style.transform = "rotateX(-90deg) translateZ(" + 0.5 * size + "vmin)";
                 bottom.id = "bottom";
                 box.appendChild(bottom);
 
                 // Create the back face
-                var back = CreateFace();
-                back.style.transform = "rotateY(180deg) translateZ(" +0.5*size + "vmin)";
+                var back = CreateBoxFace();
+                back.style.transform = "rotateY(180deg) translateZ(" + 0.5 * size + "vmin)";
                 back.id = "back";
                 box.appendChild(back);
 
                 // Create the front face
-                var front = CreateFace();
-                front.style.transform = "translateZ(" +0.5*size + "vmin)";
+                var front = CreateBoxFace();
+                front.style.transform = "translateZ(" + 0.5 * size + "vmin)";
                 front.id = "front";
                 box.appendChild(front);
 
                 // Create the left face
-                var left = CreateFace();
-                left.style.transform = "rotateY(-90deg) translateZ(" +0.5*size + "vmin)";
+                var left = CreateBoxFace();
+                left.style.transform = "rotateY(-90deg) translateZ(" + 0.5 * size + "vmin)";
                 left.id = "left";
                 box.appendChild(left);
 
                 // Create the right face
-                var right = CreateFace();
-                right.style.transform = "rotateY(90deg) translateZ(" +0.5*size + "vmin)";
+                var right = CreateBoxFace();
+                right.style.transform = "rotateY(90deg) translateZ(" + 0.5 * size + "vmin)";
                 right.id = "right";
                 box.appendChild(right);
             }
@@ -122,6 +120,11 @@
         }
 
     }
+
+    // Create the slider objects
+    CreateSlider(xSize, zSize, true);
+    CreateSlider(-1, -1, false);
+
 
     // Reposition the cube when the window gets resized
     function WindowResize() {
@@ -139,10 +142,9 @@
         }
     }
 
-    function ChangeDimensions(deltaX, deltaY, deltaZ) {
+    function ChangeDimensions(deltaX, deltaZ) {
         // Move in the direction
         hideX += deltaX;
-        hideY += deltaY;
         hideZ += deltaZ;
 
         var boxes = document.querySelectorAll("div.box");
@@ -162,11 +164,6 @@
             sign = -1;
             currentDepth = xSize + hideX;
             axis = new RegExp((xSize + hideX) + " . .");
-        } else if (hideY < 0) {
-            index = 1;
-            sign = -1;
-            currentDepth = ySize + hideY;
-            axis = new RegExp(". " + (ySize + hideY) + " .");
         } else if (hideZ < 0) {
             index = 2;
             sign = -1;
@@ -175,11 +172,6 @@
         } else if (hideX > 0) {
             currentDepth = hideX;
             axis = new RegExp(hideX + " . .");
-        }
-        else if (hideY > 0) {
-            index = 1;
-            currentDepth = hideY;
-            axis = new RegExp(". " + hideY + " .");
         } else if (hideZ > 0) {
             index = 2;
             currentDepth = hideZ;
@@ -213,7 +205,7 @@
     }
 
     // Create the Face of the cube and attach the event handlers
-    function CreateFace() {
+    function CreateBoxFace() {
         var face = document.createElement("div");
         face.style.width = `${size-0.1}vmin`;
         face.className = "face";
@@ -228,6 +220,79 @@
         face.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
 
         return face;
+    }
+
+    function CreateSliderSide(changesX) {
+        var face = document.createElement("div");
+        face.style.borderWidth =  (size/2.0) +'vmin';
+        face.style.borderBottomWidth = size + 'vmin'; 
+        face.className = "side";
+        if (changesX) {
+            face.style.borderBottomColor = "rgb(255, 0, 0)";
+        } else {
+            face.style.borderBottomColor = "rgb(0, 0, 255)";
+        }
+        return face;
+    }
+
+    function CreateSlider(xIndex, zIndex, changesX) {
+        var slider = document.createElement("div");
+        slider.className = "slider ";
+        slider.style.width = `${size}vmin`;
+        slider.style.left = `${size*(xIndex)}vmin`
+        slider.style.top = `${size*(ySize/2)}vmin`;
+        slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)";
+        slider.id = "slider";
+        container.appendChild(slider);
+
+        // Create the top front face
+        var topFront = CreateSliderSide(changesX);
+        topFront.style.transform = "translateZ(" + (size/2) + "vmin) rotateX(30deg)";
+        topFront.id = "top front";
+        slider.appendChild(topFront);
+
+        // Create the top right face
+        var topRight = CreateSliderSide(changesX)
+        topRight.style.transform = "translateX(" + (size/4) + "vmin) translateZ(" + (size/4) + "vmin) rotateY(90deg) rotateX(30deg)";
+        topRight.id = "top right";
+        slider.appendChild(topRight);
+
+        // Create the top left face
+        var topLeft = CreateSliderSide(changesX);
+        topLeft.style.transform = "translateX(" + (-size/4) + "vmin) translateZ(" + (size/4) + "vmin) rotateY(270deg) rotateX(30deg)";
+        topLeft.id = "top left";
+        slider.appendChild(topLeft);
+
+        // Create the top back face
+        var topBack = CreateSliderSide(changesX);
+        topBack.style.transform = "rotateX(-30deg) rotateY(180deg)";
+        topBack.id = "top back";
+        slider.appendChild(topBack);
+
+        // Create the bottom front face
+        var bottomFront = CreateSliderSide(changesX);
+        bottomFront.style.transform = "translateY(" + (size*Math.sqrt(3)/2) + "vmin) translateZ(" + (size/2) + "vmin) rotateX(-30deg) rotateZ(180deg)";
+        bottomFront.id = "bottom front";
+        slider.appendChild(bottomFront);
+
+        // Create the bottomm right face
+        var bottomRight = CreateSliderSide(changesX)
+        bottomRight.style.transform = "translateX(" + (size/4) + "vmin) translateY(" + (size*Math.sqrt(3)/2) + "vmin) translateZ(" + (size/4) + "vmin) rotateY(90deg) rotateX(-30deg) rotateZ(180deg)";
+        bottomRight.id = "bottom right";
+        slider.appendChild(bottomRight);
+
+        // Create the bottom left face
+        var bottomLeft = CreateSliderSide(changesX);
+        bottomLeft.style.transform = "translateX(" + (-size/4) + "vmin) translateY(" + (size*Math.sqrt(3)/2) + "vmin) translateZ(" + (size/4) + "vmin) rotateY(270deg) rotateX(-30deg) rotateZ(180deg)";
+        bottomLeft.id = "bottom left";
+        slider.appendChild(bottomLeft);
+
+        // Create the bottom back face
+        var bottomBack = CreateSliderSide(changesX);
+        bottomBack.style.transform = "translateY(" + (size*Math.sqrt(3)/2) + "vmin) rotateX(30deg) rotateY(180deg) rotateZ(180deg)";
+        bottomBack.id = "bottom back";
+        slider.appendChild(bottomBack);
+
     }
 
     // For mobile find the box with the greatest actual z position as there is no mouse enter equivalent
