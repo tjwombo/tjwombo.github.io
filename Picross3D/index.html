@@ -7,8 +7,8 @@
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
-        onmouseup="StopRotation();" onmouseleave="StopRotation()" ontouchend="StopRotation()" ontouchcancel="StopRotation()"
-        onmousemove="RotateCube(event)" ontouchmove="RotateCube(event)">
+        onmouseup="StopUserEvents()" onmouseleave="StopUserEvents()" ontouchend="StopUserEvents()" ontouchcancel="StopUserEvents()"
+        onmousemove="RotateCube(event); MoveSlider(event)" ontouchmove="RotateCube(event)">
     <div class="board" id="board">
         <div class="container" id="container">
 
@@ -34,6 +34,8 @@
     const ySize = 10;
     const zSize = 10;
 
+    const boxes = [[[]]];
+
     // Last used position of interaction point and if we should think about rotating
     var mouseX;
     var mouseY;
@@ -47,6 +49,7 @@
     var interaction = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
 
+    var sliderPressed = "";
     var hideX = 0;
     var hideZ = 0;
 
@@ -60,7 +63,7 @@
    
     // Create the cubes
     for (i = 0; i < xSize; i++) {
-        for (j = 0; j <ySize; j++) {
+        for (j = 0; j < ySize; j++) {
             for (k = 0; k < zSize; k++) {
                 // Create and position the box
                 var box = document.createElement("div");
@@ -73,6 +76,7 @@
                 box.id = i + " " + j + " " + k;
                 box.dataset.region = "outer";
                 container.appendChild(box);
+                boxes[i][j].push(box);
 
                 // Hide boxes that can't be see to save performance
                 if ((i != 0 && i != xSize - 1) && (j != 0 && j != ySize - 1) && (k != 0 && k != zSize - 1)) {
@@ -116,14 +120,18 @@
                 right.id = "right";
                 box.appendChild(right);
             }
-            
+            if (j != ySize-1) {
+                boxes[i].push([]);
+            }
         }
-
+        if (i != xSize-1) {
+            boxes.push([[]]);
+        }
     }
 
     // Create the slider objects
-    CreateSlider(xSize, -1.5, true);
-    CreateSlider(-1, zSize+0.5, false);
+    var redSlider = CreateSlider(xSize, -1.5, true);
+    var blueSlider = CreateSlider(-1, zSize+0.5, false);
 
 
     // Reposition the cube when the window gets resized
@@ -147,9 +155,13 @@
         hideX += deltaX;
         hideZ += deltaZ;
 
-        var boxes = document.querySelectorAll("div.box");
-        boxes.forEach((box) => {
-            ChangeBoxBrightness(box);
+        // Adjust the brightness for each box
+        boxes.forEach((i) => {
+            i.forEach((j) => {
+                j.forEach((box) => {
+                    ChangeBoxBrightness(box);
+                })
+            })
         });
     }
 
@@ -170,12 +182,12 @@
             currentDepth = zSize + hideZ;
             axis = new RegExp(". . " + (zSize + hideZ));
         } else if (hideX > 0) {
-            currentDepth = hideX;
-            axis = new RegExp(hideX + " . .");
+            currentDepth = hideX - 1;
+            axis = new RegExp((hideX-1) + " . .");
         } else if (hideZ > 0) {
             index = 2;
-            currentDepth = hideZ;
-            axis = new RegExp(". . " + hideZ);
+            currentDepth = hideZ - 1;
+            axis = new RegExp(". . " + (hideZ-1));
         }
 
         // On match, show all boxes at normal colors
@@ -204,6 +216,21 @@
         }
     }
 
+    // Reset the brightness on all the boxes
+    function ResetBrightness() {
+        boxes.forEach((i) => {
+            i.forEach((j) => {
+                j.forEach((box) => {
+                    if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                        box.style.backgroundColor = "rgb(0, 128, 0)";
+                    } else {
+                        box.style.backgroundColor = "rgb(128, 128, 128)";
+                    }
+                })
+            })
+        });
+    }
+
     // Create a face of the cube and attach the event handlers
     function CreateBoxFace() {
         var face = document.createElement("div");
@@ -224,16 +251,25 @@
 
     // Create a side of the slider and attach the event handlers
     function CreateSliderSide(changesX) {
-        var face = document.createElement("div");
-        face.style.borderWidth =  (size/4.0) +'vmin';
-        face.style.borderBottomWidth = (size/2.0) + 'vmin'; 
-        face.className = "side";
+        var side = document.createElement("div");
+        side.style.borderWidth =  (size/4.0) +'vmin';
+        side.style.borderBottomWidth = (size/2.0) + 'vmin'; 
+        side.className = "side";
         if (changesX) {
-            face.style.borderBottomColor = "rgb(255, 0, 0)";
+            side.style.borderBottomColor = "rgb(255, 0, 0)";
         } else {
-            face.style.borderBottomColor = "rgb(0, 0, 255)";
+            side.style.borderBottomColor = "rgb(0, 0, 255)";
         }
-        return face;
+
+        // side.addEventListener("mousedown", Interaction);
+        // side.addEventListener("touchstart", Interaction)
+        side.addEventListener("mousedown", (e) => {StopDrag(e)});
+        side.addEventListener("mousedown", StartSlider);
+        // side.addEventListener("mouseenter", ContinueInteraction);
+        // side.addEventListener("touchmove", (e) => {MobileMoveCheck(e)});
+        // side.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
+
+        return side;
     }
 
     // Create the slider object
@@ -246,9 +282,13 @@
         if (changesX) {
             slider.style.transform = "translateZ(" + size*(zIndex) + "vmin) RotateZ(90deg) RotateY(45deg)";
             slider.id = "slider red";
+            slider.dataset.xDirection = 1;
+            slider.dataset.zDirection = 0;
         } else {
             slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)";
             slider.id = "slider blue";
+            slider.dataset.xDirection = 0;
+            slider.dataset.zDirection = 1;
         }
         container.appendChild(slider);
 
@@ -300,6 +340,7 @@
         bottomBack.id = "bottom back";
         slider.appendChild(bottomBack);
 
+        return slider;
     }
 
     // For mobile find the box with the greatest actual z position as there is no mouse enter equivalent
@@ -312,23 +353,26 @@
         // Array with boxes that were touched and its z position
         var touchedBoxes = []
 
-        var boxes = document.querySelectorAll("div.box");
-        boxes.forEach((box) => {
-            if (box.style.visibility != "hidden") {
-                // Check if the touch point is inside the bounding box for each face
-                for (var i = 0; i < box.children.length; i++) {
-                    var item = box.children[i];
-                    if ((
-                        (e.touches[0].clientX >= item.getBoundingClientRect().left && e.touches[0].clientX <= item.getBoundingClientRect().right) &&
-                        (e.touches[0].clientY >= item.getBoundingClientRect().top  && e.touches[0].clientY <= item.getBoundingClientRect().bottom)
-                    )) {
-                        // Add to the array and break, as we care about the box not the face
-                        var [_, _, boxZ] = CalculatePosition(box);
-                        touchedBoxes.push([boxZ, box]);
-                        break;
+        boxes.forEach((i) => {
+            i.forEach((j) => {
+                j.forEach((box) => {
+                    if (box.style.visibility != "hidden") {
+                        // Check if the touch point is inside the bounding box for each face
+                        for (var i = 0; i < box.children.length; i++) {
+                            var item = box.children[i];
+                            if ((
+                                (e.touches[0].clientX >= item.getBoundingClientRect().left && e.touches[0].clientX <= item.getBoundingClientRect().right) &&
+                                (e.touches[0].clientY >= item.getBoundingClientRect().top  && e.touches[0].clientY <= item.getBoundingClientRect().bottom)
+                            )) {
+                                // Add to the array and break, as we care about the box not the face
+                                var [_, _, boxZ] = CalculatePosition(box);
+                                touchedBoxes.push([boxZ, box]);
+                                break;
+                            }
+                        }
                     }
-                }
-            }
+                })
+            })
         });
 
         // If we have at least one box, find the box with the greatest z and call the interaction on it
@@ -495,10 +539,13 @@
         }
     }
 
-    // Disable rotation of the cube
-    function StopRotation() {
+    // Reset variables that were set through a user interaction
+    function StopUserEvents() {
         mouseDown = false;
         held = false;
+        sliderPressed = "";
+
+        ResetBrightness();
     }
 
     // Rotate the cube if enabled
@@ -561,9 +608,6 @@
     }
 
     function SliderChangeCheck(xRad, yRad, zRad) {
-        var redSlider = document.getElementById("slider red");
-        var blueSlider = document.getElementById("slider blue");
-
         if (yRad < -Math.PI*3/2) {
             redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
             blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
@@ -587,18 +631,25 @@
         } else if (yRad > Math.PI/2) {
             blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
             redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            //CreateSlider(xSize, -1.5, true);
-            //CreateSlider(-1, zSize+0.5, false);
-            //slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)
         } else if (yRad > 0) {
             redSlider.style.left = -size + "vmin";
             blueSlider.style.left = size*xSize + "vmin";
-            
         }
-        
-        
-        
+    }
 
+    function StartSlider() {
+        sliderPressed = this.parentElement;
+        if (hideX != 0 && hideZ != 0) {
+            ChangeDimensions(0, 0);
+        } else {
+            ChangeDimensions(sliderPressed.dataset.xDirection, sliderPressed.dataset.zDirection);
+        }
+    };
+
+    function MoveSlider(e) {
+        if (sliderPressed != "") {
+            console.log("test");
+        }
     }
 
     // Perform a cube interaction and setup for continued interaction
@@ -769,9 +820,17 @@
                 parent.dataset.modifier = "Permanent";
                 parent.style.backgroundColor = "rgb(0, 128, 0)";;
                 // Aplly broken effect
+
             } else {
                 // Remove the box
                 // Play animation of it breaking
+
+
+                // Remove the box from our array and the DOM
+                const index = boxes[x][y].indexOf(parent);
+                if (index > -1) {
+                    boxes[x][y].splice(index, 1);
+                }
                 parent.remove();
             }
         }, 100);
