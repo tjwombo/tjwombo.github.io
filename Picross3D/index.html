@@ -546,6 +546,13 @@
         sliderPressed = "";
 
         ResetBrightness();
+
+        if (Math.abs(hideX) == 1) {
+            hideX = 0;
+        }
+        if (Math.abs(hideZ) == 1) {
+            hideZ = 0;
+        }
     }
 
     // Rotate the cube if enabled
@@ -639,9 +646,12 @@
 
     function StartSlider() {
         sliderPressed = this.parentElement;
-        if (hideX != 0 && hideZ != 0) {
+        // Redraw the box bright
+        if (hideX != 0 || hideZ != 0) {
             ChangeDimensions(0, 0);
-        } else {
+        }
+        // If we were at full visiblity, perform the initial offset
+        else {
             ChangeDimensions(sliderPressed.dataset.xDirection, sliderPressed.dataset.zDirection);
         }
     };
