@@ -283,12 +283,13 @@
             slider.style.transform = "translateZ(" + size*(zIndex) + "vmin) RotateZ(90deg) RotateY(45deg)";
             slider.id = "slider red";
             slider.dataset.xDirection = 1;
+            slider.dataset.xDirection = -1;
             slider.dataset.zDirection = 0;
         } else {
             slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)";
             slider.id = "slider blue";
             slider.dataset.xDirection = 0;
-            slider.dataset.zDirection = 1;
+            slider.dataset.zDirection = -1;
         }
         container.appendChild(slider);
 
@@ -547,6 +548,7 @@
 
         ResetBrightness();
 
+        // Brightness hack where abs(1) does not hide anything, just outer visibility, so we need to reset it when we let go
         if (Math.abs(hideX) == 1) {
             hideX = 0;
         }
@@ -614,33 +616,60 @@
         }
     }
 
+    // Change the position of the slider and the direction it scales in
     function SliderChangeCheck(xRad, yRad, zRad) {
         if (yRad < -Math.PI*3/2) {
             redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
             blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+            blueSlider.dataset.zDirection = -1;
         } else if (yRad < -Math.PI) {
             redSlider.style.left = -size + "vmin";
             blueSlider.style.left = size*xSize + "vmin";
-        } else if (yRad < -Math.PI/2) {
             blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
             redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            redSlider.dataset.xDirection = 1;
+            blueSlider.dataset.zDirection = 1;
+        } else if (yRad < -Math.PI/2) {
+            blueSlider.style.left = -size + "vmin";
+            redSlider.style.left = size*xSize + "vmin";
+            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            redSlider.dataset.xDirection = -1;
+            blueSlider.dataset.zDirection = 1;
         } else if (yRad < -0.02225476) {
             blueSlider.style.left = -size + "vmin";
             redSlider.style.left = size*xSize + "vmin";
-        }
-
-        if (yRad > Math.PI*3/2) {
             redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
             blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+            redSlider.dataset.xDirection = -1;
+            blueSlider.dataset.zDirection = -1;
+        }
+        
+        else if (yRad > Math.PI*3/2) {
+            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+            blueSlider.dataset.zDirection = -1
         } else if (yRad > Math.PI) {
             blueSlider.style.left = -size + "vmin";
             redSlider.style.left = size*xSize + "vmin";
-        } else if (yRad > Math.PI/2) {
             blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
             redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            redSlider.dataset.xDirection = -1;
+            blueSlider.dataset.zDirection = 1
+        } else if (yRad > Math.PI/2) {
+            redSlider.style.left = -size + "vmin";
+            blueSlider.style.left = size*xSize + "vmin";
+            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            redSlider.dataset.xDirection = 1;
+            blueSlider.dataset.zDirection = 1
         } else if (yRad > 0) {
             redSlider.style.left = -size + "vmin";
             blueSlider.style.left = size*xSize + "vmin";
+            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+            redSlider.dataset.xDirection = 1;
+            blueSlider.dataset.zDirection = -1;
         }
     }
 
@@ -652,7 +681,7 @@
         }
         // If we were at full visiblity, perform the initial offset
         else {
-            ChangeDimensions(sliderPressed.dataset.xDirection, sliderPressed.dataset.zDirection);
+            ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
         }
     };
 
