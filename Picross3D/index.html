@@ -541,13 +541,64 @@
                 }
             }
 
+            // Limit X rotation to 90 degrees
+            if (xRad + newX > Math.PI/2) {
+                xRad = Math.PI/2 - newX
+            } else if (xRad + newX < -Math.PI/2) {
+                xRad = -Math.PI/2 - newX;
+            }
+
             // Apply the rotation
-            container.style.transform = `rotateX(${(xRad + newX)%(2*Math.PI)}rad) rotateY(${(yRad + newY)%(2*Math.PI)}rad) rotateZ(${(zRad + newZ)%(2*Math.PI)}rad)`;
+            container.style.transform = `rotateX(${(xRad + newX)}rad) rotateY(${(yRad + newY)%(2*Math.PI)}rad) rotateZ(${(zRad + newZ)%(2*Math.PI)}rad)`;
 
             // Update the last interaction coord
             mouseX=e.clientX || e.touches[0].clientX;
             mouseY=e.clientY || e.touches[0].clientY;
+
+            // Check if the sliders need to change position
+            SliderChangeCheck(xRad + newX, yRad + newY, zRad + newZ);
         }
+    }
+
+    function SliderChangeCheck(xRad, yRad, zRad) {
+        var redSlider = document.getElementById("slider red");
+        var blueSlider = document.getElementById("slider blue");
+
+        if (yRad < -Math.PI*3/2) {
+            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+        } else if (yRad < -Math.PI) {
+            redSlider.style.left = -size + "vmin";
+            blueSlider.style.left = size*xSize + "vmin";
+        } else if (yRad < -Math.PI/2) {
+            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+        } else if (yRad < -0.02225476) {
+            blueSlider.style.left = -size + "vmin";
+            redSlider.style.left = size*xSize + "vmin";
+        }
+
+        if (yRad > Math.PI*3/2) {
+            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+        } else if (yRad > Math.PI) {
+            blueSlider.style.left = -size + "vmin";
+            redSlider.style.left = size*xSize + "vmin";
+        } else if (yRad > Math.PI/2) {
+            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+            //CreateSlider(xSize, -1.5, true);
+            //CreateSlider(-1, zSize+0.5, false);
+            //slider.style.transform = "translateZ(" + size*(zIndex) + "vmin)
+        } else if (yRad > 0) {
+            redSlider.style.left = -size + "vmin";
+            blueSlider.style.left = size*xSize + "vmin";
+            
+        }
+        
+        
+        
+
     }
 
     // Perform a cube interaction and setup for continued interaction
