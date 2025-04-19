@@ -562,14 +562,17 @@
         held = false;
         sliderPressed = "";
 
-        ResetBrightness();
 
         // Brightness hack where abs(1) does not hide anything, just outer visibility, so we need to reset it when we let go
         if (Math.abs(hideX) == 1) {
             hideX = 0;
+            ResetBrightness();
+            blueSlider.style.visibility = "visible"
         }
         if (Math.abs(hideZ) == 1) {
             hideZ = 0;
+            ResetBrightness();
+            redSlider.style.visibility = "visible"
         }
     }
 
@@ -627,13 +630,13 @@
             mouseX=e.clientX || e.touches[0].clientX;
             mouseY=e.clientY || e.touches[0].clientY;
 
-            // Check if the sliders need to change position
-            SliderChangeCheck(xRad + newX, yRad + newY, zRad + newZ);
+            // Update the sliders position if needed
+            SliderPositionUpdate(xRad + newX, yRad + newY, zRad + newZ);
         }
     }
 
-    // Change the position of the slider and the direction it scales in
-    function SliderChangeCheck(xRad, yRad, zRad) {
+    // Change the position of the slider and the direction it scales in if needed
+    function SliderPositionUpdate(xRad, yRad, zRad) {
         if (yRad < -Math.PI*3/2) {
             redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
             blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
@@ -707,6 +710,12 @@
         sliderPressed = side.parentElement;
         mouseX=e.clientX || e.touches[0].clientX;
         mouseY=e.clientY || e.touches[0].clientY;
+
+        if (sliderPressed.id == "slider red") {
+            blueSlider.style.visibility = "hidden";
+        } else if (sliderPressed.id == "slider blue") {
+            redSlider.style.visibility = "hidden";
+        }
 
         // Redraw the box bright
         if (hideX != 0 || hideZ != 0) {
