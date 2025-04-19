@@ -29,10 +29,10 @@
 
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
-    const size = 7;
-    const xSize = 6;
-    const ySize = 5;
-    const zSize = 4;
+    const size = 6;
+    const xSize = 10;
+    const ySize = 10;
+    const zSize = 10;
 
     // Last used position of interaction point and if we should think about rotating
     var mouseX;
@@ -323,7 +323,8 @@
                         (e.touches[0].clientY >= item.getBoundingClientRect().top  && e.touches[0].clientY <= item.getBoundingClientRect().bottom)
                     )) {
                         // Add to the array and break, as we care about the box not the face
-                        touchedBoxes.push([CalculatePosition(box), box]);
+                        var [_, _, boxZ] = CalculatePosition(box);
+                        touchedBoxes.push([boxZ, box]);
                         break;
                     }
                 }
@@ -382,10 +383,8 @@
         }
 
         // Matrix multiplication values
-        // Unused portions commented out, as I only need z currently
-
-        //var cosa = Math.cos(rotateZ);
-        //var sina = Math.sin(rotateZ);
+        var cosa = Math.cos(rotateZ);
+        var sina = Math.sin(rotateZ);
 
         var cosb = Math.cos(rotateX);
         var sinb = Math.sin(rotateX);
@@ -393,13 +392,13 @@
         var cosc = Math.cos(rotateY);
         var sinc = Math.sin(rotateY);
 
-        //var Axx = cosa*cosb;
-        //var Axy = cosa*sinb*sinc - sina*cosc;
-        //var Axz = cosa*sinb*cosc + sina*sinc;
+        var Axx = cosa*cosb;
+        var Axy = cosa*sinb*sinc - sina*cosc;
+        var Axz = cosa*sinb*cosc + sina*sinc;
 
-        //var Ayx = sina*cosb;
-        //var Ayy = sina*sinb*sinc + cosa*cosc;
-        //var Ayz = sina*sinb*cosc - cosa*sinc;
+        var Ayx = sina*cosb;
+        var Ayy = sina*sinb*sinc + cosa*cosc;
+        var Ayz = sina*sinb*cosc - cosa*sinc;
 
         var Azx = -sinb;
         var Azy = cosb*sinc;
@@ -429,11 +428,11 @@
         px -= originX;
         py -= originY;
         pz -= originZ;
-        //var newX = Axx*px + Axy*py + Axz*pz + originX;
-        //var newY = Ayx*px + Ayy*py + Ayz*pz + originY;
+        var newX = Axx*px + Axy*py + Axz*pz + originX;
+        var newY = Ayx*px + Ayy*py + Ayz*pz + originY;
         var newZ = Azx*px + Azy*py + Azz*pz + originZ;
 
-        return newZ;
+        return [newX, newY, newZ];
     }
 
     // Stop Rotation from being setup when mouse goes down on a click event object
@@ -543,7 +542,7 @@
             }
 
             // Apply the rotation
-            container.style.transform = `rotateX(${xRad + newX}rad) rotateY(${yRad + newY}rad) rotateZ(${zRad + newZ}rad)`;
+            container.style.transform = `rotateX(${(xRad + newX)%(2*Math.PI)}rad) rotateY(${(yRad + newY)%(2*Math.PI)}rad) rotateZ(${(zRad + newZ)%(2*Math.PI)}rad)`;
 
             // Update the last interaction coord
             mouseX=e.clientX || e.touches[0].clientX;
