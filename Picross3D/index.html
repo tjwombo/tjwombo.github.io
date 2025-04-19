@@ -280,7 +280,7 @@
         // side.addEventListener("mousedown", Interaction);
         // side.addEventListener("touchstart", Interaction)
         side.addEventListener("mousedown", (e) => {StopDrag(e)});
-        side.addEventListener("mousedown", StartSlider);
+        side.addEventListener("mousedown", (e) => {StartSlider(e, side)});
         // side.addEventListener("mouseenter", ContinueInteraction);
         // side.addEventListener("touchmove", (e) => {MobileMoveCheck(e)});
         // side.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
@@ -689,8 +689,25 @@
         }
     }
 
-    function StartSlider() {
-        sliderPressed = this.parentElement;
+    function getVh(percent) {
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    return (percent * h) / 100;
+    }
+
+    function getVw(percent) {
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    return (percent * w) / 100;
+    }
+
+    function getVmin(percent) {
+    return Math.min(getVh(percent), getVw(percent));
+    }
+
+    function StartSlider(e, side) {
+        sliderPressed = side.parentElement;
+        mouseX=e.clientX || e.touches[0].clientX;
+        mouseY=e.clientY || e.touches[0].clientY;
+
         // Redraw the box bright
         if (hideX != 0 || hideZ != 0) {
             ChangeDimensions(0, 0);
@@ -703,7 +720,41 @@
 
     function MoveSlider(e) {
         if (sliderPressed != "") {
-            console.log("test");
+            var [_, rotateY, _] = container.style.transform.split(" ");
+            var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+            var currentX = e.clientX || e.touches[0].clientX;
+            var currentY = e.clientY || e.touches[0].clientY;
+
+            var redBlockDif = (mouseX - currentX)*(Math.cos(yRad))/getVmin(size) + (currentY - mouseY)*(Math.sin(yRad))/getVmin(size);
+            var blueBlockDif = (mouseX - currentX)*(Math.sin(yRad))/getVmin(size) + (mouseY - currentY)*(Math.cos(yRad))/getVmin(size);
+
+            // Check if the red slider is causing a dimension change
+            if (redBlockDif*Number(sliderPressed.dataset.xDirection) <= -1) {
+                ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
+                mouseX = e.clientX || e.touches[0].clientX;
+                mouseY = e.clientY || e.touches[0].clientY;
+            } else if (redBlockDif*Number(sliderPressed.dataset.xDirection) >= 1) {
+                if (Math.abs(hideX) == 1) { // Prevent it from changing from pos->neg or vice versa
+                } else {
+                    ChangeDimensions(-Number(sliderPressed.dataset.xDirection), -Number(sliderPressed.dataset.zDirection));
+                    mouseX = e.clientX || e.touches[0].clientX;
+                    mouseY = e.clientY || e.touches[0].clientY;
+                }
+            }
+            
+            // Check if the blue slider is causing a dimension change
+            else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) <= -1) {
+                ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
+                mouseX = e.clientX || e.touches[0].clientX;
+                mouseY = e.clientY || e.touches[0].clientY;
+            } else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) >= 1) {
+                if (Math.abs(hideZ) == 1) { // Prevent it from changing from pos->neg or vice versa
+                } else {
+                    ChangeDimensions(-Number(sliderPressed.dataset.xDirection), -Number(sliderPressed.dataset.zDirection));
+                    mouseX = e.clientX || e.touches[0].clientX;
+                    mouseY = e.clientY || e.touches[0].clientY;
+                }
+            }
         }
     }
 
