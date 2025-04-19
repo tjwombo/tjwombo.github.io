@@ -18,15 +18,7 @@
         <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
-
-    <div id="test" onmousedown="StopDrag(event)" >
-        <button onclick="hideZ=0; ChangeDimensions(1, 0)" ontouchstart="hideZ=0; ChangeDimensions(1, 0)">IncX</button>
-        <button onclick="hideZ=0; ChangeDimensions(-1, 0)" ontouchstart="hideZ=0; ChangeDimensions(-1, 0)">DecX</button>
-        <button onclick="hideX=0; ChangeDimensions(0, 1)" ontouchstart="hideX=0; ChangeDimensions(0, 1)">IncZ</button>
-        <button onclick="hideX=0; ChangeDimensions(0, -1)" ontouchstart="hideX=0; ChangeDimensions(0, -1)">DecZ</button>
-    </div>
     
-
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 6;
@@ -574,6 +566,10 @@
             ResetBrightness();
             redSlider.style.visibility = "visible"
         }
+        if (hideX == 0 && hideZ == 0) {
+            redSlider.style.visibility = "visible"
+            blueSlider.style.visibility = "visible"
+        }
     }
 
     // Rotate the cube if enabled
@@ -637,58 +633,60 @@
 
     // Change the position of the slider and the direction it scales in if needed
     function SliderPositionUpdate(xRad, yRad, zRad) {
-        if (yRad < -Math.PI*3/2) {
-            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
-            blueSlider.dataset.zDirection = -1;
-        } else if (yRad < -Math.PI) {
-            redSlider.style.left = -size + "vmin";
-            blueSlider.style.left = size*xSize + "vmin";
-            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
-            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            redSlider.dataset.xDirection = 1;
-            blueSlider.dataset.zDirection = 1;
-        } else if (yRad < -Math.PI/2) {
-            blueSlider.style.left = -size + "vmin";
-            redSlider.style.left = size*xSize + "vmin";
-            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
-            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            redSlider.dataset.xDirection = -1;
-            blueSlider.dataset.zDirection = 1;
-        } else if (yRad < -0.02225476) {
-            blueSlider.style.left = -size + "vmin";
-            redSlider.style.left = size*xSize + "vmin";
-            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
-            redSlider.dataset.xDirection = -1;
-            blueSlider.dataset.zDirection = -1;
-        }
-        
-        else if (yRad > Math.PI*3/2) {
-            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
-            blueSlider.dataset.zDirection = -1
-        } else if (yRad > Math.PI) {
-            blueSlider.style.left = -size + "vmin";
-            redSlider.style.left = size*xSize + "vmin";
-            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
-            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            redSlider.dataset.xDirection = -1;
-            blueSlider.dataset.zDirection = 1
-        } else if (yRad > Math.PI/2) {
-            redSlider.style.left = -size + "vmin";
-            blueSlider.style.left = size*xSize + "vmin";
-            blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
-            redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            redSlider.dataset.xDirection = 1;
-            blueSlider.dataset.zDirection = 1
-        } else if (yRad > 0) {
-            redSlider.style.left = -size + "vmin";
-            blueSlider.style.left = size*xSize + "vmin";
-            redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
-            blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
-            redSlider.dataset.xDirection = 1;
-            blueSlider.dataset.zDirection = -1;
+        if (hideX == 0 && hideZ == 0) {
+            if (yRad < -Math.PI*3/2) {
+                redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+                blueSlider.dataset.zDirection = -1;
+            } else if (yRad < -Math.PI) {
+                redSlider.style.left = -size + "vmin";
+                blueSlider.style.left = size*xSize + "vmin";
+                blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+                redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                redSlider.dataset.xDirection = 1;
+                blueSlider.dataset.zDirection = 1;
+            } else if (yRad < -Math.PI/2) {
+                blueSlider.style.left = -size + "vmin";
+                redSlider.style.left = size*xSize + "vmin";
+                blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+                redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                redSlider.dataset.xDirection = -1;
+                blueSlider.dataset.zDirection = 1;
+            } else if (yRad < -0.02225476) {
+                blueSlider.style.left = -size + "vmin";
+                redSlider.style.left = size*xSize + "vmin";
+                redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+                redSlider.dataset.xDirection = -1;
+                blueSlider.dataset.zDirection = -1;
+            }
+            
+            else if (yRad > Math.PI*3/2) {
+                redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+                blueSlider.dataset.zDirection = -1
+            } else if (yRad > Math.PI) {
+                blueSlider.style.left = -size + "vmin";
+                redSlider.style.left = size*xSize + "vmin";
+                blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+                redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                redSlider.dataset.xDirection = -1;
+                blueSlider.dataset.zDirection = 1
+            } else if (yRad > Math.PI/2) {
+                redSlider.style.left = -size + "vmin";
+                blueSlider.style.left = size*xSize + "vmin";
+                blueSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin)";
+                redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                redSlider.dataset.xDirection = 1;
+                blueSlider.dataset.zDirection = 1
+            } else if (yRad > 0) {
+                redSlider.style.left = -size + "vmin";
+                blueSlider.style.left = size*xSize + "vmin";
+                redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
+                blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
+                redSlider.dataset.xDirection = 1;
+                blueSlider.dataset.zDirection = -1;
+            }
         }
     }
 
@@ -740,12 +738,22 @@
             // Check if the red slider is causing a dimension change
             if (redBlockDif*Number(sliderPressed.dataset.xDirection) <= -1) {
                 ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
+                if (sliderPressed.dataset.xDirection == -1) {
+                    redSlider.style.left = ((xSize+1-Math.abs(hideX))*size) + "vmin";
+                } else {
+                    redSlider.style.left = ((Math.abs(hideX)-2)*size) + "vmin";
+                }
                 mouseX = e.clientX || e.touches[0].clientX;
                 mouseY = e.clientY || e.touches[0].clientY;
             } else if (redBlockDif*Number(sliderPressed.dataset.xDirection) >= 1) {
                 if (Math.abs(hideX) == 1) { // Prevent it from changing from pos->neg or vice versa
                 } else {
                     ChangeDimensions(-Number(sliderPressed.dataset.xDirection), -Number(sliderPressed.dataset.zDirection));
+                    if (sliderPressed.dataset.xDirection == -1) {
+                        redSlider.style.left = ((xSize+1-Math.abs(hideX))*size) + "vmin";
+                    } else {
+                        redSlider.style.left = ((Math.abs(hideX)-2)*size) + "vmin";
+                    }
                     mouseX = e.clientX || e.touches[0].clientX;
                     mouseY = e.clientY || e.touches[0].clientY;
                 }
@@ -754,12 +762,22 @@
             // Check if the blue slider is causing a dimension change
             else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) <= -1) {
                 ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
+                if (sliderPressed.dataset.zDirection == -1) {
+                    blueSlider.style.transform = "translateZ(" + size*(zSize + 1.5 - Math.abs(hideZ)) + "vmin)";
+                } else {
+                    blueSlider.style.transform = "translateZ(" + size*(-2.5 + Math.abs(hideZ)) + "vmin)";
+                }
                 mouseX = e.clientX || e.touches[0].clientX;
                 mouseY = e.clientY || e.touches[0].clientY;
             } else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) >= 1) {
                 if (Math.abs(hideZ) == 1) { // Prevent it from changing from pos->neg or vice versa
                 } else {
                     ChangeDimensions(-Number(sliderPressed.dataset.xDirection), -Number(sliderPressed.dataset.zDirection));
+                    if (sliderPressed.dataset.zDirection == -1) {
+                        blueSlider.style.transform = "translateZ(" + size*(zSize + 1.5 - Math.abs(hideZ)) + "vmin)";
+                    } else {
+                        blueSlider.style.transform = "translateZ(" + size*(-2.5 + Math.abs(hideZ)) + "vmin)";
+                    }
                     mouseX = e.clientX || e.touches[0].clientX;
                     mouseY = e.clientY || e.touches[0].clientY;
                 }
