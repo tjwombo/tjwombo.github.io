@@ -175,19 +175,35 @@
         if (hideX < 0) {
             sign = -1;
             currentDepth = xSize + hideX;
-            axis = new RegExp((xSize + hideX) + " . .");
+            if (currentDepth < 0) {
+                currentDepth = 0;
+                hideX += 1;
+            }
+            axis = new RegExp(currentDepth + " . .");
         } else if (hideZ < 0) {
             index = 2;
             sign = -1;
             currentDepth = zSize + hideZ;
-            axis = new RegExp(". . " + (zSize + hideZ));
+            if (currentDepth < 0) {
+                currentDepth = 0;
+                hideZ += 1;
+            }
+            axis = new RegExp(". . " + currentDepth);
         } else if (hideX > 0) {
             currentDepth = hideX - 1;
-            axis = new RegExp((hideX-1) + " . .");
+            if (currentDepth > xSize-1) {
+                currentDepth = xSize-1;
+                hideX -= 1;
+            }
+            axis = new RegExp(currentDepth + " . .");
         } else if (hideZ > 0) {
             index = 2;
             currentDepth = hideZ - 1;
-            axis = new RegExp(". . " + (hideZ-1));
+            if (currentDepth > zSize-1) {
+                currentDepth = zSize-1;
+                hideZ -= 1;
+            }
+            axis = new RegExp(". . " + currentDepth);
         }
 
         // On match, show all boxes at normal colors
