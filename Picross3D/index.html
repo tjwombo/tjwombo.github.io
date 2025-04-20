@@ -245,7 +245,7 @@
         var face = document.createElement("div");
         face.style.width = `${faceSize-0.1}vmin`;
         face.className = "face";
-        face.style.backgroundImage = 'url("./src/square_7.svg")';
+        face.style.backgroundImage = 'url("./src/blank.svg")';
 
 
         if (interactive) {
@@ -953,9 +953,10 @@
         setTimeout(function() {
             if (parent.dataset.required == "Required") {
                 // Play animation of it breaking
+                Explode(parent);
                 parent.style.visibility = "hidden";
-                parent.style.visibility = "visible";
 
+                // Wait for the animation to play out and stop user input and show the error
 
                 // Rehide the blocks that were shown for the animation
                 for (element of changedVisibility) {
@@ -963,21 +964,24 @@
                     element.dataset.region = "inner";
                 }
 
+                // Apply broken effect
+                parent.style.visibility = "visible";
                 parent.dataset.modifier = "Permanent";
-                parent.style.backgroundColor = "rgb(0, 128, 0)";;
-                // Aplly broken effect
+                parent.style.backgroundColor = "rgb(0, 128, 0)";
 
+                parent.childNodes.forEach((face) => {
+                    face.style.backgroundSize = face.style.backgroundSize + ', 100%'; 
+                    face.style.backgroundImage = face.style.backgroundImage + ', url("./src/broken.svg")'; 
+                });
             } else {
-                // Remove the box
                 // Play animation of it breaking
-
+                Explode(parent);
 
                 // Remove the box from our array and the DOM
                 const index = boxes[x][y].indexOf(parent);
                 if (index > -1) {
                     boxes[x][y].splice(index, 1);
                 }
-                Explode(parent);
                 parent.remove();
             }
         }, 100);
