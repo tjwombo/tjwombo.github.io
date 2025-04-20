@@ -45,6 +45,7 @@ body {
     position: absolute;
     transform-style: preserve-3d;
     border-color: blue;
+    touch-action: none;
 }
 
 .side {

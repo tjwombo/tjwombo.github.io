@@ -22,6 +22,7 @@
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 5.5;
+    const sliderSize = size*1.5;
     const xSize = 10;
     const ySize = 10;
     const zSize = 10;
@@ -260,8 +261,8 @@
     // Create a side of the slider and attach the event handlers
     function CreateSliderSide(changesX) {
         var side = document.createElement("div");
-        side.style.borderWidth =  (size/4.0) +'vmin';
-        side.style.borderBottomWidth = (size/2.0) + 'vmin'; 
+        side.style.borderWidth =  (sliderSize/4.0) +'vmin';
+        side.style.borderBottomWidth = (sliderSize/2.0) + 'vmin'; 
         side.className = "side";
         if (changesX) {
             side.style.borderBottomColor = "rgb(255, 0, 0)";
@@ -280,8 +281,8 @@
     // Create the slider object
     function CreateSlider(xIndex, zIndex, changesX) {
         var slider = document.createElement("div");
-        slider.className = "slider ";
-        slider.style.width = `${size}vmin`;
+        slider.className = "slider";
+        slider.style.width = `${sliderSize}vmin`;
         slider.style.left = `${size*(xIndex)}vmin`
         slider.style.top = `${size*(ySize/2)}vmin`;
         if (changesX) {
@@ -300,19 +301,19 @@
 
         // Create the top front face
         var topFront = CreateSliderSide(changesX);
-        topFront.style.transform = "translateZ(" + (size/4) + "vmin) rotateX(30deg)";
+        topFront.style.transform = "translateZ(" + (sliderSize/4) + "vmin) rotateX(30deg)";
         topFront.id = "top front";
         slider.appendChild(topFront);
 
         // Create the top right face
         var topRight = CreateSliderSide(changesX)
-        topRight.style.transform = "translateX(" + (size/8) + "vmin) translateZ(" + (size/8) + "vmin) rotateY(90deg) rotateX(30deg)";
+        topRight.style.transform = "translateX(" + (sliderSize/8) + "vmin) translateZ(" + (sliderSize/8) + "vmin) rotateY(90deg) rotateX(30deg)";
         topRight.id = "top right";
         slider.appendChild(topRight);
 
         // Create the top left face
         var topLeft = CreateSliderSide(changesX);
-        topLeft.style.transform = "translateX(" + (-size/8) + "vmin) translateZ(" + (size/8) + "vmin) rotateY(270deg) rotateX(30deg)";
+        topLeft.style.transform = "translateX(" + (-sliderSize/8) + "vmin) translateZ(" + (sliderSize/8) + "vmin) rotateY(270deg) rotateX(30deg)";
         topLeft.id = "top left";
         slider.appendChild(topLeft);
 
@@ -324,25 +325,25 @@
 
         // Create the bottom front face
         var bottomFront = CreateSliderSide(changesX);
-        bottomFront.style.transform = "translateY(" + (size*Math.sqrt(3)/4) + "vmin) translateZ(" + (size/4) + "vmin) rotateX(-30deg) rotateZ(180deg)";
+        bottomFront.style.transform = "translateY(" + (sliderSize*Math.sqrt(3)/4) + "vmin) translateZ(" + (sliderSize/4) + "vmin) rotateX(-30deg) rotateZ(180deg)";
         bottomFront.id = "bottom front";
         slider.appendChild(bottomFront);
 
         // Create the bottomm right face
         var bottomRight = CreateSliderSide(changesX)
-        bottomRight.style.transform = "translateX(" + (size/8) + "vmin) translateY(" + (size*Math.sqrt(3)/4) + "vmin) translateZ(" + (size/8) + "vmin) rotateY(90deg) rotateX(-30deg) rotateZ(180deg)";
+        bottomRight.style.transform = "translateX(" + (sliderSize/8) + "vmin) translateY(" + (sliderSize*Math.sqrt(3)/4) + "vmin) translateZ(" + (sliderSize/8) + "vmin) rotateY(90deg) rotateX(-30deg) rotateZ(180deg)";
         bottomRight.id = "bottom right";
         slider.appendChild(bottomRight);
 
         // Create the bottom left face
         var bottomLeft = CreateSliderSide(changesX);
-        bottomLeft.style.transform = "translateX(" + (-size/8) + "vmin) translateY(" + (size*Math.sqrt(3)/4) + "vmin) translateZ(" + (size/8) + "vmin) rotateY(270deg) rotateX(-30deg) rotateZ(180deg)";
+        bottomLeft.style.transform = "translateX(" + (-sliderSize/8) + "vmin) translateY(" + (sliderSize*Math.sqrt(3)/4) + "vmin) translateZ(" + (sliderSize/8) + "vmin) rotateY(270deg) rotateX(-30deg) rotateZ(180deg)";
         bottomLeft.id = "bottom left";
         slider.appendChild(bottomLeft);
 
         // Create the bottom back face
         var bottomBack = CreateSliderSide(changesX);
-        bottomBack.style.transform = "translateY(" + (size*Math.sqrt(3)/4) + "vmin) rotateX(30deg) rotateY(180deg) rotateZ(180deg)";
+        bottomBack.style.transform = "translateY(" + (sliderSize*Math.sqrt(3)/4) + "vmin) rotateX(30deg) rotateY(180deg) rotateZ(180deg)";
         bottomBack.id = "bottom back";
         slider.appendChild(bottomBack);
 
@@ -649,7 +650,7 @@
                 redSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
                 redSlider.dataset.xDirection = -1;
                 blueSlider.dataset.zDirection = 1;
-            } else if (yRad < -0.02225476) {
+            } else if (yRad < 0) {
                 blueSlider.style.left = -size + "vmin";
                 redSlider.style.left = size*xSize + "vmin";
                 redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
