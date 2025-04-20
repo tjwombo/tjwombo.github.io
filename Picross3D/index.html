@@ -14,7 +14,7 @@
 
         </div>
     </div>
-    <div id="buttons" onmousedown="StopDrag(event)" >
+    <div id="buttons" class="button" onmousedown="StopDrag(event)" >
         <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
@@ -23,9 +23,9 @@
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 5.5;
     const sliderSize = size*1.5;
-    const xSize = 10;
-    const ySize = 10;
-    const zSize = 10;
+    const xSize = 5;
+    const ySize = 5;
+    const zSize = 5;
 
     const boxes = [[[]]];
 
