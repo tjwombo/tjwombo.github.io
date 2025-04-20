@@ -241,19 +241,24 @@
     }
 
     // Create a face of the cube and attach the event handlers
-    function CreateBoxFace() {
+    function CreateBoxFace(faceSize = size, interactive = true) {
         var face = document.createElement("div");
-        face.style.width = `${size-0.1}vmin`;
+        face.style.width = `${faceSize-0.1}vmin`;
         face.className = "face";
-        //face.style.backgroundImage = 'url("./src/square_7.svg")';
-        face.style.backgroundSize =  `${size-1}vmin`;
+        face.style.backgroundImage = 'url("./src/square_7.svg")';
 
-        face.addEventListener("mousedown", Interaction);
-        face.addEventListener("touchstart", Interaction)
-        face.addEventListener("mousedown", (e) => {StopDrag(e, true)});
-        face.addEventListener("mouseenter", ContinueInteraction);
-        face.addEventListener("touchmove", (e) => {MobileMoveCheck(e)});
-        face.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
+
+        if (interactive) {
+            face.style.backgroundSize =  `${faceSize-1}vmin`;
+            face.addEventListener("mousedown", Interaction);
+            face.addEventListener("touchstart", Interaction)
+            face.addEventListener("mousedown", (e) => {StopDrag(e, true)});
+            face.addEventListener("mouseenter", ContinueInteraction);
+            face.addEventListener("touchmove", (e) => {MobileMoveCheck(e)});
+            face.addEventListener('touchend',  () => {held = false}); // Mobile destruction does not like to reset held, so we do it here
+        } else {
+            face.style.backgroundSize =  `${3*(faceSize-1)}vmin`;
+        }
 
         return face;
     }
@@ -972,10 +977,107 @@
                 if (index > -1) {
                     boxes[x][y].splice(index, 1);
                 }
+                Explode(parent);
                 parent.remove();
             }
         }, 100);
     }
+
+    function Explode(e) {
+        var [baseX, baseY, baseZ] = e.id.split(" ");
+        baseX = Number(baseX);
+        baseY = Number(baseY);
+        baseZ = Number(baseZ);
+
+        for (let i = 0; i < 1; i+=0.5) {
+            for (let j = 0; j < 1; j+=0.5) {
+                for (let k = -0.25; k <= 0.25; k+=0.5) {
+                    // Create and position the box
+                    var box = document.createElement("div");
+                    box.style.left = `${size*(baseX + i)}vmin`
+                    box.style.top = `${size*(baseY + j)}vmin`;
+                    box.style.transform = "translateZ(" + size*(baseZ + k) + "vmin)";
+                    box.style.setProperty('--leftStart', box.style.left);
+
+                    var leftPosition = 0;
+                    var topPosition = 0;
+                    if (i == 0) {
+                        box.style.setProperty('--leftEnd', `${size*(baseX-0.5 + i)}vmin`);
+                    } else {
+                        box.style.setProperty('--leftEnd', `${size*(baseX+0.5 + i)}vmin`);
+                        leftPosition = 50;
+                    }
+                    box.style.setProperty('--topStart', box.style.top);
+                    if (j == 0) {
+                        box.style.setProperty('--topStart', `${size*(baseY + j - 0.25)}vmin`);
+                        box.style.setProperty('--topEnd', `${size*(baseY+0.5 + j)}vmin`);
+                    } else {
+                        box.style.setProperty('--topEnd', `${size*(baseY+1.5 + j)}vmin`);
+                        topPosition = 50;
+                    }
+                    box.style.setProperty('--zStart', box.style.transform);
+                    if (k == -0.25) {
+                        box.style.setProperty('--zEnd', "translateZ(" + size*(baseZ-0.5 + k) + "vmin)");
+                    } else {
+                        box.style.setProperty('--zEnd', "translateZ(" + size*(baseZ+0.5 + k) + "vmin)");
+                    }
+                    box.style.setProperty('--rotateX', "rotateX(" + Math.floor(Math.random() * 360 - 180) + "deg");
+                    box.className = "explode";
+                    box.style.width = `${size/2}vmin`;
+                    box.style.backgroundColor = "rgb(128, 128, 128)";
+                    box.style.backgroundSize = "200%";
+                    box.style.backgroundPosition = "bottom right";
+                    box.id = (baseX + i) + " " + (baseY + j) + " " + (baseZ + k);
+                    box.dataset.region = "outer";
+                    box.addEventListener("animationend", function(){this.remove()});
+                    container.appendChild(box);
+
+                    // Create the top face
+                    var topFace = CreateBoxFace(size/2, false);
+                    topFace.style.transform = "rotateX(90deg) translateZ(" + 0.5 * size/2 + "vmin)";
+                    topFace.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    topFace.id = "top";
+                    box.appendChild(topFace);
+
+                    // Create the bottom face
+                    var bottom = CreateBoxFace(size/2, false)
+                    bottom.style.transform = "rotateX(-90deg) translateZ(" + 0.5 * size/2 + "vmin)";
+                    bottom.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    bottom.id = "bottom";
+                    box.appendChild(bottom);
+
+                    // Create the back face
+                    var back = CreateBoxFace(size/2, false);
+                    back.style.transform = "rotateY(180deg) translateZ(" + 0.5 * size/2 + "vmin)";
+                    back.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    back.id = "back";
+                    box.appendChild(back);
+
+                    // Create the front face
+                    var front = CreateBoxFace(size/2, false);
+                    front.style.transform = "translateZ(" + 0.5 * size/2 + "vmin)";
+                    front.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    front.id = "front";
+                    box.appendChild(front);
+
+                    // Create the left face
+                    var left = CreateBoxFace(size/2, false);
+                    left.style.transform = "rotateY(-90deg) translateZ(" + 0.5 * size/2 + "vmin)";
+                    left.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    left.id = "left";
+                    box.appendChild(left);
+
+                    // Create the right face
+                    var right = CreateBoxFace(size/2, false);
+                    right.style.transform = "rotateY(90deg) translateZ(" + 0.5 * size/2 + "vmin)";
+                    right.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+                    right.id = "right";
+                    box.appendChild(right);
+                }
+            }
+        }
+    }
+
 </script>
 </body>
 </html>
