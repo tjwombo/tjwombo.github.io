@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="mystyle.css">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>Level Editor</title>
 </head>
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
@@ -15,19 +16,28 @@
         </div>
     </div>
     <div id="buttons" class="button" onmousedown="StopDrag(event)" >
+        <button id="Add" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Add</button>
         <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
+    </div>
+    <div id="maxDim">
     </div>
     
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 5.5;
     const sliderSize = size*1.5;
-    const xSize = 10;
-    const ySize = 10;
-    const zSize = 10;
+    var xSize = 2;
+    var ySize = 2;
+    var zSize = 2;
 
     const boxes = [[[]]];
+
+    const isEditing = true;
+    if (!isEditing) {
+        document.getElementById("Add").style.visibility = "hidden";
+        document.getElementById("maxDim").style.visibility = "hidden";
+    }
 
     // Last used position of interaction point and if we should think about rotating
     var mouseX;
@@ -41,6 +51,7 @@
 
     var interaction = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
+    var destroyBox = "";
 
     var sliderPressed = "";
     var hideX = 0;
@@ -58,18 +69,7 @@
     for (i = 0; i < xSize; i++) {
         for (j = 0; j < ySize; j++) {
             for (k = 0; k < zSize; k++) {
-                // Create and position the box
-                var box = document.createElement("div");
-                box.className = "box ";
-                box.style.width = `${size}vmin`;
-                box.style.left = `${size*(i)}vmin`
-                box.style.top = `${size*(j)}vmin`;
-                box.style.transform = "translateZ(" + size*(k) + "vmin)";
-                box.style.backgroundColor = "rgb(128, 128, 128)";
-                box.id = i + " " + j + " " + k;
-                box.dataset.region = "outer";
-                container.appendChild(box);
-                boxes[i][j].push(box);
+                var box = CreateBox(i, j, k);
 
                 // Hide boxes that can't be see to save performance
                 if ((i != 0 && i != xSize - 1) && (j != 0 && j != ySize - 1) && (k != 0 && k != zSize - 1)) {
@@ -77,41 +77,7 @@
                     box.dataset.region = "inner";
                 }
 
-                // Create the top face
-                var topFace = CreateBoxFace();
-                topFace.style.transform = "rotateX(90deg) translateZ(" + 0.5 * size + "vmin)";
-                topFace.id = "top";
-                box.appendChild(topFace);
-
-                // Create the bottom face
-                var bottom = CreateBoxFace()
-                bottom.style.transform = "rotateX(-90deg) translateZ(" + 0.5 * size + "vmin)";
-                bottom.id = "bottom";
-                box.appendChild(bottom);
-
-                // Create the back face
-                var back = CreateBoxFace();
-                back.style.transform = "rotateY(180deg) translateZ(" + 0.5 * size + "vmin)";
-                back.id = "back";
-                box.appendChild(back);
-
-                // Create the front face
-                var front = CreateBoxFace();
-                front.style.transform = "translateZ(" + 0.5 * size + "vmin)";
-                front.id = "front";
-                box.appendChild(front);
-
-                // Create the left face
-                var left = CreateBoxFace();
-                left.style.transform = "rotateY(-90deg) translateZ(" + 0.5 * size + "vmin)";
-                left.id = "left";
-                box.appendChild(left);
-
-                // Create the right face
-                var right = CreateBoxFace();
-                right.style.transform = "rotateY(90deg) translateZ(" + 0.5 * size + "vmin)";
-                right.id = "right";
-                box.appendChild(right);
+                boxes[i][j].push(box);
             }
             if (j != ySize-1) {
                 boxes[i].push([]);
@@ -125,6 +91,8 @@
     // Create the slider objects
     var redSlider = CreateSlider(xSize, -1.5, true);
     var blueSlider = CreateSlider(-1, zSize+0.5, false);
+
+    document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
 
 
     // Reposition the cube when the window gets resized
@@ -261,6 +229,76 @@
         }
 
         return face;
+    }
+
+    function CreateBox(i, j, k, boxSize = size, interactive = true, leftPosition = 0, topPosition = 0) {
+        // Create and position the box
+        var box = document.createElement("div");
+        box.className = "box";
+        box.style.width = `${boxSize}vmin`;
+        box.style.left = `${size*(i)}vmin`
+        box.style.top = `${size*(j)}vmin`;
+        box.style.transform = "translateZ(" + size*(k) + "vmin)";
+        box.style.backgroundColor = "rgb(128, 128, 128)";
+        box.id = i + " " + j + " " + k;
+        box.dataset.region = "outer";
+        container.appendChild(box);
+
+        // Create the top face
+        var topFace = CreateBoxFace(boxSize, interactive);
+        topFace.style.transform = "rotateX(90deg) translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            topFace.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        topFace.id = "top";
+        box.appendChild(topFace);
+
+        // Create the bottom face
+        var bottom = CreateBoxFace(boxSize, interactive)
+        bottom.style.transform = "rotateX(-90deg) translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            bottom.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        bottom.id = "bottom";
+        box.appendChild(bottom);
+
+        // Create the back face
+        var back = CreateBoxFace(boxSize, interactive);
+        back.style.transform = "rotateY(180deg) translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            back.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        back.id = "back";
+        box.appendChild(back);
+
+        // Create the front face
+        var front = CreateBoxFace(boxSize, interactive);
+        front.style.transform = "translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            front.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        front.id = "front";
+        box.appendChild(front);
+
+        // Create the left face
+        var left = CreateBoxFace(boxSize, interactive);
+        left.style.transform = "rotateY(-90deg) translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            left.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        left.id = "left";
+        box.appendChild(left);
+
+        // Create the right face
+        var right = CreateBoxFace(boxSize, interactive);
+        right.style.transform = "rotateY(90deg) translateZ(" + 0.5 * boxSize + "vmin)";
+        if (!interactive) {
+            right.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
+        }
+        right.id = "right";
+        box.appendChild(right);
+
+        return box;
     }
 
     // Create a side of the slider and attach the event handlers
@@ -510,6 +548,7 @@
                 interaction = "Paint";
                 button.classList.add('clicked');
                 document.getElementById("Destroy").classList.remove("clicked");
+                document.getElementById("Add").classList.remove("clicked");
             }
         } else if (button.id == "Destroy") {
             if (interaction == "Destroy") {
@@ -519,6 +558,17 @@
                 interaction = "Destroy";
                 button.classList.add("clicked");
                 document.getElementById("Paint").classList.remove("clicked");
+                document.getElementById("Add").classList.remove("clicked");
+            }
+        } else if (button.id == "Add") {
+            if (interaction == "Add") {
+                interaction = "";
+                button.classList.remove("clicked");
+            } else {
+                interaction = "Add";
+                button.classList.add("clicked");
+                document.getElementById("Paint").classList.remove("clicked");
+                document.getElementById("Destroy").classList.remove("clicked");
             }
         }
     }
@@ -637,6 +687,8 @@
     // Change the position of the slider and the direction it scales in if needed
     function SliderPositionUpdate(xRad, yRad, zRad) {
         if (hideX == 0 && hideZ == 0) {
+            redSlider.style.top = `${size*(ySize/2)}vmin`;
+            blueSlider.style.top = `${size*(ySize/2)}vmin`;
             if (yRad < -Math.PI*3/2) {
                 redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
                 blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
@@ -740,7 +792,7 @@
 
             // Check if the red slider is causing a dimension change
             if (redBlockDif*Number(sliderPressed.dataset.xDirection) <= -1) {
-                for (let i = 0; i < Math.abs(redBlockDif); i++) {
+                for (let i = 0; i < Math.floor(Math.abs(redBlockDif)); i++) {
                     ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
                     if (sliderPressed.dataset.xDirection == -1) {
                         redSlider.style.left = ((xSize+1-Math.abs(hideX))*size) + "vmin";
@@ -751,7 +803,7 @@
                 mouseX = e.clientX || e.touches[0].clientX;
                 mouseY = e.clientY || e.touches[0].clientY;
             } else if (redBlockDif*Number(sliderPressed.dataset.xDirection) >= 1) {
-                for (let i = 0; i < Math.abs(redBlockDif); i++) {
+                for (let i = 0; i < Math.floor(Math.abs(redBlockDif)); i++) {
                     if (Math.abs(hideX) == 1) { // Prevent it from changing from pos->neg or vice versa
                         break;
                     } else {
@@ -769,7 +821,7 @@
             
             // Check if the blue slider is causing a dimension change
             else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) <= -1) {
-                for (let i = 0; i < Math.abs(blueBlockDif); i++) {
+                for (let i = 0; i < Math.floor(Math.abs(blueBlockDif)); i++) {
                     ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
                     if (sliderPressed.dataset.zDirection == -1) {
                         blueSlider.style.transform = "translateZ(" + size*(zSize + 1.5 - Math.abs(hideZ)) + "vmin)";
@@ -780,7 +832,7 @@
                 mouseX = e.clientX || e.touches[0].clientX;
                 mouseY = e.clientY || e.touches[0].clientY;
             } else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) >= 1) {
-                for (let i = 0; i < Math.abs(blueBlockDif); i++) {
+                for (let i = 0; i < Math.floor(Math.abs(blueBlockDif)); i++) {
                     if (Math.abs(hideZ) == 1) { // Prevent it from changing from pos->neg or vice versa
                         break;
                     } else {
@@ -811,6 +863,8 @@
         // Destroy the cube
         else if (interaction == "Destroy") {
             Destroy.call(this);
+        } else if (interaction == "Add") {
+            AddBlock.call(this);
         }
 
         // If this is the first interaction of the click, set up the axis
@@ -837,6 +891,16 @@
                         heldDelay = false;
                         // Create an additional delay before destroying the block that caused this
                         // This allows another block to be chosen as the first break
+                        setTimeout(() => {
+                            ContinueInteraction.call(this);
+                        }, 100);
+                    }, 100);
+                } else if (interaction == "Add") {
+                    // Create a delay before accepting input
+                    setTimeout(() => {
+                        heldDelay = false;
+                        // Create an additional delay before adding the block
+                        // This allows another side to be chosen as the first add
                         setTimeout(() => {
                             ContinueInteraction.call(this);
                         }, 100);
@@ -874,7 +938,7 @@
         }
     }
 
-    //Toggle the paint modifier unless it has the perminent modifier
+    // Toggle the paint modifier unless it has the perminent modifier
     function Paint() {
         var parent = this.parentElement
         // If we were held, perform the same paint interaction, unless its permanently painted
@@ -912,10 +976,21 @@
         y = Number(y);
         z = Number(z);
 
-        // Don't break the box if it was painted
+        // Don't break the box if it was painted, if the parent is null (somehow), or we've already queued this box to be destroyed
         if (parent.dataset.modifier == 'Paint') {
             return;
         }
+        if (parent.parentNode == null) {
+            return;
+        }
+        if (destroyBox == parent.id) {
+            return;
+        }
+
+        // Turn off the listener of the other faces to prevent duplicates
+        var new_box = parent.cloneNode(true);
+        parent.parentNode.replaceChild(new_box, parent);
+        destroyBox = new_box;
 
         var changedVisibility = []
 
@@ -982,13 +1057,25 @@
                 if (index > -1) {
                     boxes[x][y].splice(index, 1);
                 }
-                parent.remove();
+
+                if (isEditing) {
+                    CheckMaxDimChange(x, y, z);
+                    var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+                    var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
+                    var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+                    var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
+                    SliderPositionUpdate(xRad, yRad, zRad);
+                    document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+                }
+
+                new_box.remove();
             }
         }, 100);
     }
 
-    function Explode(e) {
-        var [baseX, baseY, baseZ] = e.id.split(" ");
+    // Create the explosion effect from a block
+    function Explode(block) {
+        var [baseX, baseY, baseZ] = block.id.split(" ");
         baseX = Number(baseX);
         baseY = Number(baseY);
         baseZ = Number(baseZ);
@@ -997,19 +1084,26 @@
             for (let j = 0; j < 1; j+=0.5) {
                 for (let k = -0.25; k <= 0.25; k+=0.5) {
                     // Create and position the box
-                    var box = document.createElement("div");
-                    box.style.left = `${size*(baseX + i)}vmin`
-                    box.style.top = `${size*(baseY + j)}vmin`;
-                    box.style.transform = "translateZ(" + size*(baseZ + k) + "vmin)";
-                    box.style.setProperty('--leftStart', box.style.left);
 
                     var leftPosition = 0;
                     var topPosition = 0;
+
+                    if (i == 0.5) {
+                        leftPosition = 50;
+                    }
+                    if (j == 0.5) {
+                        topPosition = 50;
+                    }
+
+                    var box = CreateBox(baseX+i, baseY+j, baseZ+k, size/2, false, leftPosition, topPosition);
+
+                    box.style.setProperty('--leftStart', box.style.left);
+
+
                     if (i == 0) {
                         box.style.setProperty('--leftEnd', `${size*(baseX-0.5 + i)}vmin`);
                     } else {
                         box.style.setProperty('--leftEnd', `${size*(baseX+0.5 + i)}vmin`);
-                        leftPosition = 50;
                     }
                     box.style.setProperty('--topStart', box.style.top);
                     if (j == 0) {
@@ -1017,7 +1111,6 @@
                         box.style.setProperty('--topEnd', `${size*(baseY+0.5 + j)}vmin`);
                     } else {
                         box.style.setProperty('--topEnd', `${size*(baseY+1.5 + j)}vmin`);
-                        topPosition = 50;
                     }
                     box.style.setProperty('--zStart', box.style.transform);
                     if (k == -0.25) {
@@ -1026,59 +1119,149 @@
                         box.style.setProperty('--zEnd', "translateZ(" + size*(baseZ+0.5 + k) + "vmin)");
                     }
                     box.style.setProperty('--rotateX', "rotateX(" + Math.floor(Math.random() * 360 - 180) + "deg");
-                    box.className = "explode";
-                    box.style.width = `${size/2}vmin`;
-                    box.style.backgroundColor = "rgb(128, 128, 128)";
+                    box.classList.add("explode");
                     box.style.backgroundSize = "200%";
-                    box.style.backgroundPosition = "bottom right";
-                    box.id = (baseX + i) + " " + (baseY + j) + " " + (baseZ + k);
-                    box.dataset.region = "outer";
                     box.addEventListener("animationend", function(){this.remove()});
-                    container.appendChild(box);
-
-                    // Create the top face
-                    var topFace = CreateBoxFace(size/2, false);
-                    topFace.style.transform = "rotateX(90deg) translateZ(" + 0.5 * size/2 + "vmin)";
-                    topFace.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    topFace.id = "top";
-                    box.appendChild(topFace);
-
-                    // Create the bottom face
-                    var bottom = CreateBoxFace(size/2, false)
-                    bottom.style.transform = "rotateX(-90deg) translateZ(" + 0.5 * size/2 + "vmin)";
-                    bottom.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    bottom.id = "bottom";
-                    box.appendChild(bottom);
-
-                    // Create the back face
-                    var back = CreateBoxFace(size/2, false);
-                    back.style.transform = "rotateY(180deg) translateZ(" + 0.5 * size/2 + "vmin)";
-                    back.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    back.id = "back";
-                    box.appendChild(back);
-
-                    // Create the front face
-                    var front = CreateBoxFace(size/2, false);
-                    front.style.transform = "translateZ(" + 0.5 * size/2 + "vmin)";
-                    front.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    front.id = "front";
-                    box.appendChild(front);
-
-                    // Create the left face
-                    var left = CreateBoxFace(size/2, false);
-                    left.style.transform = "rotateY(-90deg) translateZ(" + 0.5 * size/2 + "vmin)";
-                    left.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    left.id = "left";
-                    box.appendChild(left);
-
-                    // Create the right face
-                    var right = CreateBoxFace(size/2, false);
-                    right.style.transform = "rotateY(90deg) translateZ(" + 0.5 * size/2 + "vmin)";
-                    right.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
-                    right.id = "right";
-                    box.appendChild(right);
                 }
             }
+        }
+    }
+
+    // Add a block to the level editor
+    function AddBlock() {
+        var parent = this.parentElement;
+
+        var [parentX, parentY, parentZ] = this.parentElement.id.split(" ");
+        parentX = Number(parentX);
+        parentY = Number(parentY);
+        parentZ = Number(parentZ);
+        console.log(parentX, parentY, parentZ, this.id);
+
+        if (this.id == "front" && parentZ != 9) {
+            if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
+                var box = CreateBox(parentX, parentY, parentZ+1)
+                if (parentZ+1 > zSize-1) {
+                    zSize += 1;
+                }
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX].length < ySize) {
+                    boxes[parentX].push([]);
+                }
+                boxes[parentX][parentY].push(box) // z order doesnt matter
+            }
+        } else if (this.id == "right" && parentX != 9) {
+            if (document.getElementById((parentX+1) + " " + parentY + " " + parentZ) == null) {
+                var box = CreateBox(parentX+1, parentY, parentZ)
+                if (parentX+1 > xSize-1) {
+                    xSize += 1;
+                }
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX+1].length < ySize) {
+                    boxes[parentX+1].push([]);
+                }
+                boxes[parentX+1][parentY].push(box);
+            }
+        } else if (this.id == "bottom" && parentY != 9) {
+            if (document.getElementById(parentX + " " + (parentY+1) + " " + parentZ) == null) {
+                var box = CreateBox(parentX, parentY+1, parentZ);
+                if (parentY+1 > ySize-1) {
+                    ySize += 1;
+                }
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX].length < ySize) {
+                    boxes[parentX].push([]);
+                }
+                boxes[parentX][parentY+1].push(box);
+            }
+        }
+        // PROBABLY DO SOME \.SIZE/ MANIPULATION
+        // IDEALLY SHIFT EVERYTHING DOWN WHEN NEEDED SO YOUR NOT FORCED WITH A TRUE TOP LEFT
+        else if (this.id == "back" && parentZ != 0) {
+            if (document.getElementById(parentX + " " + parentY + " " + (parentZ-1)) == null) {
+                var box = CreateBox(parentX, parentY, parentZ-1)
+                boxes[parentX][parentY].push(box);
+            }
+        } else if (this.id == "left" && parentX != 0) {
+            if (document.getElementById((parentX-1) + " " + parentY + " " + parentZ) == null) {
+                var box = CreateBox(parentX-1, parentY, parentZ)
+                boxes[parentX-1][parentY].push(box);
+            }
+        } else if (this.id == "top" && parentY != 0) {
+            if (document.getElementById(parentX + " " + (parentY-1) + " " + parentZ) == null) {
+                var box = CreateBox(parentX, parentY-1, parentZ)
+                boxes[parentX][parentY-1].push(box);
+            }
+        }
+
+        var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+        var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
+        var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+        var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
+        SliderPositionUpdate(xRad, yRad, zRad);
+
+        var hideX = 0;
+        var hideZ = 0;
+
+        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+    }
+
+    function CheckMaxDimChange(x, y, z) {
+        // Check Y dim
+        var removeAll = true;
+        for (let i = 0; i < boxes.length; i++) {
+            if (boxes[i].length >= ySize) {
+                if (boxes[i][ySize-1].length > 0) {
+                    removeAll = false;
+                    break;
+                }
+            }
+        }
+        if (removeAll) {
+            boxes[x].splice(y, 1);
+            ySize--;
+            CheckMaxDimChange(x, y-1, z);
+        }
+
+        // Check X dim
+        var removeAll = true;
+        if (boxes[x] != undefined) {
+            for (let i = 0; i < boxes[x].length; i++) {
+                if (boxes[x][i].length > 0) {
+                    removeAll = false;
+                    break;
+                }
+            }
+            if (removeAll) {
+                if (x >= xSize-1) {
+                    boxes.splice(x, 1);
+                    xSize--;
+                    CheckMaxDimChange(x-1, y, z)
+                }
+                console.log(x, xSize);
+            }
+        }
+
+        // Check Z dim
+        var removeAll = true;
+        for (let i = 0; i < boxes.length; i++) {
+            for (let j = 0; j < boxes[i].length; j++) {
+                for (let k = 0; k < boxes[i][j].length; k++) {
+                    if (boxes[i][j][k].id.split(" ")[2] >= zSize-1) {
+                        removeAll = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if (removeAll) {
+            zSize--;
+            CheckMaxDimChange(x, y, z-1)
         }
     }
 

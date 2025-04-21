@@ -83,11 +83,6 @@ body {
 
 
 .explode {
-    aspect-ratio: 1/1;
-    position: absolute;
-    transform-style: preserve-3d;
-    user-select: none;
-    touch-action: none;
     animation: pop 0.5s forwards;
 }
 
