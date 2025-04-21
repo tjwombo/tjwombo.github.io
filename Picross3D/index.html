@@ -20,6 +20,24 @@
         <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
+    <div id="colors">
+        <button id = "White" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="255" data-b="255" data-texture = "" class="clicked">White</button>
+        <button id = "Black" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="0" data-g="0" data-b="0" data-texture = "">Black</button>
+        <button id = "Gray" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="169" data-g="169" data-b="169" data-texture = "">Gray</button>
+        <button id = "Red" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="0" data-b="0" data-texture = "">Red</button>
+        <button id = "Orange" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="165" data-b="0" data-texture = "">Orange</button>
+        <button id = "Yellow" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="255" data-b="0" data-texture = "">Yellow</button>
+        <button id = "Lime" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="50" data-g="205" data-b="50" data-texture = "">Lime</button>
+        <button id = "Green" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="0" data-g="128" data-b="0" data-texture = "">Green</button>
+        <button id = "Cyan" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="0" data-g="255" data-b="255" data-texture = "">Cyan</button>
+        <button id = "Blue" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="0" data-g="0" data-b="255" data-texture = "">Blue</button>
+        <button id = "Purple" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="128" data-g="0" data-b="128" data-texture = "">Purple</button>
+        <button id = "Pink" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="192" data-b="203" data-texture = "">Pink</button>
+        <button id = "Tan" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="245" data-g="222" data-b="179" data-texture = "">Tan</button>
+        <button id = "Brown" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="139" data-g="69" data-b="19" data-texture = "">Brown</button>
+        <button id = "Maroon" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="128" data-g="0" data-b="0" data-texture = "">Marron</button>
+        <button id = "Eye" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="255" data-b="255" data-texture = ".\base_1.svg">Eye</button>
+    </div>
     <div id="maxDim">
     </div>
     
@@ -34,10 +52,23 @@
     const boxes = [[[]]];
 
     const isEditing = true;
+    var colorR = "";
+    var colorG = "";
+    var colorB = "";
+    var texture = ""; // STILL NEED TO SET UP THE TEXTURE
     if (!isEditing) {
         document.getElementById("Add").style.visibility = "hidden";
         document.getElementById("maxDim").style.visibility = "hidden";
+        // Maybe eventually read from database options what color highlighting should be
+        colorR = "0";
+        colorG = "128";
+        colorB = "0";
+    } else {
+        colorR = "255";
+        colorG = "255";
+        colorB = "255";
     }
+    document.getElementById("colors").style.visibility = "hidden";
 
     // Last used position of interaction point and if we should think about rotating
     var mouseX;
@@ -170,7 +201,7 @@
         // On match, show all boxes at normal colors
         if (box.id.search(axis) != -1) {
             if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                box.style.backgroundColor = "rgb(0, 128, 0)";
+                box.style.backgroundColor = "rgb(" + box.dataset.colorR + ", " + box.dataset.colorG + ", " + box.dataset.colorB + ")";
             } else {
                 box.style.backgroundColor = "rgb(128, 128, 128)";
             }
@@ -184,7 +215,7 @@
                 if (box.dataset.region == "outer") {
                     box.style.visibility = "visible";
                     if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                        box.style.backgroundColor = "rgb(0, 64, 0)";
+                        box.style.backgroundColor = "rgb(" + (Number(box.dataset.colorR)/2) + ", " + (Number(box.dataset.colorG)/2) + ", " + (Number(box.dataset.colorB)/2) + ")";
                     } else {
                         box.style.backgroundColor = "rgb(64, 64, 64)";
                     }
@@ -199,7 +230,7 @@
             i.forEach((j) => {
                 j.forEach((box) => {
                     if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                        box.style.backgroundColor = "rgb(0, 128, 0)";
+                        box.style.backgroundColor = "rgb(" + box.dataset.colorR + ", " + box.dataset.colorG + ", " + box.dataset.colorB + ")";
                     } else {
                         box.style.backgroundColor = "rgb(128, 128, 128)";
                     }
@@ -538,17 +569,21 @@
         e.stopPropagation();
     }
 
-    // Limit a group of checkboxes to only have one box clicked at a time
+    // Limit a group of buttons to only have one clicked at a time
     function LimitOne(button) {
         if (button.id == "Paint") {
             if (interaction == "Paint") {
                 interaction = "";
                 button.classList.remove("clicked");
+                document.getElementById("colors").style.visibility = "hidden";
             } else {
                 interaction = "Paint";
                 button.classList.add('clicked');
                 document.getElementById("Destroy").classList.remove("clicked");
                 document.getElementById("Add").classList.remove("clicked");
+                if (isEditing) {
+                    document.getElementById("colors").style.visibility = "visible";
+                }
             }
         } else if (button.id == "Destroy") {
             if (interaction == "Destroy") {
@@ -560,6 +595,7 @@
                 document.getElementById("Paint").classList.remove("clicked");
                 document.getElementById("Add").classList.remove("clicked");
             }
+            document.getElementById("colors").style.visibility = "hidden";
         } else if (button.id == "Add") {
             if (interaction == "Add") {
                 interaction = "";
@@ -570,7 +606,21 @@
                 document.getElementById("Paint").classList.remove("clicked");
                 document.getElementById("Destroy").classList.remove("clicked");
             }
+            document.getElementById("colors").style.visibility = "hidden";
         }
+    }
+
+    function SelectColor(button) {
+        document.getElementById("colors").childNodes.forEach((color) => {
+            if (color.id == button.id) {
+                color.className = "clicked";
+            } else {
+                color.className = "";
+            }
+        })
+        colorR = button.dataset.r;
+        colorG = button.dataset.g;
+        colorB = button.dataset.b;
     }
 
     // Enable rotation of the cube and update the interaction coords
@@ -946,25 +996,39 @@
             if (parent.dataset.modifier != "Permanent") {
                 if (paint) {
                     parent.dataset.modifier = "Paint";
-                    parent.style.backgroundColor = "rgb(0, 128, 0)";
+                    parent.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+                    parent.dataset.colorR = colorR;
+                    parent.dataset.colorG = colorG;
+                    parent.dataset.colorB = colorB;
                 } else {
                     parent.dataset.modifier = "Destroy";
                     parent.style.backgroundColor = "rgb(128, 128, 128)";
+                    parent.dataset.colorR = "128";
+                    parent.dataset.colorG = "128";
+                    parent.dataset.colorB = "128";
                 }
             }
         }
         // Otherwise toggle it
         else {
-            if (parent.dataset.modifier == "Paint") {
+            if (parent.dataset.modifier == "Paint" && parent.dataset.colorR == colorR && parent.dataset.colorG == colorG && parent.dataset.colorB == colorB) {
                 parent.dataset.modifier = "Destroy";
                 parent.style.backgroundColor = "rgb(128, 128, 128)";
+                parent.dataset.colorR = "128";
+                parent.dataset.colorG = "128";
+                parent.dataset.colorB = "128";
                 paint = false;
-            } else if (parent.dataset.modifier == undefined || parent.dataset.modifier == "" || parent.dataset.modifier == "Destroy") {
+                
+            } else {
                 parent.dataset.modifier = "Paint";
-                parent.style.backgroundColor = "rgb(0, 128, 0)";
+                parent.dataset.colorR = colorR;
+                parent.dataset.colorG = colorG;
+                parent.dataset.colorB = colorB;
+                parent.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
                 paint = true;
             }
         }
+        ChangeBoxBrightness(parent);
     }
 
     // Destroy the box that was clicked
