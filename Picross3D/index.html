@@ -8,7 +8,7 @@
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
-        onmouseup="StopUserEvents()" onmouseleave="StopUserEvents()" ontouchend="StopUserEvents()" ontouchcancel="StopUserEvents()"
+        onmouseup="ResetUserEvents()" onmouseleave="ResetUserEvents()" ontouchend="ResetUserEvents()" ontouchcancel="ResetUserEvents()"
         onmousemove="RotateCube(event); MoveSlider(event)" ontouchmove="RotateCube(event); MoveSlider(event)">
     <div class="board" id="board">
         <div class="container" id="container">
@@ -49,41 +49,51 @@
     var ySize = 2;
     var zSize = 2;
 
+    // List of boxes to avoid re-querying div.boxes everytime I need it
     const boxes = [[[]]];
 
+    // Flag to seperate editing/puzzle solving and variables related to editing
     const isEditing = true;
     var colorR = "";
     var colorG = "";
     var colorB = "";
     var texture = ""; // STILL NEED TO SET UP THE TEXTURE
     if (!isEditing) {
-        document.getElementById("Add").style.visibility = "hidden";
-        document.getElementById("maxDim").style.visibility = "hidden";
         // Maybe eventually read from database options what color highlighting should be
         colorR = "0";
         colorG = "128";
         colorB = "0";
+        document.getElementById("Add").remove();
+        document.getElementById("maxDim").remove();
+        document.getElementById("colors").remove();
     } else {
         colorR = "255";
         colorG = "255";
         colorB = "255";
+        document.getElementById("colors").style.visibility = "hidden";
     }
-    document.getElementById("colors").style.visibility = "hidden";
+
+    // Variables to represent color of unpainted boxes
+    const unselectedR = 128;
+    const unselectedG = 128;
+    const unselectedB = 128;
 
     // Last used position of interaction point and if we should think about rotating
     var mouseX;
     var mouseY;
     var mouseDown = false;
 
-    // Different mouse click variable to see if an interaction is held and should propogate and the axis to propogate
+    // Different mouse click variable to see if an interaction is held and should propogate the interaction and the axis to propogate on
     var held = false;
     var heldDelay = false;
     var axis = "";
 
+    // Interaction variables to determine what interaction is selected
     var interaction = "";
     var painting = false; // For the paint interaction only have it go from off->on or vice versa
-    var destroyBox = "";
+    var destroyBox = ""; // What box is exploding, so we don't re-explode the box
 
+    // Slider variables to determine which slider is selected and the depth we are hiding
     var sliderPressed = "";
     var hideX = 0;
     var hideZ = 0;
@@ -91,10 +101,10 @@
     // Position the cube to the center of the screen
     WindowResize();
 
-    // Set the transformation origin the center of the cube and 0 rotation
+    // Set the transformation origin the center of the cube and set the initial rotation
     var container = document.getElementById("container");
     container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
-    container.style.transform = `rotateX(0rad) rotateY(0rad) rotateZ(0rad)`;
+    container.style.transform = "rotateX(-" + Math.PI/6 + "rad) rotateY(-" + Math.PI/6 + "rad) rotateZ(0rad)";
    
     // Create the cubes
     for (i = 0; i < xSize; i++) {
@@ -123,6 +133,7 @@
     var redSlider = CreateSlider(xSize, -1.5, true);
     var blueSlider = CreateSlider(-1, zSize+0.5, false);
 
+    // Perform initial update of maxDim
     document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
 
 
@@ -142,6 +153,7 @@
         }
     }
 
+    // Change the shown dimensions by deltaX, deltaZ 
     function ChangeDimensions(deltaX, deltaZ) {
         // Move in the direction
         hideX += deltaX;
@@ -203,7 +215,7 @@
             if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
                 box.style.backgroundColor = "rgb(" + box.dataset.colorR + ", " + box.dataset.colorG + ", " + box.dataset.colorB + ")";
             } else {
-                box.style.backgroundColor = "rgb(128, 128, 128)";
+                box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
             }
             box.style.visibility = "visible";
         } else {
@@ -217,7 +229,7 @@
                     if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
                         box.style.backgroundColor = "rgb(" + (Number(box.dataset.colorR)/2) + ", " + (Number(box.dataset.colorG)/2) + ", " + (Number(box.dataset.colorB)/2) + ")";
                     } else {
-                        box.style.backgroundColor = "rgb(64, 64, 64)";
+                        box.style.backgroundColor = "rgb(" + (Number(unselectedR)/2) + ", " + (Number(unselectedG)/2) + ", " + (Number(unselectedB)/2) + ")";
                     }
                 }
             }
@@ -232,21 +244,21 @@
                     if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
                         box.style.backgroundColor = "rgb(" + box.dataset.colorR + ", " + box.dataset.colorG + ", " + box.dataset.colorB + ")";
                     } else {
-                        box.style.backgroundColor = "rgb(128, 128, 128)";
+                        box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
                     }
                 })
             })
         });
     }
 
-    // Create a face of the cube and attach the event handlers
+    // Create a face of the cube and attach the event handlers where interactive = puzzle box and !Interactive = box created for explosion
     function CreateBoxFace(faceSize = size, interactive = true) {
         var face = document.createElement("div");
         face.style.width = `${faceSize-0.1}vmin`;
         face.className = "face";
-        face.style.backgroundImage = 'url("./src/blank.svg")';
+        face.style.backgroundImage = 'url("./src/blank.svg")'; // So that we can apply broken ontop of it without worrying if the block already had an image or not - might not be necessary as it would just be "" or some equivalent
 
-
+        // Add the event listeners to the puzzle boxes
         if (interactive) {
             face.style.backgroundSize =  `${faceSize-1}vmin`;
             face.addEventListener("mousedown", Interaction);
@@ -262,6 +274,7 @@
         return face;
     }
 
+    // Create a box and its faces where left and top position represents the position of the background image on a face rather than the box position
     function CreateBox(i, j, k, boxSize = size, interactive = true, leftPosition = 0, topPosition = 0) {
         // Create and position the box
         var box = document.createElement("div");
@@ -270,7 +283,7 @@
         box.style.left = `${size*(i)}vmin`
         box.style.top = `${size*(j)}vmin`;
         box.style.transform = "translateZ(" + size*(k) + "vmin)";
-        box.style.backgroundColor = "rgb(128, 128, 128)";
+        box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
         box.id = i + " " + j + " " + k;
         box.dataset.region = "outer";
         container.appendChild(box);
@@ -345,24 +358,26 @@
         }
 
         side.addEventListener("mousedown", (e) => {StopDrag(e)});
-        side.addEventListener("mousedown", (e) => {StartSlider(e, side)});
+        side.addEventListener("mousedown", (e) => {SetupSlider(e, side)});
         side.addEventListener("touchstart", (e) => {StopDrag(e)});
-        side.addEventListener("touchstart", (e) => {StartSlider(e, side)});
+        side.addEventListener("touchstart", (e) => {SetupSlider(e, side)});
 
         return side;
     }
 
-    // Create the slider object
+    // Create the slider object and its sides
     function CreateSlider(xIndex, zIndex, changesX) {
+        // Create the slider object
         var slider = document.createElement("div");
         slider.className = "slider";
         slider.style.width = `${sliderSize}vmin`;
         slider.style.left = `${size*(xIndex)}vmin`
         slider.style.top = `${size*(ySize/2)}vmin`;
+
+        // set the directions each slider manipulates and rotate the red slider to be horizontal
         if (changesX) {
             slider.style.transform = "translateZ(" + size*(zIndex) + "vmin) RotateZ(90deg) RotateY(45deg)";
             slider.id = "slider red";
-            slider.dataset.xDirection = 1;
             slider.dataset.xDirection = -1;
             slider.dataset.zDirection = 0;
         } else {
@@ -424,7 +439,7 @@
         return slider;
     }
 
-    // For mobile find the box with the greatest actual z position as there is no mouse enter equivalent
+    // For mobile find the box with the greatest actual z position to perform the interaction on as there is no mouse enter equivalent
     function MobileMoveCheck(e) {
         // Make sure there is an interaction
         if (interaction == "") {
@@ -437,8 +452,9 @@
         boxes.forEach((i) => {
             i.forEach((j) => {
                 j.forEach((box) => {
+                    // Skip over boxes that can't be selected
                     if (box.style.visibility != "hidden") {
-                        // Check if the touch point is inside the bounding box for each face
+                        // Check if the touch point is inside the bounding box for any of the faces
                         for (var i = 0; i < box.children.length; i++) {
                             var item = box.children[i];
                             if ((
@@ -566,10 +582,12 @@
         if ((conditionally && interaction == "") || (e.buttons & (1 << 1) && !(e.buttons & (1 << 0)))) {
             return true;
         }
+
         e.stopPropagation();
     }
 
-    // Limit a group of buttons to only have one clicked at a time
+    // Limit interaction buttons to only have one clicked at a time
+    // Could probably be reworked to be similar to the newer SelectColor
     function LimitOne(button) {
         if (button.id == "Paint") {
             if (interaction == "Paint") {
@@ -610,7 +628,9 @@
         }
     }
 
+    // Limit color buttons to only have one clicked at a time
     function SelectColor(button) {
+        // Click the button that was clicked, and unclick all the other buttons
         document.getElementById("colors").childNodes.forEach((color) => {
             if (color.id == button.id) {
                 color.className = "clicked";
@@ -618,6 +638,8 @@
                 color.className = "";
             }
         })
+
+        // Update the rgb colors
         colorR = button.dataset.r;
         colorG = button.dataset.g;
         colorB = button.dataset.b;
@@ -625,9 +647,11 @@
 
     // Enable rotation of the cube and update the interaction coords
     function SetupRotation(e) {
+        // Prevent other events when we are rotating
         e.preventDefault();
         e.stopPropagation();
 
+        // Get the 'mouse' coords
         if (e.touches != undefined) {
             mouseX = e.touches[0].clientX;
             mouseY = e.touches[0].clientY;
@@ -640,11 +664,11 @@
         if (e.buttons & (1 << 1) && !(e.buttons & (1 << 0))) {
             mouseDown = true;
         }
-        // Conditionally rotate if its a touch (neither of the cube interactions are active)
+        // Conditionally rotate if its a touch (none of the cube interactions are active)
         else if (e.type == "touchstart" && interaction == "") {
             mouseDown = true;
         }
-        // Conditionally rotate if its a left click (neither of the cube interactions are active)
+        // Conditionally rotate if its a left click (none of the cube interactions are active)
         else if (e.buttons == 1 && interaction == "") {
             mouseDown = true;
         }
@@ -657,13 +681,13 @@
     }
 
     // Reset variables that were set through a user interaction
-    function StopUserEvents() {
+    function ResetUserEvents() {
         mouseDown = false;
         held = false;
         sliderPressed = "";
 
 
-        // Brightness hack where abs(1) does not hide anything, just outer visibility, so we need to reset it when we let go
+        // Brightness hack-ish where abs(1) does not hide anything, just outer brightness, so we need to reset it when we let go
         if (Math.abs(hideX) == 1) {
             hideX = 0;
             ResetBrightness();
@@ -674,15 +698,17 @@
             ResetBrightness();
             redSlider.style.visibility = "visible"
         }
+
+        // Show the both sliders if we're at full visibility
         if (hideX == 0 && hideZ == 0) {
             redSlider.style.visibility = "visible"
             blueSlider.style.visibility = "visible"
         }
     }
 
-    // Rotate the cube if enabled
+    // Rotate the cube if rotation is active
     function RotateCube(e) {
-
+        // Check if we are rotating the cube
         if (mouseDown) {
             // Get the previous rotation values
             var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
@@ -690,7 +716,7 @@
             var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
             var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
 
-            // Get the values to apply to the rotation
+            // Get the new values to apply to the rotation
             var newX;
             var newY;
             if (e.touches != undefined) {
@@ -746,16 +772,21 @@
                 mouseY = e.clientY;
             }
 
-            // Update the sliders position if needed
+            // Check to see if the sliders position needs to be updated (and update it if needed)
             SliderPositionUpdate(xRad + newX, yRad + newY, zRad + newZ);
         }
     }
 
     // Change the position of the slider and the direction it scales in if needed
     function SliderPositionUpdate(xRad, yRad, zRad) {
+        // Recenter the top position of the sliders (should only change if editing)
+        redSlider.style.top = `${size*(ySize/2)}vmin`;
+        blueSlider.style.top = `${size*(ySize/2)}vmin`;
+
+        // Keep the slider position static if we are not at full visibility
+        // SHOULD UPDATE IT TO ALLOW THE VISIBLE ONE TO CHANGE SIDE IF IT KEEPS THE SAME DIRECTION, BUT BLOCK A DIRECTION CHANGE ROTATION
+        // ALSO PROBABLY COULD STRUCTURE IT BETTER
         if (hideX == 0 && hideZ == 0) {
-            redSlider.style.top = `${size*(ySize/2)}vmin`;
-            blueSlider.style.top = `${size*(ySize/2)}vmin`;
             if (yRad < -Math.PI*3/2) {
                 redSlider.style.transform = "translateZ(" + size*(-1.5) + "vmin) RotateZ(90deg) RotateY(45deg)";
                 blueSlider.style.transform = "translateZ(" + size*(zSize + 0.5) + "vmin)";
@@ -812,22 +843,28 @@
         }
     }
 
+    // Get the number of pixels from the Vh percent
     function getVh(percent) {
-    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    return (percent * h) / 100;
+        var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        return (percent * h) / 100;
     }
 
+    // Get the number of pixels from the Vw percent
     function getVw(percent) {
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    return (percent * w) / 100;
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        return (percent * w) / 100;
     }
 
+    // Get the number of pixels from the Vmin percent
+    // I DON'T PLAN ON USING THE OTHER TWO, SO MAYBE JUST COMBINE THEM INTO THIS ONE
     function getVmin(percent) {
-    return Math.min(getVh(percent), getVw(percent));
+        return Math.min(getVh(percent), getVw(percent));
     }
 
-    function StartSlider(e, side) {
+    // Setup the variables for the slider movement
+    function SetupSlider(e, side) {
         sliderPressed = side.parentElement;
+
         if (e.touches != undefined) {
             mouseX = e.touches[0].clientX;
             mouseY = e.touches[0].clientY;
@@ -836,6 +873,7 @@
             mouseY = e.clientY;
         }
 
+        // Hide the other slider
         if (sliderPressed.id == "slider red") {
             blueSlider.style.visibility = "hidden";
         } else if (sliderPressed.id == "slider blue") {
@@ -844,18 +882,23 @@
 
         // Redraw the box bright
         if (hideX != 0 || hideZ != 0) {
+            // UNSURE WHAT THE PURPOSE OF THIS ONE IS ACTUALLY, COMMENTING THIS OUT DOESNT SEEM TO CHANGE ANYTHING
             ChangeDimensions(0, 0);
         }
-        // If we were at full visiblity, perform the initial offset
+        // If we were at full visiblity, perform the initial offset to darken the boxes behind
         else {
             ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
         }
     };
 
+    // Check if the slider needs to move and change the dimensions appropriately
     function MoveSlider(e) {
+        // Make sure a slider is selected
         if (sliderPressed != "") {
+            // Get the y rotation of the cube
             var [_, rotateY, _] = container.style.transform.split(" ");
             var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+
             var currentX;
             var currentY;
             if (e.touches != undefined) {
@@ -866,19 +909,24 @@
                 currentY = e.clientY;
             }
 
+            // Calculate if the slider has changed size% vmin accounting for the cube rotation
             var redBlockDif = (mouseX - currentX)*(Math.cos(yRad))/getVmin(size) + (currentY - mouseY)*(Math.sin(yRad))/getVmin(size);
             var blueBlockDif = (mouseX - currentX)*(Math.sin(yRad))/getVmin(size) + (mouseY - currentY)*(Math.cos(yRad))/getVmin(size);
 
             // Check if the red slider is causing a dimension change
             if (redBlockDif*Number(sliderPressed.dataset.xDirection) <= -1) {
+                // Change the dimension for each size% change
                 for (let i = 0; i < Math.floor(Math.abs(redBlockDif)); i++) {
                     ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
+
+                    // Update the position
                     if (sliderPressed.dataset.xDirection == -1) {
                         redSlider.style.left = ((xSize+1-Math.abs(hideX))*size) + "vmin";
                     } else {
                         redSlider.style.left = ((Math.abs(hideX)-2)*size) + "vmin";
                     }
                 }
+                // Update the last accounted for mouse position
                 if (e.touches != undefined) {
                     mouseX = e.touches[0].clientX;
                     mouseY = e.touches[0].clientY;
@@ -962,7 +1010,9 @@
         // Destroy the cube
         else if (interaction == "Destroy") {
             Destroy.call(this);
-        } else if (interaction == "Add") {
+        }
+        // Add a cube
+        else if (interaction == "Add") {
             AddBlock.call(this);
         }
 
@@ -976,7 +1026,7 @@
 
     // Continue a held interaction
     function ContinueInteraction() {
-        // Check if an interaction happened on mousedown
+        // Check if an interaction should occur
         if (held) {
             // Create a delay before performing the first held interaction
             if (heldDelay) {
@@ -994,7 +1044,7 @@
                             ContinueInteraction.call(this);
                         }, 100);
                     }, 100);
-                } else if (interaction == "Add") {
+                } else if (interaction == "Add") { // CURRENTLY THE SAME SO COULD PROBABLY BE CONDENSED INTO AN ELSE
                     // Create a delay before accepting input
                     setTimeout(() => {
                         heldDelay = false;
@@ -1005,7 +1055,9 @@
                         }, 100);
                     }, 100);
                 }
-            } else {
+            }
+            // Held interactions after the initial delay
+            else {
                 var parent = this.parentElement.id
 
                 // If axis is a regex perform interaction if the box matches
@@ -1051,24 +1103,27 @@
                     parent.dataset.colorB = colorB;
                 } else {
                     parent.dataset.modifier = "Destroy";
-                    parent.style.backgroundColor = "rgb(128, 128, 128)";
-                    parent.dataset.colorR = "128";
-                    parent.dataset.colorG = "128";
-                    parent.dataset.colorB = "128";
+                    parent.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
+                    parent.dataset.colorR = unselectedR;
+                    parent.dataset.colorG = unselectedG;
+                    parent.dataset.colorB = unselectedB;
                 }
             }
         }
         // Otherwise toggle it
         else {
+            // Toggle if its painted and the same color
             if (parent.dataset.modifier == "Paint" && parent.dataset.colorR == colorR && parent.dataset.colorG == colorG && parent.dataset.colorB == colorB) {
                 parent.dataset.modifier = "Destroy";
-                parent.style.backgroundColor = "rgb(128, 128, 128)";
-                parent.dataset.colorR = "128";
-                parent.dataset.colorG = "128";
-                parent.dataset.colorB = "128";
+                parent.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
+                parent.dataset.colorR = unselectedR;
+                parent.dataset.colorG = unselectedG;
+                parent.dataset.colorB = unselectedB;
                 paint = false;
                 
-            } else {
+            }
+            // Otherwise we paint (as its unpainted or a different color)
+            else {
                 parent.dataset.modifier = "Paint";
                 parent.dataset.colorR = colorR;
                 parent.dataset.colorG = colorG;
@@ -1077,6 +1132,8 @@
                 paint = true;
             }
         }
+
+        // Change the brightness in case we are painting a darkened box
         ChangeBoxBrightness(parent);
     }
 
@@ -1105,12 +1162,12 @@
         parent.parentNode.replaceChild(new_box, parent);
         destroyBox = new_box;
 
+        // Create a list of boxes that changed visibility, in case you break a required box and need to rehide them
         var changedVisibility = []
 
-        // MIGHT WANT TO LOOK INTO MAKING IT JUST THE CARDINAL DIRECTIONS IF I NEED THE SPEED UP
-        
         // For the 3x3 grid centered on the box, make it visible
         for (i of [1, -1]) {
+            // If the element exists unhide it and add it to the list if it was hidden
             var xElement = document.getElementById((x+i) + " " + y + " " + z);
             if (xElement != null) {
                 if (xElement.style.visibility == "hidden") {
@@ -1145,6 +1202,7 @@
                 parent.style.visibility = "hidden";
 
                 // Wait for the animation to play out and stop user input and show the error
+                // WAIT FOR THE ANIMATION TO PLAY OUT AND STOP USER INPUT AND SHOW THE ERROR
 
                 // Rehide the blocks that were shown for the animation
                 for (element of changedVisibility) {
@@ -1155,8 +1213,12 @@
                 // Apply broken effect
                 parent.style.visibility = "visible";
                 parent.dataset.modifier = "Permanent";
-                parent.style.backgroundColor = "rgb(0, 128, 0)";
+                parent.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
+                parent.style.dataset.colorR = colorR;
+                parent.style.dataset.colorG = colorG;
+                parent.style.dataset.colorB = colorB;
 
+                // Apply the broken texture to each of the faces
                 parent.childNodes.forEach((face) => {
                     face.style.backgroundSize = face.style.backgroundSize + ', 100%'; 
                     face.style.backgroundImage = face.style.backgroundImage + ', url("./src/broken.svg")'; 
@@ -1171,6 +1233,7 @@
                     boxes[x][y].splice(index, 1);
                 }
 
+                // If we are in edit mode, update the dimensions and slider
                 if (isEditing) {
                     CheckMaxDimChange(x, y, z);
                     var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
@@ -1181,23 +1244,24 @@
                     document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
                 }
 
-                new_box.remove();
+                new_box.remove(); // WANT TO SEE IF I CAN MOVE IT UP, JUST SO ITS POSITONED TOWARDS THE OTHER DELETION ONES
             }
         }, 100);
     }
 
     // Create the explosion effect from a block
     function Explode(block) {
+        // Get the values of the parent
         var [baseX, baseY, baseZ] = block.id.split(" ");
         baseX = Number(baseX);
         baseY = Number(baseY);
         baseZ = Number(baseZ);
 
+        // Split it into a 2x2x2
         for (let i = 0; i < 1; i+=0.5) {
             for (let j = 0; j < 1; j+=0.5) {
                 for (let k = -0.25; k <= 0.25; k+=0.5) {
-                    // Create and position the box
-
+                    // Calculate how the puzzle image should be offset
                     var leftPosition = 0;
                     var topPosition = 0;
 
@@ -1208,16 +1272,17 @@
                         topPosition = 50;
                     }
 
+                    // Create and position the box
                     var box = CreateBox(baseX+i, baseY+j, baseZ+k, size/2, false, leftPosition, topPosition);
 
+                    // Set the animation positions for the box
                     box.style.setProperty('--leftStart', box.style.left);
-
-
                     if (i == 0) {
                         box.style.setProperty('--leftEnd', `${size*(baseX-0.5 + i)}vmin`);
                     } else {
                         box.style.setProperty('--leftEnd', `${size*(baseX+0.5 + i)}vmin`);
                     }
+
                     box.style.setProperty('--topStart', box.style.top);
                     if (j == 0) {
                         box.style.setProperty('--topStart', `${size*(baseY + j - 0.25)}vmin`);
@@ -1225,15 +1290,21 @@
                     } else {
                         box.style.setProperty('--topEnd', `${size*(baseY+1.5 + j)}vmin`);
                     }
+
                     box.style.setProperty('--zStart', box.style.transform);
                     if (k == -0.25) {
                         box.style.setProperty('--zEnd', "translateZ(" + size*(baseZ-0.5 + k) + "vmin)");
                     } else {
                         box.style.setProperty('--zEnd', "translateZ(" + size*(baseZ+0.5 + k) + "vmin)");
                     }
+
+                    // Rotate the box a random amount as its falling
                     box.style.setProperty('--rotateX', "rotateX(" + Math.floor(Math.random() * 360 - 180) + "deg");
+
                     box.classList.add("explode");
                     box.style.backgroundSize = "200%";
+
+                    // Remove the box once we've finished the animation
                     box.addEventListener("animationend", function(){this.remove()});
                 }
             }
@@ -1250,12 +1321,19 @@
         parentZ = Number(parentZ);
         console.log(parentX, parentY, parentZ, this.id);
 
+        // STILL NEEDS A LITTLE BIT OF CLEAN UP, I THINK ITS MAINLY ON BACK/LEFT/TOP SIDES
+
+        // Prevent a dimension from going greater than 10
         if (this.id == "front" && parentZ != 9) {
             if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
                 var box = CreateBox(parentX, parentY, parentZ+1)
+
+                // Update hte max dim if needed
                 if (parentZ+1 > zSize-1) {
                     zSize += 1;
                 }
+
+                // Add the required box arrays if needed to perserve boxes[x][y] order
                 while (boxes.length < xSize) {
                     boxes.push([[]]);
                 }
@@ -1312,18 +1390,22 @@
             }
         }
 
+        // Update the slider position
         var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
         var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
         var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
         var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
         SliderPositionUpdate(xRad, yRad, zRad);
 
+        // ALSO UNSURE WHAT THIS IS DOING OR IF ITS NEEDED
         var hideX = 0;
         var hideZ = 0;
 
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
     }
 
+    // Check if the max dimension changed, editor only
+    // UNSURE IF THIS IS WORKING 100% CORRECTLY
     function CheckMaxDimChange(x, y, z) {
         // Check Y dim
         var removeAll = true;
