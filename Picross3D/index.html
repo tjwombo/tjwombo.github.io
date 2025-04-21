@@ -628,8 +628,13 @@
         e.preventDefault();
         e.stopPropagation();
 
-        mouseX=e.clientX || e.touches[0].clientX;
-        mouseY=e.clientY || e.touches[0].clientY;
+        if (e.touches != undefined) {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+        } else {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
 
         // Start rotating if right click is pressed and left is not
         if (e.buttons & (1 << 1) && !(e.buttons & (1 << 0))) {
@@ -686,8 +691,15 @@
             var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
 
             // Get the values to apply to the rotation
-            var newX = (((e.clientX || e.touches[0].clientX)-mouseX)/180)%(2*Math.PI);
-            var newY = (((e.clientY || e.touches[0].clientY)-mouseY)/180)%(2*Math.PI);
+            var newX;
+            var newY;
+            if (e.touches != undefined) {
+                newX = ((e.touches[0].clientX-mouseX)/180)%(2*Math.PI);
+                newY = ((e.touches[0].clientY-mouseY)/180)%(2*Math.PI);
+            } else {
+                newX = ((e.clientX-mouseX)/180)%(2*Math.PI);
+                newY = ((e.clientY-mouseY)/180)%(2*Math.PI);
+            }
             var newZ = 0;
 
             // Calculate the 3x3 rotation matrix (minus the unused r22 and r23)
@@ -726,8 +738,13 @@
             container.style.transform = `rotateX(${(xRad + newX)}rad) rotateY(${(yRad + newY)%(2*Math.PI)}rad) rotateZ(${(zRad + newZ)%(2*Math.PI)}rad)`;
 
             // Update the last interaction coord
-            mouseX=e.clientX || e.touches[0].clientX;
-            mouseY=e.clientY || e.touches[0].clientY;
+            if (e.touches != undefined) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+            } else {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }
 
             // Update the sliders position if needed
             SliderPositionUpdate(xRad + newX, yRad + newY, zRad + newZ);
@@ -811,8 +828,13 @@
 
     function StartSlider(e, side) {
         sliderPressed = side.parentElement;
-        mouseX=e.clientX || e.touches[0].clientX;
-        mouseY=e.clientY || e.touches[0].clientY;
+        if (e.touches != undefined) {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
+        } else {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
 
         if (sliderPressed.id == "slider red") {
             blueSlider.style.visibility = "hidden";
@@ -834,8 +856,15 @@
         if (sliderPressed != "") {
             var [_, rotateY, _] = container.style.transform.split(" ");
             var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
-            var currentX = e.clientX || e.touches[0].clientX;
-            var currentY = e.clientY || e.touches[0].clientY;
+            var currentX;
+            var currentY;
+            if (e.touches != undefined) {
+                currentX = e.touches[0].clientX;
+                currentY = e.touches[0].clientY;
+            } else {
+                currentX = e.clientX;
+                currentY = e.clientY;
+            }
 
             var redBlockDif = (mouseX - currentX)*(Math.cos(yRad))/getVmin(size) + (currentY - mouseY)*(Math.sin(yRad))/getVmin(size);
             var blueBlockDif = (mouseX - currentX)*(Math.sin(yRad))/getVmin(size) + (mouseY - currentY)*(Math.cos(yRad))/getVmin(size);
@@ -850,8 +879,13 @@
                         redSlider.style.left = ((Math.abs(hideX)-2)*size) + "vmin";
                     }
                 }
-                mouseX = e.clientX || e.touches[0].clientX;
-                mouseY = e.clientY || e.touches[0].clientY;
+                if (e.touches != undefined) {
+                    mouseX = e.touches[0].clientX;
+                    mouseY = e.touches[0].clientY;
+                } else {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                }
             } else if (redBlockDif*Number(sliderPressed.dataset.xDirection) >= 1) {
                 for (let i = 0; i < Math.floor(Math.abs(redBlockDif)); i++) {
                     if (Math.abs(hideX) == 1) { // Prevent it from changing from pos->neg or vice versa
@@ -864,8 +898,13 @@
                             redSlider.style.left = ((Math.abs(hideX)-2)*size) + "vmin";
                         }
                     }
-                    mouseX = e.clientX || e.touches[0].clientX;
-                    mouseY = e.clientY || e.touches[0].clientY;
+                    if (e.touches != undefined) {
+                        mouseX = e.touches[0].clientX;
+                        mouseY = e.touches[0].clientY;
+                    } else {
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+                    }
                 }
             }
             
@@ -879,8 +918,13 @@
                         blueSlider.style.transform = "translateZ(" + size*(-2.5 + Math.abs(hideZ)) + "vmin)";
                     }
                 }
-                mouseX = e.clientX || e.touches[0].clientX;
-                mouseY = e.clientY || e.touches[0].clientY;
+                if (e.touches != undefined) {
+                    mouseX = e.touches[0].clientX;
+                    mouseY = e.touches[0].clientY;
+                } else {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                }
             } else if (blueBlockDif*Number(sliderPressed.dataset.zDirection) >= 1) {
                 for (let i = 0; i < Math.floor(Math.abs(blueBlockDif)); i++) {
                     if (Math.abs(hideZ) == 1) { // Prevent it from changing from pos->neg or vice versa
@@ -893,8 +937,13 @@
                             blueSlider.style.transform = "translateZ(" + size*(-2.5 + Math.abs(hideZ)) + "vmin)";
                         }
                     }
-                    mouseX = e.clientX || e.touches[0].clientX;
-                    mouseY = e.clientY || e.touches[0].clientY;
+                    if (e.touches != undefined) {
+                        mouseX = e.touches[0].clientX;
+                        mouseY = e.touches[0].clientY;
+                    } else {
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+                    }
                 }
             }
         }
