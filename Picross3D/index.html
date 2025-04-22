@@ -45,15 +45,15 @@
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 5.5;
     const sliderSize = size*1.5;
-    var xSize = 2;
-    var ySize = 2;
-    var zSize = 2;
+    var xSize = 5;
+    var ySize = 8;
+    var zSize = 6;
 
     // List of boxes to avoid re-querying div.boxes everytime I need it
     const boxes = [[[]]];
 
     // Flag to seperate editing/puzzle solving and variables related to editing
-    const isEditing = true;
+    const isEditing = false;
     var colorR = "";
     var colorG = "";
     var colorB = "";
@@ -105,6 +105,26 @@
     var container = document.getElementById("container");
     container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
     container.style.transform = "rotateX(-" + Math.PI/6 + "rad) rotateY(-" + Math.PI/6 + "rad) rotateZ(0rad)";
+
+    // Read the puzzle information
+    var frontHint = []
+    var sideHint = []
+    var topHint = []
+    const puzzleFront = "0 0 - - 0|- 2 - 1 0|- 2 - - 0|- 3 - 4 -|1 4 - - 0|- 3 - - 1|1 1 - - -|1 0 - 1 0";
+    const puzzleSide = "- - 1 - - -|- - 2 2 - -|- 0 2 2 - -|0 2 3 3 - 1|- 3 3 3 - -|1 4 3 3 - -|0 4 2 1 1 0|- 1 - - - -";
+    const puzzleTop = "1 1 0 1 -|2 - 4 4C -|- - 7 4 -|- - 5 4 -|0 - 0 3C 0|0 - 0 1 -";
+    const puzzleAnswer = [
+                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [1, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+                            [[0, 0, 1, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 1, 1], [0, 1, 1, 1, 0, 0], [1, 1, 1, 1, 0, 0], [0, 1, 1, 1, 1, 0], [0, 0, 0, 0, 1, 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+                        ];
+    console.log(puzzleAnswer);
+    var frontAnswer = []
+    var sideAnswer = []
+    var topAnswer = []
+    ParsePuzzle();
    
     // Create the cubes
     for (i = 0; i < xSize; i++) {
@@ -134,7 +154,9 @@
     var blueSlider = CreateSlider(-1, zSize+0.5, false);
 
     // Perform initial update of maxDim
-    document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+    if (isEditing) {
+        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+    }
 
 
     // Reposition the cube when the window gets resized
@@ -251,12 +273,97 @@
         });
     }
 
+    // Seperate the serialized puzzle info into a format each face can read to apply the puzzle information
+    function ParsePuzzle() {
+        frontHint = puzzleFront.split("|");
+        for (let i = 0; i < frontHint.length; i++) {
+            frontHint[i] = frontHint[i].split(" ");
+            for (let j = 0; j < frontHint[i].length; j++) {
+                frontHint[i][j] = InfoToImage(frontHint[i][j]);
+            }
+        }
+
+        sideHint = puzzleSide.split("|");
+        for (let i = 0; i < sideHint.length; i++) {
+            sideHint[i] = sideHint[i].split(" ");
+            for (let j = 0; j < sideHint[i].length; j++) {
+                sideHint[i][j] = InfoToImage(sideHint[i][j]);
+            }
+        }
+
+        topHint = puzzleTop.split("|");
+        for (let i = 0; i < topHint.length; i++) {
+            topHint[i] = topHint[i].split(" ");
+            for (let j = 0; j < topHint[i].length; j++) {
+                topHint[i][j] = InfoToImage(topHint[i][j]);
+            }
+        }
+    }
+
+    // Take the string info and turn it into the url string for the texture
+    function InfoToImage(info) {
+        if (info == "0") {
+            return "./src/base_0.svg"
+        } else if (info == "1") {
+            return "./src/base_1.svg"
+        } else if (info == "2") {
+            return "./src/base_2.svg"
+        } else if (info == "3") {
+            return "./src/base_3.svg"
+        } else if (info == "4") {
+            return "./src/base_4.svg"
+        } else if (info == "5") {
+            return "./src/base_5.svg"
+        } else if (info == "6") {
+            return "./src/base_6.svg"
+        } else if (info == "7") {
+            return "./src/base_7.svg"
+        } else if (info == "8") {
+            return "./src/base_8.svg"
+        } else if (info == "9") {
+            return "./src/base_9.svg"
+        } else if (info == "10") {
+            return "./src/base_10.svg"
+        } else if (info == "1C") {
+            return "./src/circle_1.svg"
+        } else if (info == "2C") {
+            return "./src/circle_2.svg"
+        } else if (info == "3C") {
+            return "./src/circle_3.svg"
+        } else if (info == "4C") {
+            return "./src/circle_4.svg"
+        } else if (info == "5C") {
+            return "./src/circle_5.svg"
+        } else if (info == "6C") {
+            return "./src/circle_6.svg"
+        } else if (info == "7C") {
+            return "./src/circle_7.svg"
+        } else if (info == "8C") {
+            return "./src/circle_8.svg"
+        } else if (info == "1S") {
+            return "./src/square_1.svg"
+        } else if (info == "2S") {
+            return "./src/square_2.svg"
+        } else if (info == "3S") {
+            return "./src/square_3.svg"
+        } else if (info == "4S") {
+            return "./src/square_4.svg"
+        } else if (info == "5S") {
+            return "./src/square_5.svg"
+        } else if (info == "6S") {
+            return "./src/square_6.svg"
+        } else if (info == "7S") {
+            return "./src/square_7.svg"
+        } else {
+            return "./src/blank.svg"
+        }
+    }
+
     // Create a face of the cube and attach the event handlers where interactive = puzzle box and !Interactive = box created for explosion
     function CreateBoxFace(faceSize = size, interactive = true) {
         var face = document.createElement("div");
         face.style.width = `${faceSize-0.1}vmin`;
         face.className = "face";
-        face.style.backgroundImage = 'url("./src/blank.svg")'; // So that we can apply broken ontop of it without worrying if the block already had an image or not - might not be necessary as it would just be "" or some equivalent
 
         // Add the event listeners to the puzzle boxes
         if (interactive) {
@@ -286,6 +393,9 @@
         box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
         box.id = i + " " + j + " " + k;
         box.dataset.region = "outer";
+        if (interactive && puzzleAnswer[i][j][k]) {
+            box.dataset.required = "Required";
+        }
         container.appendChild(box);
 
         // Create the top face
@@ -294,6 +404,7 @@
         if (!interactive) {
             topFace.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        topFace.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
         topFace.id = "top";
         box.appendChild(topFace);
 
@@ -303,6 +414,7 @@
         if (!interactive) {
             bottom.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        bottom.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
         bottom.id = "bottom";
         box.appendChild(bottom);
 
@@ -312,6 +424,7 @@
         if (!interactive) {
             back.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        back.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
         back.id = "back";
         box.appendChild(back);
 
@@ -321,6 +434,7 @@
         if (!interactive) {
             front.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        front.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
         front.id = "front";
         box.appendChild(front);
 
@@ -330,6 +444,7 @@
         if (!interactive) {
             left.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        left.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
         left.id = "left";
         box.appendChild(left);
 
@@ -339,6 +454,7 @@
         if (!interactive) {
             right.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
+        right.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
         right.id = "right";
         box.appendChild(right);
 
@@ -593,13 +709,15 @@
             if (interaction == "Paint") {
                 interaction = "";
                 button.classList.remove("clicked");
-                document.getElementById("colors").style.visibility = "hidden";
+                if (isEditing) {
+                    document.getElementById("colors").style.visibility = "hidden";
+                }
             } else {
                 interaction = "Paint";
                 button.classList.add('clicked');
                 document.getElementById("Destroy").classList.remove("clicked");
-                document.getElementById("Add").classList.remove("clicked");
                 if (isEditing) {
+                    document.getElementById("Add").classList.remove("clicked");
                     document.getElementById("colors").style.visibility = "visible";
                 }
             }
@@ -611,9 +729,13 @@
                 interaction = "Destroy";
                 button.classList.add("clicked");
                 document.getElementById("Paint").classList.remove("clicked");
-                document.getElementById("Add").classList.remove("clicked");
+                if (isEditing) {
+                    document.getElementById("Add").classList.remove("clicked");
+                }
             }
-            document.getElementById("colors").style.visibility = "hidden";
+            if (isEditing) {
+                document.getElementById("colors").style.visibility = "hidden";
+            }
         } else if (button.id == "Add") {
             if (interaction == "Add") {
                 interaction = "";
@@ -1170,7 +1292,7 @@
             // If the element exists unhide it and add it to the list if it was hidden
             var xElement = document.getElementById((x+i) + " " + y + " " + z);
             if (xElement != null) {
-                if (xElement.style.visibility == "hidden") {
+                if (xElement.style.visibility == "hidden" && xElement.dataset.region == "inner") {
                     changedVisibility.push(xElement)
                 }
                 xElement.dataset.region = "outer";
@@ -1178,7 +1300,7 @@
             }
             var yElement = document.getElementById(x + " " + (y+i) + " " + z);
             if (yElement != null) {
-                if (yElement.style.visibility == "hidden") {
+                if (yElement.style.visibility == "hidden" && yElement.dataset.region == "inner") {
                     changedVisibility.push(yElement)
                 }
                 yElement.dataset.region = "outer";
@@ -1186,7 +1308,7 @@
             }
             var zElement = document.getElementById(x + " " + y + " " + (z+i));
             if (zElement != null) {
-                if (zElement.style.visibility == "hidden") {
+                if (zElement.style.visibility == "hidden" && zElement.dataset.region == "inner") {
                     changedVisibility.push(zElement)
                 }
                 zElement.dataset.region = "outer";
@@ -1197,6 +1319,8 @@
         // Create a delay between the click and destruction for the held destruction
         setTimeout(function() {
             if (parent.dataset.required == "Required") {
+                parent = new_box
+
                 // Play animation of it breaking
                 Explode(parent);
                 parent.style.visibility = "hidden";
@@ -1213,16 +1337,20 @@
                 // Apply broken effect
                 parent.style.visibility = "visible";
                 parent.dataset.modifier = "Permanent";
+                parent.dataset.region == "outer"
                 parent.style.backgroundColor = "rgb(" + colorR + ", " + colorG + ", " + colorB + ")";
-                parent.style.dataset.colorR = colorR;
-                parent.style.dataset.colorG = colorG;
-                parent.style.dataset.colorB = colorB;
+                parent.dataset.colorR = colorR;
+                parent.dataset.colorG = colorG;
+                parent.dataset.colorB = colorB;
 
                 // Apply the broken texture to each of the faces
                 parent.childNodes.forEach((face) => {
                     face.style.backgroundSize = face.style.backgroundSize + ', 100%'; 
                     face.style.backgroundImage = face.style.backgroundImage + ', url("./src/broken.svg")'; 
                 });
+
+                // Update the boxes array with the new box node
+                boxes[x][y][z] = parent;
             } else {
                 // Play animation of it breaking
                 Explode(parent);
