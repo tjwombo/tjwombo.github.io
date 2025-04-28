@@ -87,6 +87,7 @@
     var held = false;
     var heldDelay = false;
     var axis = "";
+    var faceAxis = ""; // Special variable for add blocks
 
     // Interaction variables to determine what interaction is selected
     var interaction = "";
@@ -393,7 +394,7 @@
         box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
         box.id = i + " " + j + " " + k;
         box.dataset.region = "outer";
-        if (interactive && puzzleAnswer[i][j][k]) {
+        if (!isEditing && interactive && puzzleAnswer[i][j][k]) {
             box.dataset.required = "Required";
         }
         container.appendChild(box);
@@ -404,7 +405,9 @@
         if (!interactive) {
             topFace.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        topFace.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+        if (!isEditing) {
+            topFace.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+        }
         topFace.id = "top";
         box.appendChild(topFace);
 
@@ -414,7 +417,9 @@
         if (!interactive) {
             bottom.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        bottom.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+        if (!isEditing) {
+            bottom.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+        }
         bottom.id = "bottom";
         box.appendChild(bottom);
 
@@ -424,7 +429,9 @@
         if (!interactive) {
             back.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        back.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
+        if (!isEditing) {
+            back.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
+        }
         back.id = "back";
         box.appendChild(back);
 
@@ -434,7 +441,9 @@
         if (!interactive) {
             front.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        front.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
+        if (!isEditing) {
+            front.style.backgroundImage = 'url(' + frontHint[Math.floor(j)][Math.floor(i)] + ')';
+        }
         front.id = "front";
         box.appendChild(front);
 
@@ -444,7 +453,9 @@
         if (!interactive) {
             left.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        left.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
+        if (!isEditing) {
+            left.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
+        }
         left.id = "left";
         box.appendChild(left);
 
@@ -454,7 +465,9 @@
         if (!interactive) {
             right.style.backgroundPosition = leftPosition + "% " + topPosition + "%";
         }
-        right.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
+        if (!isEditing) {
+            right.style.backgroundImage = 'url(' + sideHint[Math.floor(j)][Math.round(k)] + ')';
+        }
         right.id = "right";
         box.appendChild(right);
 
@@ -1166,14 +1179,36 @@
                             ContinueInteraction.call(this);
                         }, 100);
                     }, 100);
-                } else if (interaction == "Add") { // CURRENTLY THE SAME SO COULD PROBABLY BE CONDENSED INTO AN ELSE
+                } else if (interaction == "Add") {
+
+                    // Set the axis parent to be the newly added block
+                    var [pX, pY, pZ] = this.parentElement.id.split(" ");
+                    axis = new RegExp(pX + " " + pY + " " + pZ);
+                    faceAxis = ""
+
+                    heldDelay = false;
+
                     // Create a delay before accepting input
                     setTimeout(() => {
-                        heldDelay = false;
                         // Create an additional delay before adding the block
                         // This allows another side to be chosen as the first add
                         setTimeout(() => {
-                            ContinueInteraction.call(this);
+
+                            // If we don't choose a different side first, create the setup
+                            if (faceAxis == "")  {
+                                var [pX, pY, pZ] = this.parentElement.id.split(" ");
+                                if (this.id == "top" || this.id == "bottom") {
+                                    faceAxis = "y";
+                                    axis = new RegExp(pX + " . " + pZ);
+                                } else if (this.id == "right" || this.id == "left") {
+                                    faceAxis = "x";
+                                    axis = new RegExp(". " + pY + " " + pZ);
+                                } else if (this.id == "front" || this.id == "back") {
+                                    faceAxis = "z";
+                                    axis = new RegExp(pX + " " + pY + " .");
+                                }
+                                ContinueInteraction.call(this);
+                            }
                         }, 100);
                     }, 100);
                 }
@@ -1182,9 +1217,43 @@
             else {
                 var parent = this.parentElement.id
 
-                // If axis is a regex perform interaction if the box matches
-                if (typeof(axis) != "string") {
+                // We've gotten the added block, but need to determine the direction to add in
+                if (interaction == "Add" && faceAxis == "") {
                     if (parent.search(axis) != -1) {
+                        var [pX, pY, pZ] = parent.split(" ");
+                        if (this.id == "top" || this.id == "bottom") {
+                            faceAxis = "y";
+                            axis = new RegExp(pX + " . " + pZ);
+                        } else if (this.id == "right" || this.id == "left") {
+                            faceAxis = "x";
+                            axis = new RegExp(". " + pY + " " + pZ);
+                        } else if (this.id == "front" || this.id == "back") {
+                            faceAxis = "z";
+                            axis = new RegExp(pX + " " + pY + " .");
+                        }
+                    }
+                }
+                // If axis is a regex perform interaction if the box matches
+                else if (typeof(axis) != "string") {
+                    // Find the id of the would be new block and perform the search on that
+                    if (interaction == "Add") {
+                        var [pX, pY, pZ] = parent.split(" ");
+                        if (this.id == "right" && ((Number(pX)+1) + " " + pY + " " + pZ).search(axis) != -1) {
+                            Interaction.call(this);
+                        } else if (this.id == "left" && ((Number(pX)-1) + " " + pY + " " + pZ).search(axis) != -1) {
+                            Interaction.call(this);
+                        } else if (this.id == "bottom" && (pX + " " + (Number(pY)+1) + " " + pZ).search(axis) != -1) {
+                            Interaction.call(this);
+                        } else if (this.id == "top" && (pX + " " + (Number(pY)-1) + " " + pZ).search(axis) != -1) {
+                            Interaction.call(this);
+                        } else if (this.id == "front" && (pX + " " + pY + " " + (Number(pZ)+1)).search(axis) != -1) {
+                            Interaction.call(this);
+                        } else if (this.id == "back" && (pX + " " + pY + " " + (Number(pZ)-1)).search(axis) != -1) {
+                            Interaction.call(this);
+                        }
+                    }
+                    // Otherwise do the normal search
+                    else if (parent.search(axis) != -1) {
                         Interaction.call(this);
                     }
                 }
