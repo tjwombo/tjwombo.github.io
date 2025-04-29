@@ -9,7 +9,7 @@
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
         onmouseup="ResetUserEvents()" onmouseleave="ResetUserEvents()" ontouchend="ResetUserEvents()" ontouchcancel="ResetUserEvents()"
-        onmousemove="RotateCube(event); MoveSlider(event)" ontouchmove="RotateCube(event); MoveSlider(event)">
+        onmousemove="RotateCube(event); MoveSlider(event)" ontouchmove="if (lastUpdateCall != null) {cancelAnimationFrame(lastUpdateCall);} lastUpdateCall=window.requestAnimationFrame(() => {RotateCube(event)}); MoveSlider(event)">
     <div class="board" id="board">
         <div class="container" id="container">
 
@@ -45,15 +45,15 @@
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
     const size = 5.5;
     const sliderSize = size*1.5;
-    var xSize = 5;
-    var ySize = 8;
-    var zSize = 6;
+    var xSize = 10;
+    var ySize = 10;
+    var zSize = 10;
 
     // List of boxes to avoid re-querying div.boxes everytime I need it
     const boxes = [[[]]];
 
     // Flag to seperate editing/puzzle solving and variables related to editing
-    const isEditing = false;
+    const isEditing = true;
     var colorR = "";
     var colorG = "";
     var colorB = "";
@@ -98,6 +98,9 @@
     var sliderPressed = "";
     var hideX = 0;
     var hideZ = 0;
+
+    // Variable to hold last animation frame and cancel if needed
+    var lastUpdateCall=null;
 
     // Position the cube to the center of the screen
     WindowResize();
@@ -254,6 +257,8 @@
                     } else {
                         box.style.backgroundColor = "rgb(" + (Number(unselectedR)/2) + ", " + (Number(unselectedG)/2) + ", " + (Number(unselectedB)/2) + ")";
                     }
+                } else {
+                    box.style.visibility = "hidden";
                 }
             }
         }
@@ -909,7 +914,10 @@
 
             // Check to see if the sliders position needs to be updated (and update it if needed)
             SliderPositionUpdate(xRad + newX, yRad + newY, zRad + newZ);
+            
         }
+
+        lastUpdateCall=null;
     }
 
     // Change the position of the slider and the direction it scales in if needed
