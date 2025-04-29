@@ -40,6 +40,9 @@
     </div>
     <div id="maxDim">
     </div>
+    <img id="imgtest" alt="test" style="width:10vmin" src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*">
+    <div id="divtest2" style="width:10vmin; height:10vmin"></div>
+    <div id="divtest" style="width:10vmin; height:10vmin"></div>
     
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
@@ -412,6 +415,12 @@
         }
         if (!isEditing) {
             topFace.style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+            console.log(topHint[Math.round(k)][Math.floor(i)]);
+            if (topHint[Math.round(k)][Math.floor(i)] != "./src/blank.svg") {
+                document.getElementById("imgtest").src = topHint[Math.round(k)][Math.floor(i)];
+                document.getElementById("divtest").style.backgroundImage = 'url(' + topHint[Math.round(k)][Math.floor(i)] + ')';
+                document.getElementById("divtest2").style.backgroundImage = topHint[Math.round(k)][Math.floor(i)];
+            }
         }
         topFace.id = "top";
         box.appendChild(topFace);
