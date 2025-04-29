@@ -17,3 +17,5 @@ Planned features:
 - Timer and Strike limit
 - Allow users to upload their created puzzle so that others can play them
 - Daily puzzle
+
+Does not work on ios 14.x ish as the images do not load, and I have finally updated my ios version, so I am unable to test it anymore
