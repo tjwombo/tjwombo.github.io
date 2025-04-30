@@ -8,8 +8,8 @@
 
 <body onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
-        onmouseup="ResetUserEvents()" onmouseleave="ResetUserEvents()" ontouchend="ResetUserEvents()" ontouchcancel="ResetUserEvents()"
-        onmousemove="RotateCube(event); MoveSlider(event)" ontouchmove="if (lastUpdateCall != null) {cancelAnimationFrame(lastUpdateCall);} lastUpdateCall=window.requestAnimationFrame(() => {RotateCube(event)}); MoveSlider(event)">
+        onmouseup="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" onmouseleave="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchend="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchcancel="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})"
+        onmousemove="if (lastMoveCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)});" ontouchmove="if (lastMoveeCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)})">
     <div class="board" id="board">
         <div class="container" id="container">
 
@@ -100,7 +100,9 @@
     var hideZ = 0;
 
     // Variable to hold last animation frame and cancel if needed
-    var lastUpdateCall=null;
+    var lastMoveCall = null;
+    var lastResetCall = null;
+    var lastSetupCall = null;
 
     // Position the cube to the center of the screen
     WindowResize();
@@ -491,10 +493,11 @@
             side.style.borderBottomColor = "rgb(0, 0, 255)";
         }
 
+
         side.addEventListener("mousedown", (e) => {StopDrag(e)});
-        side.addEventListener("mousedown", (e) => {SetupSlider(e, side)});
+        side.addEventListener("mousedown", (e) => {if (lastSetupCall != null) {cancelAnimationFrame(lastSetupCall);} lastSetupCall=window.requestAnimationFrame(() => {SetupSlider(e, side)})});
         side.addEventListener("touchstart", (e) => {StopDrag(e)});
-        side.addEventListener("touchstart", (e) => {SetupSlider(e, side)});
+        side.addEventListener("touchstart", (e) => {if (lastSetupCall != null) {cancelAnimationFrame(lastSetupCall);} lastSetupCall=window.requestAnimationFrame(() => {SetupSlider(e, side)})});
 
         return side;
     }
