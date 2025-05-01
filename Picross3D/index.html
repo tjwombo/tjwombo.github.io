@@ -41,6 +41,8 @@
     </div>
     <div id="maxDim">
     </div>
+    <div id="boxesLeft">
+    </div>
     
 <script>
     // Size = %vmin dimensions of each box, xSize = # of boxes left-right, ySize = # of boxes top-down, zSize = # of boxes front-back
@@ -130,6 +132,7 @@
     var sideAnswer = []
     var topAnswer = []
     ParsePuzzle();
+    var nonAnswerBoxes = 0;
    
     // Create the cubes
     for (i = 0; i < xSize; i++) {
@@ -158,9 +161,12 @@
     var redSlider = CreateSlider(xSize, -1.5, true);
     var blueSlider = CreateSlider(-1, zSize+0.5, false);
 
+    // THESE ARE JUST TESTING INFO DISPLAY
     // Perform initial update of maxDim
     if (isEditing) {
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+    } else {
+        document.getElementById("boxesLeft").innerHTML = nonAnswerBoxes;
     }
 
 
@@ -402,8 +408,12 @@
         box.style.backgroundColor = "rgb(" + unselectedR + ", " + unselectedG + ", " + unselectedB + ")";
         box.id = i + " " + j + " " + k;
         box.dataset.region = "outer";
-        if (!isEditing && interactive && puzzleAnswer[i][j][k]) {
-            box.dataset.required = "Required";
+        if (!isEditing && interactive) {
+            if (puzzleAnswer[i][j][k]) {
+                box.dataset.required = "Required";
+            } else {
+                nonAnswerBoxes++;
+            }
         }
         container.appendChild(box);
 
@@ -1437,6 +1447,8 @@
                 if (index > -1) {
                     boxes[x][y].splice(index, 1);
                 }
+                nonAnswerBoxes--;
+                document.getElementById("boxesLeft").innerHTML = nonAnswerBoxes;
 
                 // If we are in edit mode, update the dimensions and slider
                 if (isEditing) {
