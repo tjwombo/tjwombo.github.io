@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html class="unselectable">
 <head>
     <link rel="stylesheet" href="mystyle.css">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>Level Editor</title>
 </head>
 
-<body onresize="WindowResize()" oncontextmenu="return false;"
+<body class="unselectable"
+        onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
         onmouseup="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" onmouseleave="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchend="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchcancel="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})"
         onmousemove="if (lastMoveCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)});" ontouchmove="if (lastMoveeCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)})">
-    <div class="board" id="board">
-        <div class="container" id="container">
+    <div class="board unselectable" id="board">
+        <div class="container unselectable" id="container">
 
         </div>
     </div>
-    <div id="buttons" class="button" onmousedown="StopDrag(event)" >
+    <div id="buttons" class="button unselectable" onmousedown="StopDrag(event)" >
         <button id="Add" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Add</button>
         <button id="Paint" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Paint</button>
         <button id="Destroy" onclick="LimitOne(this)" ontouchstart="LimitOne(this)">Destroy</button>
     </div>
-    <div id="colors">
+    <div id="colors" class="button unselectable">
         <button id = "White" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="255" data-g="255" data-b="255" data-texture = "" class="clicked">White</button>
         <button id = "Black" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="0" data-g="0" data-b="0" data-texture = "">Black</button>
         <button id = "Gray" onclick="SelectColor(this); ontouchstart=SelectColor(this)" data-r="169" data-g="169" data-b="169" data-texture = "">Gray</button>
@@ -371,7 +372,7 @@
     function CreateBoxFace(faceSize = size, interactive = true) {
         var face = document.createElement("div");
         face.style.width = `${faceSize-0.1}vmin`;
-        face.className = "face";
+        face.className = "face unselectable";
 
         // Add the event listeners to the puzzle boxes
         if (interactive) {
@@ -393,7 +394,7 @@
     function CreateBox(i, j, k, boxSize = size, interactive = true, leftPosition = 0, topPosition = 0) {
         // Create and position the box
         var box = document.createElement("div");
-        box.className = "box";
+        box.className = "box unselectable";
         box.style.width = `${boxSize}vmin`;
         box.style.left = `${size*(i)}vmin`
         box.style.top = `${size*(j)}vmin`;
@@ -486,7 +487,7 @@
         var side = document.createElement("div");
         side.style.borderWidth =  (sliderSize/4.0) +'vmin';
         side.style.borderBottomWidth = (sliderSize/2.0) + 'vmin'; 
-        side.className = "side";
+        side.className = "side unselectable";
         if (changesX) {
             side.style.borderBottomColor = "rgb(255, 0, 0)";
         } else {
@@ -506,7 +507,7 @@
     function CreateSlider(xIndex, zIndex, changesX) {
         // Create the slider object
         var slider = document.createElement("div");
-        slider.className = "slider";
+        slider.className = "slider unselectable";
         slider.style.width = `${sliderSize}vmin`;
         slider.style.left = `${size*(xIndex)}vmin`
         slider.style.top = `${size*(ySize/2)}vmin`;
@@ -1026,13 +1027,9 @@
             redSlider.style.visibility = "hidden";
         }
 
-        // Redraw the box bright
-        if (hideX != 0 || hideZ != 0) {
-            // UNSURE WHAT THE PURPOSE OF THIS ONE IS ACTUALLY, COMMENTING THIS OUT DOESNT SEEM TO CHANGE ANYTHING
-            ChangeDimensions(0, 0);
-        }
-        // If we were at full visiblity, perform the initial offset to darken the boxes behind
-        else {
+        // Dim all the blocks if none of the blocks are dimmed
+        if (hideX == 0 && hideZ == 0) {
+            
             ChangeDimensions(Number(sliderPressed.dataset.xDirection), Number(sliderPressed.dataset.zDirection));
         }
     };

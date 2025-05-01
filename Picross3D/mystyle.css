@@ -1,15 +1,11 @@
 html {
     width: 100%;
     height: 100%;
-    user-select: none;
-    touch-action: none;
 }
 
 body {
     background-color: rgb(65, 61, 61);
     overflow: hidden;
-    user-select: none;
-    touch-action: none;
     width: 100%;
     height: 100%;
 }
@@ -18,24 +14,18 @@ body {
     position: absolute;
     height: 50vmin;
     aspect-ratio: 1 / 1;
-    user-select: none;
-    touch-action: none;
 }
 .container {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
     will-change: transform;
-    user-select: none;
-    touch-action: none;
 }
 
 .box {  
     aspect-ratio: 1/1;
     position: absolute;
     transform-style: preserve-3d;
-    user-select: none;
-    touch-action: none;
 }
   
 .face {
@@ -47,8 +37,6 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    user-select: none;
-    touch-action: none;
 }
 
 .slider {  
@@ -56,8 +44,6 @@ body {
     position: absolute;
     transform-style: preserve-3d;
     border-color: blue;
-    user-select: none;
-    touch-action: none;
 }
 
 .side {
@@ -68,11 +54,15 @@ body {
     border: 100px solid transparent;
     border-bottom: 200px solid blue;
     border-top: 0px;
-    user-select: none;
-    touch-action: none;
 }
 
 .button {
+    
+}
+
+.unselectable {
+    -webkit-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     touch-action: none;
 }
