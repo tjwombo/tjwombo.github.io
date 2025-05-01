@@ -10,7 +10,7 @@
         onresize="WindowResize()" oncontextmenu="return false;"
         onmousedown="SetupRotation(event)" ontouchstart="SetupRotation(event)"
         onmouseup="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" onmouseleave="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchend="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})" ontouchcancel="if (lastResetCall != null) {cancelAnimationFrame(lastResetCall);} lastResetCall=window.requestAnimationFrame(() => {ResetUserEvents()})"
-        onmousemove="if (lastMoveCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)});" ontouchmove="if (lastMoveeCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)})">
+        onmousemove="if (lastMoveCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)});" ontouchmove="if (lastMoveCall != null) {cancelAnimationFrame(lastMoveCall);} lastMoveCall=window.requestAnimationFrame(() => {RotateCube(event); MoveSlider(event)})">
     <div class="board unselectable" id="board">
         <div class="container unselectable" id="container">
 
