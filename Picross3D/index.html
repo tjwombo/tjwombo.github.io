@@ -68,9 +68,7 @@
         document.getElementById("maxDim").remove();
         document.getElementById("colors").remove();
     } else {
-        colorR = "255";
-        colorG = "255";
-        colorB = "255";
+        SelectColor(document.getElementById("White"));
         document.getElementById("colors").style.visibility = "hidden";
     }
 
@@ -255,10 +253,12 @@
                 // Otherwise show the outer layer in a darker color
                 if (box.dataset.region == "outer") {
                     box.style.visibility = "visible";
-                    if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
-                        box.style.backgroundColor = "rgb(" + (Number(box.dataset.colorR)/2) + ", " + (Number(box.dataset.colorG)/2) + ", " + (Number(box.dataset.colorB)/2) + ")";
-                    } else {
-                        box.style.backgroundColor = "rgb(" + (Number(unselectedR)/2) + ", " + (Number(unselectedG)/2) + ", " + (Number(unselectedB)/2) + ")";
+                    if (!isEditing) {
+                        if (box.dataset.modifier == "Paint" || box.dataset.modifier == "Permanent") {
+                            box.style.backgroundColor = "rgb(" + (Number(box.dataset.colorR)/2) + ", " + (Number(box.dataset.colorG)/2) + ", " + (Number(box.dataset.colorB)/2) + ")";
+                        } else {
+                            box.style.backgroundColor = "rgb(" + (Number(unselectedR)/2) + ", " + (Number(unselectedG)/2) + ", " + (Number(unselectedB)/2) + ")";
+                        }
                     }
                 } else {
                     box.style.visibility = "hidden";
