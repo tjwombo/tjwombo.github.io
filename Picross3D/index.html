@@ -1355,14 +1355,13 @@
         y = Number(y);
         z = Number(z);
 
-        // Don't break the box if it was painted, if the parent is null (somehow), or we've already queued this box to be destroyed
-        if (parent.dataset.modifier == 'Paint') {
+        // Don't break the box if it was painted or if its the last block (editing only) and play an animation to show that it can't be destroyed
+        if (parent.dataset.modifier == 'Paint' || (xSize == 1 && ySize == 1 && zSize == 1)) {
+            // TODO: PLAY AN ANIMATION TO SHOW THAT YOU CAN'T BREAK IT
             return;
         }
-        if (parent.parentNode == null) {
-            return;
-        }
-        if (destroyBox == parent.id) {
+        // Don't break the box if the parent is null (somehow), or we've already queued this box to be destroyed
+        if (parent.parentNode == null || destroyBox == parent.id) {
             return;
         }
 
