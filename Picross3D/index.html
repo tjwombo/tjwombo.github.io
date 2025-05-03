@@ -1449,15 +1449,10 @@
                 nonAnswerBoxes--;
                 document.getElementById("boxesLeft").innerHTML = nonAnswerBoxes;
 
-                // If we are in edit mode, update the dimensions and slider
+                // If we are in edit mode, update the dimensions, boxes, slider, board, and container
                 if (isEditing) {
                     UpdateBoxesIfDimChanged(x, y, z);
-                    var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
-                    var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
-                    var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
-                    var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
-                    SliderPositionUpdate(xRad, yRad, zRad);
-                    document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+                    ReadjustPositionsAfterDimChange();
                 }
 
                 new_box.remove(); // TODO: WANT TO SEE IF I CAN MOVE IT UP, JUST SO ITS POSITONED TOWARDS THE OTHER DELETION ONES
@@ -1668,15 +1663,7 @@
                 boxes[parentX][parentY-1].push(box);
             }
         }
-
-        // Update the slider position
-        var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
-        var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
-        var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
-        var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
-        SliderPositionUpdate(xRad, yRad, zRad);
-
-        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+        ReadjustPositionsAfterDimChange();
     }
 
     // Update box positions and id if any edge arry is empty throughout its axis, editor only
@@ -1820,6 +1807,22 @@
             zSize--;
             UpdateBoxesIfDimChanged(x, y, z);
         }
+    }
+
+    // Readjust the positions and transformations of the slider, board, and container when we adjust the dimensions
+    function ReadjustPositionsAfterDimChange() {
+        // Update the slider position
+        var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+        var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
+        var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+        var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
+        SliderPositionUpdate(xRad, yRad, zRad);
+
+        // Recenter the cube
+        container.style.transformOrigin = (size*xSize)/2.0 + "vmin " + (size*ySize)/2.0 +"vmin " + (size*zSize)/2.0 +"vmin";
+        WindowResize();
+
+        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
     }
 
 </script>
