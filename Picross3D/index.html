@@ -121,16 +121,12 @@
     const puzzleSide = "- - 1 - - -|- - 2 2 - -|- 0 2 2 - -|0 2 3 3 - 1|- 3 3 3 - -|1 4 3 3 - -|0 4 2 1 1 0|- 1 - - - -";
     const puzzleTop = "1 1 0 1 -|2 - 4 4C -|- - 7 4 -|- - 5 4 -|0 - 0 3C 0|0 - 0 1 -";
     const puzzleAnswer = [
-                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]],
-                            [[0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [1, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
-                            [[0, 0, 1, 0, 0, 0], [0, 0, 1, 1, 0, 0], [0, 0, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 1, 0, 0], [0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
-                            [[0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 1, 1, 1, 1], [0, 1, 1, 1, 0, 0], [1, 1, 1, 1, 0, 0], [0, 1, 1, 1, 1, 0], [0, 0, 0, 0, 1, 0]],
-                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [[245, 222, 179], 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, [245, 222, 179], 0, 0, 0, 0], [0, [245, 222, 179], 0, 0, 0, 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, 0, [0, 0, 0], [0, 0, 0], 0, 0], [0, 0, [0, 0, 0], [245, 222, 179], 0, 0], [0, [245, 222, 179], [245, 222, 179], [245, 222, 179], 0, 0], [[245, 222, 179], [245, 222, 179], [245, 222, 179], [245, 222, 179], 0, 0], [0, [0, 0, 255], [0, 0, 255], [0, 0, 255], 0, 0], [0, [245, 222, 179], 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+                            [[0, 0, [0, 0, 0], 0, 0, 0], [0, 0, [0, 0, 0], [0, 0, 0], 0, 0], [0, 0, [0, 0, 0], [0, 0, 0], 0, 0], [0, [245, 222, 179], [245, 222, 179], [245, 222, 179], 0, 0], [0, [245, 222, 179], [245, 222, 179], [245, 222, 179], 0, 0], [0, [0, 0, 255], [245, 222, 179], [0, 0, 255], 0, 0], [0, [245, 222, 179], [0, 0, 255], 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, [0, 0, 0], 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, [245, 222, 179], [245, 222, 179], [245, 222, 179], [245, 222, 179]], [0, [245, 222, 179], [245, 222, 179], [245, 222, 179], 0, 0], [[0, 0, 255], [0, 0, 255], [0, 0, 255], [0, 0, 255], 0, 0], [0, [0, 0, 255], [245, 222, 179], [245, 222, 179], [245, 222, 179], 0], [0, 0, 0, 0, [245, 222, 179], 0]],
+                            [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, [0, 0, 255], 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
                         ];
-    console.log(puzzleAnswer);
-    var frontAnswer = []
-    var sideAnswer = []
-    var topAnswer = []
     ParsePuzzle();
     var nonAnswerBoxes = 0;
    
@@ -161,7 +157,7 @@
     var redSlider = CreateSlider(xSize, -1.5, true);
     var blueSlider = CreateSlider(-1, zSize+0.5, false);
 
-    // THESE ARE JUST TESTING INFO DISPLAY
+    // TODO: THESE ARE JUST TESTING INFO DISPLAY
     // Perform initial update of maxDim
     if (isEditing) {
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
@@ -409,7 +405,7 @@
         box.id = i + " " + j + " " + k;
         box.dataset.region = "outer";
         if (!isEditing && interactive) {
-            if (puzzleAnswer[i][j][k]) {
+            if (puzzleAnswer[i][j][k] !== 0) {
                 box.dataset.required = "Required";
             } else {
                 nonAnswerBoxes++;
@@ -1477,6 +1473,8 @@
                         blueSlider.remove();
                         buttons.remove();
                         document.getElementById("boxesLeft").remove();
+                        interaction = "";
+                        ColorPuzzle();
                     }
                 }
 
@@ -1484,7 +1482,7 @@
             }
 
             // Check if destroying the box (or painting it because it was required) finished any hints
-            if (!isEditing) {
+            if (!isEditing && nonAnswerBoxes > 0) {
                 UpdateFinishedHints(x, y, z);
             }
         }, 100);
@@ -1976,6 +1974,22 @@
         }
     }
 
+    function ColorPuzzle() {
+        for (let i = 0; i < boxes.length; i++) {
+            for (let j = 0; j < boxes[i].length; j++) {
+                for (let k = 0; k < boxes[i][j].length; k++) {
+
+                    boxes[i][j][k].childNodes.forEach((face) => {
+                        face.style.backgroundImage = ""; 
+                    });
+
+                    var realZ = Number(boxes[i][j][k].id.split(" ")[2]);
+
+                    boxes[i][j][k].style.backgroundColor = "rgb(" + puzzleAnswer[i][j][realZ][0] + ", " + puzzleAnswer[i][j][realZ][1] + ", " + puzzleAnswer[i][j][realZ][2] + ")";
+                }
+            }
+        }
+    }
 </script>
 </body>
 </html>
