@@ -1541,7 +1541,7 @@
         // TODO: STILL NEEDS A LITTLE BIT OF CLEAN UP, I THINK ITS MAINLY ON BACK/LEFT/TOP SIDES
 
         // Prevent a dimension from going greater than 10
-        if (this.id == "front" && parentZ != 9) {
+        if (this.id == "front" && parentZ != 9 && hideZ >= 0) {
             if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
                 var box = CreateBox(parentX, parentY, parentZ+1)
 
@@ -1559,7 +1559,7 @@
                 }
                 boxes[parentX][parentY].push(box) // z order doesnt matter
             }
-        } else if (this.id == "right" && parentX != 9) {
+        } else if (this.id == "right" && parentX != 9 && hideX >= 0) {
             if (document.getElementById((parentX+1) + " " + parentY + " " + parentZ) == null) {
                 var box = CreateBox(parentX+1, parentY, parentZ)
                 if (parentX+1 > xSize-1) {
@@ -1590,12 +1590,12 @@
         }
         // TODO: PROBABLY DO SOME \.SIZE/ MANIPULATION
         // IDEALLY SHIFT EVERYTHING DOWN WHEN NEEDED SO YOUR NOT FORCED WITH A TRUE TOP LEFT
-        else if (this.id == "back" && parentZ != 0) {
+        else if (this.id == "back" && parentZ != 0 && hideZ <= 0) {
             if (document.getElementById(parentX + " " + parentY + " " + (parentZ-1)) == null) {
                 var box = CreateBox(parentX, parentY, parentZ-1)
                 boxes[parentX][parentY].push(box);
             }
-        } else if (this.id == "left" && parentX != 0) {
+        } else if (this.id == "left" && parentX != 0 && hideX <= 0) {
             if (document.getElementById((parentX-1) + " " + parentY + " " + parentZ) == null) {
                 var box = CreateBox(parentX-1, parentY, parentZ)
                 boxes[parentX-1][parentY].push(box);
@@ -1613,10 +1613,6 @@
         var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
         var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
         SliderPositionUpdate(xRad, yRad, zRad);
-
-        // TODO: ALSO UNSURE WHAT THIS IS DOING OR IF ITS NEEDED
-        var hideX = 0;
-        var hideZ = 0;
 
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
     }
