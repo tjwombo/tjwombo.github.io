@@ -1445,7 +1445,12 @@
                 });
 
                 // Update the boxes array with the new box node
-                boxes[x][y][z] = parent;
+                for (let k = 0; k < boxes[x][y].length; k++) {
+                    if (boxes[x][y][k].id.split(" ")[2] == z) {
+                        boxes[x][y][k] = parent;
+                        break;
+                    }
+                }
             } else {
                 // Play animation of it breaking
                 Explode(parent);
@@ -1462,6 +1467,15 @@
                 if (isEditing) {
                     UpdateBoxesIfDimChanged(x, y, z);
                     ReadjustPositionsAfterDimChange();
+                } else {
+                    if (nonAnswerBoxes == 0) {
+                        container.style.animation = "spin 20s linear infinite";
+                        hideX = 0;
+                        hideZ = 0;
+                        ChangeDimensions(0, 0);
+                        redSlider.remove();
+                        blueSlider.remove();
+                    }
                 }
 
                 new_box.remove(); // TODO: WANT TO SEE IF I CAN MOVE IT UP, JUST SO ITS POSITONED TOWARDS THE OTHER DELETION ONES
