@@ -1,0 +1,7 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+	<title>base_3</title>
+	<style>
+		.s0 { opacity: .5;fill: #000000 } 
+	</style>
+	<path id="10" class="s0" d="m40 28.1v-8h8v8zm0-16v8h-24v-8zm-15.9 23.9v-7.9h15.9v7.9zm16 8v-8h8v8zm0 0v8h-24v-8z"/>
+</svg>
