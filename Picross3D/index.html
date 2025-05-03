@@ -1452,7 +1452,7 @@
 
                 // If we are in edit mode, update the dimensions and slider
                 if (isEditing) {
-                    CheckMaxDimChange(x, y, z);
+                    UpdateBoxesIfDimChanged(x, y, z);
                     var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
                     var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
                     var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
@@ -1537,87 +1537,6 @@
         parentY = Number(parentY);
         parentZ = Number(parentZ);
         console.log(parentX, parentY, parentZ, this.id);
-
-        // TODO: STILL NEEDS A LITTLE BIT OF CLEAN UP, I THINK ITS MAINLY ON BACK/LEFT/TOP SIDES
-
-        // Previous code, gonna try to refactor it
-        /*
-        // Prevent a dimension from going greater than 10
-        if (this.id == "front" && parentZ != 9 && hideZ >= 0) {
-            if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
-                var box = CreateBox(parentX, parentY, parentZ+1)
-
-                // Update the max dim if needed
-                if (parentZ+1 > zSize-1) {
-                    zSize += 1;
-                }
-
-                // Add the required box arrays if needed to perserve boxes[x][y] order
-                while (boxes.length < xSize) {
-                    boxes.push([[]]);
-                }
-                while (boxes[parentX].length < ySize) {
-                    boxes[parentX].push([]);
-                }
-                boxes[parentX][parentY].push(box) // z order doesnt matter
-            }
-        } else if (this.id == "right" && parentX != 9 && hideX >= 0) {
-            if (document.getElementById((parentX+1) + " " + parentY + " " + parentZ) == null) {
-                var box = CreateBox(parentX+1, parentY, parentZ)
-                if (parentX+1 > xSize-1) {
-                    xSize += 1;
-                }
-                while (boxes.length < xSize) {
-                    boxes.push([[]]);
-                }
-                while (boxes[parentX+1].length < ySize) {
-                    boxes[parentX+1].push([]);
-                }
-                boxes[parentX+1][parentY].push(box);
-            }
-        } else if (this.id == "bottom" && parentY != 9) {
-            if (document.getElementById(parentX + " " + (parentY+1) + " " + parentZ) == null) {
-                var box = CreateBox(parentX, parentY+1, parentZ);
-                if (parentY+1 > ySize-1) {
-                    ySize += 1;
-                }
-                while (boxes.length < xSize) {
-                    boxes.push([[]]);
-                }
-                while (boxes[parentX].length < ySize) {
-                    boxes[parentX].push([]);
-                }
-                boxes[parentX][parentY+1].push(box);
-            }
-        }
-        // TODO: PROBABLY DO SOME \.SIZE/ MANIPULATION
-        // IDEALLY SHIFT EVERYTHING DOWN WHEN NEEDED SO YOUR NOT FORCED WITH A TRUE TOP LEFT
-        else if (this.id == "back" && parentZ != 0 && hideZ <= 0) {
-            if (document.getElementById(parentX + " " + parentY + " " + (parentZ-1)) == null) {
-                var box = CreateBox(parentX, parentY, parentZ-1)
-                boxes[parentX][parentY].push(box);
-            }
-        } else if (this.id == "left" && parentX != 0 && hideX <= 0) {
-            if (document.getElementById((parentX-1) + " " + parentY + " " + parentZ) == null) {
-                var box = CreateBox(parentX-1, parentY, parentZ)
-                boxes[parentX-1][parentY].push(box);
-            }
-        } else if (this.id == "top" && parentY != 0) {
-            if (document.getElementById(parentX + " " + (parentY-1) + " " + parentZ) == null) {
-                var box = CreateBox(parentX, parentY-1, parentZ)
-                boxes[parentX][parentY-1].push(box);
-            }
-        }
-
-        // Update the slider position
-        var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
-        var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
-        var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
-        var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
-        SliderPositionUpdate(xRad, yRad, zRad);
-
-        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
-        */
 
         // If we are trying to add to the negative hiding side
         // Allow it as long as we are not trying to add a new dimension while at max and are not hiding in that direction
@@ -1750,28 +1669,20 @@
                 boxes[parentX][parentY-1].push(box);
             }
         }
+
+        // Update the slider position
+        var [rotateX, rotateY, rotateZ] = container.style.transform.split(" ");
+        var xRad = Number(rotateX.substring(rotateX.indexOf("(")+1, rotateX.indexOf("rad")));
+        var yRad = Number(rotateY.substring(rotateY.indexOf("(")+1, rotateY.indexOf("rad")));
+        var zRad = Number(rotateZ.substring(rotateZ.indexOf("(")+1, rotateZ.indexOf("rad")));
+        SliderPositionUpdate(xRad, yRad, zRad);
+
+        document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
     }
 
-    // Check if the max dimension changed, editor only
-    // TODO: UNSURE IF THIS IS WORKING 100% CORRECTLY
-    function CheckMaxDimChange(x, y, z) {
-        // Check Y dim
-        var removeAll = true;
-        for (let i = 0; i < boxes.length; i++) {
-            if (boxes[i].length >= ySize) {
-                if (boxes[i][ySize-1].length > 0) {
-                    removeAll = false;
-                    break;
-                }
-            }
-        }
-        if (removeAll) {
-            boxes[x].splice(y, 1);
-            ySize--;
-            CheckMaxDimChange(x, y-1, z);
-        }
-
-        // Check X dim
+    // Update box positions and id if any edge arry is empty throughout its axis, editor only
+    function UpdateBoxesIfDimChanged(x, y, z) {
+        // Check upper X dim
         var removeAll = true;
         if (boxes[x] != undefined) {
             for (let i = 0; i < boxes[x].length; i++) {
@@ -1784,13 +1695,77 @@
                 if (x >= xSize-1) {
                     boxes.splice(x, 1);
                     xSize--;
-                    CheckMaxDimChange(x-1, y, z)
+                    UpdateBoxesIfDimChanged(x-1, y, z)
                 }
-                console.log(x, xSize);
             }
         }
 
-        // Check Z dim
+        // Check lower X dim
+        removeAll = true;
+        for (let j = 0; j < boxes[0].length; j++) {
+            if (boxes[0][j].length > 0) {
+                removeAll = false;
+                break;
+            }
+        }
+        if (removeAll) {
+            boxes.splice(0, 1);
+            for (let i = 0; i < boxes.length; i++) {
+                for (let j = 0; j < boxes[i].length; j++) {
+                    for (let k = 0; k < boxes[i][j].length; k++) {
+                        var box = boxes[i][j][k];
+                        var zId = Number(box.id.split(" ")[2]);
+
+                        box.style.left = `${size*(i)}vmin`
+                        box.id = i + " " + j + " " + zId;
+                    }
+                }
+            }
+            xSize--;
+            UpdateBoxesIfDimChanged(x, y, z);
+        }
+
+        // Check upper Y dim
+        removeAll = true;
+        for (let i = 0; i < boxes.length; i++) {
+            if (boxes[i].length >= ySize && boxes[i][ySize-1].length > 0) {
+                removeAll = false;
+                break;
+            }
+        }
+        if (removeAll) {
+            boxes[x].splice(y, 1);
+            ySize--;
+            UpdateBoxesIfDimChanged(x, y-1, z);
+        }
+
+        // Check lower Y dim
+        removeAll = true;
+        for (let i = 0; i < boxes.length; i++) {
+            if (boxes[i][0].length > 0) {
+                removeAll = false;
+                break;
+            }
+        }
+        if (removeAll) {
+            for (let i = 0; i < boxes.length; i++) {
+                boxes[i].splice(0, 1);
+
+                for (let j = 0; j < boxes[i].length; j++) {
+                    for (let k = 0; k < boxes[i][j].length; k++) {
+                        var box = boxes[i][j][k];
+                        var zId = Number(box.id.split(" ")[2]);
+
+                        box.style.top = `${size*(j)}vmin`
+                        box.id = i + " " + j + " " + zId;
+                    }
+                }
+            }
+            ySize--;
+            UpdateBoxesIfDimChanged(x, y, z);
+        }
+
+        // Check upper Z dim
         var removeAll = true;
         for (let i = 0; i < boxes.length; i++) {
             for (let j = 0; j < boxes[i].length; j++) {
@@ -1800,11 +1775,51 @@
                         break;
                     }
                 }
+                if (!removeAll) {
+                    break;
+                }
+            }
+            if (!removeAll) {
+                break;
             }
         }
         if (removeAll) {
             zSize--;
-            CheckMaxDimChange(x, y, z-1)
+            UpdateBoxesIfDimChanged(x, y, z-1)
+        }
+
+        // Check lower Z dim
+        removeAll = true;
+        for (let i = 0; i < boxes.length; i++) {
+            for (let j = 0; j < boxes[i].length; j++) {
+                for (let k = 0; k < boxes[i][j].length; k++) {
+                    if (boxes[i][j][k].id.split(" ")[2] == 0) {
+                        removeAll = false;
+                        break;
+                    }
+                }
+                if (!removeAll) {
+                    break;
+                }
+            }
+            if (!removeAll) {
+                break;
+            }
+        }
+        if (removeAll) {
+            for (let i = 0; i < boxes.length; i++) {
+                for (let j = 0; j < boxes[i].length; j++) {
+                    for (let k = 0; k < boxes[i][j].length; k++) {
+                        var box = boxes[i][j][k];
+                        var updatedZId = Number(box.id.split(" ")[2])-1;
+
+                        box.style.transform = "translateZ(" + size*(updatedZId) + "vmin)";
+                        box.id = i + " " + j + " " + updatedZId;
+                    }
+                }
+            }
+            zSize--;
+            UpdateBoxesIfDimChanged(x, y, z);
         }
     }
 
