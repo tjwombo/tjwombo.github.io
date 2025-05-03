@@ -1344,6 +1344,15 @@
 
         // Change the brightness in case we are painting a darkened box
         ChangeBoxBrightness(parent);
+
+        if (!isEditing) {
+            // Check if the paint action finished a hint or unfinished a hint
+            var [x, y, z] = parent.id.split(" ");
+            x = Number(x);
+            y = Number(y);
+            z = Number(z);
+            UpdateFinishedHints(x, y, z)
+        }
     }
 
     // Destroy the box that was clicked
@@ -1456,6 +1465,11 @@
                 }
 
                 new_box.remove(); // TODO: WANT TO SEE IF I CAN MOVE IT UP, JUST SO ITS POSITONED TOWARDS THE OTHER DELETION ONES
+            }
+
+            // Check if destroying the box (or painting it because it was required) finished any hints
+            if (!isEditing) {
+                UpdateFinishedHints(x, y, z);
             }
         }, 100);
     }
@@ -1823,6 +1837,127 @@
         WindowResize();
 
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+    }
+
+    // Update the face image to be finished or not
+    function UpdateFaceHint(i, j, k, paintedAll, blockTotal, faceIndex) {
+        var images = boxes[i][j][k].childNodes[faceIndex].style.backgroundImage;
+        var hint = images.split(",")[0];
+
+        // Skip if there is hint on the face
+        if (hint == 'url("./src/blank.svg")') {
+            return;
+        }
+
+        // Get the remaining image info (i.e. is it broken), number of the hint, and type of hint (base, circle, or square)
+        var remainder = images.substring(images.indexOf(",")); // Will equal hint if there is no ','
+        var number = Number(hint.substring(hint.lastIndexOf("_")+1, hint.lastIndexOf(".")));
+        var type = "";
+        if (hint.indexOf("_") == hint.lastIndexOf("_")) {
+            type = hint.substring(hint.lastIndexOf("/")+1, hint.lastIndexOf("_"));
+        } else {
+            type = hint.substring(hint.indexOf("_")+1, hint.lastIndexOf("_"));
+        }
+
+        // Change it to the finished image if all is painted and the number of blocks equals the hint number
+        if (paintedAll) {
+            if (blockTotal == number) {
+                if (hint != remainder) {
+                    boxes[i][j][k].childNodes[faceIndex].style.backgroundImage = 'url("./src/finished_' + type + "_" + number + '.svg")' + remainder;
+                    boxes[i][j][k].childNodes[faceIndex+1].style.backgroundImage = 'url("./src/finished_' + type + "_" + number + '.svg")' + remainder;
+                } else {
+                    boxes[i][j][k].childNodes[faceIndex].style.backgroundImage = 'url("./src/finished_' + type + "_" + number + '.svg"';
+                    boxes[i][j][k].childNodes[faceIndex+1].style.backgroundImage = 'url("./src/finished_' + type + "_" + number + '.svg"';
+                }
+            }
+        }
+        // If there is at least one unpainted, set them all to unfinished
+        else {
+            if (hint != remainder) {
+                boxes[i][j][k].childNodes[faceIndex].style.backgroundImage = 'url("./src/' + type + "_" + number + '.svg)"' + remainder;
+                boxes[i][j][k].childNodes[faceIndex+1].style.backgroundImage = 'url("./src/' + type + "_" + number + '.svg)"' + remainder;
+            } else {
+                boxes[i][j][k].childNodes[faceIndex].style.backgroundImage = 'url("./src/' + type + "_" + number + '.svg"';
+                boxes[i][j][k].childNodes[faceIndex+1].style.backgroundImage = 'url("./src/' + type + "_" + number + '.svg"';
+            }
+        }
+
+    }
+
+    // Sets hint the hint to finished/unfinished (whatever is correct) whenever a block is painted/unpainted or destroyed
+    function UpdateFinishedHints(x, y, z) {
+        // Variables to count how many blocks are in the axis and whether they are all painted or not
+        var paintedAllX = true;
+        var totalX = 0;
+        var paintedAllY = true;
+        var totalY = 0;
+        var paintedAllZ = true;
+        // totalZ = boxes[x][y].length - thus trivial and does not need its own variable
+
+
+        // Change the left and right faces
+        for (let i = 0; i < boxes.length; i++) {
+            // Loop through all the x boxes and find the z index that matches our z and count how many boxes there are and if they are all painted
+            for (let k = 0; k < boxes[i][y].length; k++) {
+                if (boxes[i][y][k].id.split(" ")[2] == z) {
+                    if (boxes[i][y][k].dataset.modifier != "Paint" && boxes[i][y][k].dataset.modifier != "Permanent") {
+                        paintedAllX = false;
+                    }
+
+                    totalX++;
+                    break;
+                }
+            }
+        }
+        // Then loop through it again, once again getting to our true Z for each x
+        for (let i = 0; i < boxes.length; i++) {
+            for (let k = 0; k < boxes[i][y].length; k++) {
+                if (boxes[i][y][k].id.split(" ")[2] != z) {
+                    continue;
+                }
+
+                // Then update the hint on the face
+                UpdateFaceHint(i, y, k, paintedAllX, totalX, 4)
+
+                break;
+            }
+        }
+
+        // Change the top and bottom faces
+        for (let j = 0; j < boxes[x].length; j++) {
+            for (let k = 0; k < boxes[x][j].length; k++) {
+                if (boxes[x][j][k].id.split(" ")[2] == z) {
+                    if (boxes[x][j][k].dataset.modifier != "Paint" && boxes[x][j][k].dataset.modifier != "Permanent") {
+                        paintedAllY = false;
+                    }
+
+                    totalY++;
+                    break;
+                }
+            }
+        }
+        for (let j = 0; j < boxes[x].length; j++) {
+            for (let k = 0; k < boxes[x][j].length; k++) {
+                if (boxes[x][j][k].id.split(" ")[2] != z) {
+                    continue;
+                }
+
+                UpdateFaceHint(x, j, k, paintedAllY, totalY, 0)
+
+                break;
+            }
+        }
+
+        // Change the front and back faces
+        for (let k = 0; k < boxes[x][y].length; k++) {
+            if (boxes[x][y][k].dataset.modifier != "Paint" && boxes[x][y][k].dataset.modifier != "Permanent") {
+                paintedAllZ = false;
+                break;
+            }
+        }
+        for (let k = 0; k < boxes[x][y].length; k++) {
+            UpdateFaceHint(x, y, k, paintedAllZ, boxes[x][y].length, 2);
+        }
     }
 
 </script>
