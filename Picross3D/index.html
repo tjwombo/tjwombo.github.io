@@ -1540,12 +1540,14 @@
 
         // TODO: STILL NEEDS A LITTLE BIT OF CLEAN UP, I THINK ITS MAINLY ON BACK/LEFT/TOP SIDES
 
+        // Previous code, gonna try to refactor it
+        /*
         // Prevent a dimension from going greater than 10
         if (this.id == "front" && parentZ != 9 && hideZ >= 0) {
             if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
                 var box = CreateBox(parentX, parentY, parentZ+1)
 
-                // Update hte max dim if needed
+                // Update the max dim if needed
                 if (parentZ+1 > zSize-1) {
                     zSize += 1;
                 }
@@ -1615,6 +1617,139 @@
         SliderPositionUpdate(xRad, yRad, zRad);
 
         document.getElementById("maxDim").innerHTML = xSize + " " + ySize + " " + zSize;
+        */
+
+        // If we are trying to add to the negative hiding side
+        // Allow it as long as we are not trying to add a new dimension while at max and are not hiding in that direction
+        if (this.id == "front" && !(zSize == 10 && parentZ == 9) && hideZ >= 0) {
+            if (document.getElementById(parentX + " " + parentY + " " + (parentZ+1)) == null) {
+                var box = CreateBox(parentX, parentY, parentZ+1)
+
+                // Update the max dim if needed
+                if (parentZ+1 > zSize-1) {
+                    zSize += 1;
+                }
+
+                // Add the required box arrays if needed to perserve boxes[x][y] order
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX].length < ySize) {
+                    boxes[parentX].push([]);
+                }
+                boxes[parentX][parentY].push(box) // z order doesnt matter
+            }
+        } else if (this.id == "right" && !(xSize == 10 && parentX == 9) && hideX >= 0) {
+            if (document.getElementById((parentX+1) + " " + parentY + " " + parentZ) == null) {
+                var box = CreateBox(parentX+1, parentY, parentZ)
+                if (parentX+1 > xSize-1) {
+                    xSize += 1;
+                }
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX+1].length < ySize) {
+                    boxes[parentX+1].push([]);
+                }
+                boxes[parentX+1][parentY].push(box);
+            }
+        } else if (this.id == "bottom" && !(ySize == 10 && parentY == 9)) {
+            if (document.getElementById(parentX + " " + (parentY+1) + " " + parentZ) == null) {
+                var box = CreateBox(parentX, parentY+1, parentZ);
+                if (parentY+1 > ySize-1) {
+                    ySize += 1;
+                }
+                while (boxes.length < xSize) {
+                    boxes.push([[]]);
+                }
+                while (boxes[parentX].length < ySize) {
+                    boxes[parentX].push([]);
+                }
+                boxes[parentX][parentY+1].push(box);
+            }
+        }
+        // Adding to positive hiding side is similar, but will need to update positions and ids
+        else if (this.id == "back" && !(zSize == 10 && parentZ == 0) && hideZ <= 0) {
+            if (document.getElementById(parentX + " " + parentY + " " + (parentZ-1)) == null) {
+
+                // If we are adding a new dim, shift all ids up by 1 in z direction and update their translateZ transform
+                if (parentZ == 0) {
+                    for (let i = 0; i < boxes.length; i++) {
+                        for (let j = 0; j < boxes[i].length; j++) {
+                            for (let k = 0; k < boxes[i][j].length; k++) {
+                                var box = boxes[i][j][k];
+                                var updatedZId = Number(box.id.split(" ")[2])+1;
+
+                                box.style.transform = "translateZ(" + size*(updatedZId) + "vmin)";
+                                box.id = i + " " + j + " " + updatedZId;
+                            }
+                        }
+                    }
+
+                    // Update the parentZ for consistent createBox and our max z dimension
+                    parentZ++;
+                    zSize++;
+                }
+
+                // Create the box and add it (z ordering doesn't matter so this one is simple)
+                var box = CreateBox(parentX, parentY, parentZ-1)
+                boxes[parentX][parentY].push(box);
+            }
+        } else if (this.id == "left" && !(xSize == 10 && parentX == 0) && hideX <= 0) {
+            if (document.getElementById((parentX-1) + " " + parentY + " " + parentZ) == null) {
+                if (parentX == 0) {
+                    for (let i = 0; i < boxes.length; i++) {
+                        for (let j = 0; j < boxes[i].length; j++) {
+                            for (let k = 0; k < boxes[i][j].length; k++) {
+                                var box = boxes[i][j][k];
+                                var zId = Number(box.id.split(" ")[2]); // We still need zId, because z order is non guaranteed
+
+                                box.style.left = `${size*(i+1)}vmin`
+                                box.id = (i+1) + " " + j + " " + zId;
+                            }
+                        }
+                    }
+
+                    parentX++;
+                    xSize++;
+
+                    // Create the new box entries to correspond to the new dim
+                    boxes.unshift([]);
+                    for (let j = 0; j < ySize; j++) {
+                        boxes[0].push([]);
+                    }
+                }
+
+                var box = CreateBox(parentX-1, parentY, parentZ)
+                boxes[parentX-1][parentY].push(box);
+            }
+        } else if (this.id == "top" && !(ySize == 10 && parentY == 0)) {
+            if (document.getElementById(parentX + " " + (parentY-1) + " " + parentZ) == null) {
+                if (parentY == 0) {
+                    for (let i = 0; i < boxes.length; i++) {
+                        for (let j = 0; j < boxes[i].length; j++) {
+                            for (let k = 0; k < boxes[i][j].length; k++) {
+                                var box = boxes[i][j][k];
+                                var zId = Number(box.id.split(" ")[2]);
+
+                                box.style.top = `${size*(j+1)}vmin`
+                                box.id = i + " " + (j+1) + " " + zId;
+                            }
+                        }
+                    }
+
+                    parentY++;
+                    ySize++;
+
+                    for (let i = 0; i < xSize; i++) {
+                        boxes[i].unshift([]);
+                    }
+                }
+
+                var box = CreateBox(parentX, parentY-1, parentZ)
+                boxes[parentX][parentY-1].push(box);
+            }
+        }
     }
 
     // Check if the max dimension changed, editor only
